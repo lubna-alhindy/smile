@@ -1,60 +1,56 @@
-exports.getAllPosts = async (models) => {
-    const allPost = await models.posts.findAll();
+exports.getPost = async (args, models) => {
+    const post = await models.posts.findByPk(args.id);
+    const editedPost = JSON.parse(JSON.stringify(post));
 
-    const response = [];
-    for(const post of allPost){
-        const editedPost = JSON.parse(JSON.stringify(post));
-
-        const likes = await models.likes.findAll({
-            where:{
-                PostId: post.id
-            }
-        });
-
-        const likesRes = [];
-        for( const like of likes) {
-            const editedLike = JSON.parse(JSON.stringify(like));
-            editedLike.user = await models.users.findOne({
-                where: {
-                    id: like.UserId
-                }
-            });
-            likesRes.push(editedLike);
+    const likes = await models.likes.findAll({
+        where:{
+            postId: post.id
         }
-        editedPost.likes = likesRes;
-        editedPost.likesCnt = editedPost.likes.length;
+    });
 
-        const comments = await models.comments.findAll({
-            where:{
-                PostId: post.id
+    const likesRes = [];
+    for( const like of likes) {
+        const editedLike = JSON.parse(JSON.stringify(like));
+        editedLike.user = await models.users.findOne({
+            where: {
+                id: like.userId
             }
         });
-
-        const commentsRes = [];
-        for( const comment of comments){
-            const editedComment = JSON.parse(JSON.stringify(comment));
-            editedComment.user = await models.users.findOne({
-                where: {
-                    id: comment.UserId
-                }
-            });
-            commentsRes.push(editedComment);
-        }
-        editedPost.comments = commentsRes;
-        editedPost.commentsCnt = editedPost.comments.length;
-
-        const user = await models.users.findOne({
-            where:{
-                id: post.UserId
-            }
-        });
-
-        editedPost.user = user;
-        response.push(editedPost);
+        likesRes.push(editedLike);
     }
+    editedPost.likes = likesRes;
+    editedPost.likesCnt = editedPost.likes.length;
 
-    return response;
+    const comments = await models.comments.findAll({
+        where:{
+            postId: post.id
+        }
+    });
+
+    const commentsRes = [];
+    for( const comment of comments){
+        const editedComment = JSON.parse(JSON.stringify(comment));
+        editedComment.user = await models.users.findOne({
+            where: {
+                id: comment.userId
+            }
+        });
+        commentsRes.push(editedComment);
+    }
+    editedPost.comments = commentsRes;
+    editedPost.commentsCnt = editedPost.comments.length;
+
+    const user = await models.users.findOne({
+        where:{
+            id: post.userId
+        }
+    });
+
+    editedPost.user = user;
+
+    return editedPost;
 }
+
 
 exports.getAllGeneralPost = async (models) => {
     const allPost = await models.posts.findAll({
@@ -69,7 +65,7 @@ exports.getAllGeneralPost = async (models) => {
 
         const likes = await models.likes.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -78,7 +74,7 @@ exports.getAllGeneralPost = async (models) => {
             const editedLike = JSON.parse(JSON.stringify(like));
             editedLike.user = await models.users.findOne({
                 where: {
-                    id: like.UserId
+                    id: like.userId
                 }
             });
             likesRes.push(editedLike);
@@ -88,7 +84,7 @@ exports.getAllGeneralPost = async (models) => {
 
         const comments = await models.comments.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -97,7 +93,7 @@ exports.getAllGeneralPost = async (models) => {
             const editedComment = JSON.parse(JSON.stringify(comment));
             editedComment.user = await models.users.findOne({
                 where: {
-                    id: comment.UserId
+                    id: comment.userId
                 }
             });
             commentsRes.push(editedComment);
@@ -107,7 +103,7 @@ exports.getAllGeneralPost = async (models) => {
 
         const user = await models.users.findOne({
             where:{
-                id: post.UserId
+                id: post.userId
             }
         });
 
@@ -121,7 +117,7 @@ exports.getAllGeneralPost = async (models) => {
 exports.getAllPostOfUser = async (args ,models) => {
     const allPost = await models.posts.findAll({
         where:{
-            UserId: args.UserId
+            userId: args.userId
         }
     });
 
@@ -131,7 +127,7 @@ exports.getAllPostOfUser = async (args ,models) => {
 
         const likes = await models.likes.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -140,7 +136,7 @@ exports.getAllPostOfUser = async (args ,models) => {
             const editedLike = JSON.parse(JSON.stringify(like));
             editedLike.user = await models.users.findOne({
                 where: {
-                    id: like.UserId
+                    id: like.userId
                 }
             });
             likesRes.push(editedLike);
@@ -150,7 +146,7 @@ exports.getAllPostOfUser = async (args ,models) => {
 
         const comments = await models.comments.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -159,7 +155,7 @@ exports.getAllPostOfUser = async (args ,models) => {
             const editedComment = JSON.parse(JSON.stringify(comment));
             editedComment.user = await models.users.findOne({
                 where: {
-                    id: comment.UserId
+                    id: comment.userId
                 }
             });
             commentsRes.push(editedComment);
@@ -169,7 +165,7 @@ exports.getAllPostOfUser = async (args ,models) => {
 
         const user = await models.users.findOne({
             where:{
-                id: post.UserId
+                id: post.userId
             }
         });
 
@@ -194,7 +190,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
 
         const likes = await models.likes.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -203,7 +199,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
             const editedLike = JSON.parse(JSON.stringify(like));
             editedLike.user = await models.users.findOne({
                 where: {
-                    id: like.UserId
+                    id: like.userId
                 }
             });
             likesRes.push(editedLike);
@@ -213,7 +209,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
 
         const comments = await models.comments.findAll({
             where:{
-                PostId: post.id
+                postId: post.id
             }
         });
 
@@ -222,7 +218,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
             const editedComment = JSON.parse(JSON.stringify(comment));
             editedComment.user = await models.users.findOne({
                 where: {
-                    id: comment.UserId
+                    id: comment.userId
                 }
             });
             commentsRes.push(editedComment);
@@ -232,7 +228,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
 
         const user = await models.users.findOne({
             where:{
-                id: post.UserId
+                id: post.userId
             }
         });
 
@@ -246,7 +242,7 @@ exports.getAllPostOfSubject = async (args ,models) => {
 exports.getFavoritePosts = async (args ,models) => {
     const favorites = await models.favorites.findAll({
         where: {
-            UserId: args.UserId
+            userId: args.userId
         }
     });
 
@@ -256,7 +252,7 @@ exports.getFavoritePosts = async (args ,models) => {
 
         editedFavorite.post = await models.posts.findOne({
             where: {
-                id: favorite.PostId
+                id: favorite.postId
             }
         });
 
@@ -272,9 +268,10 @@ exports.addPost = async (args ,models) => {
         type: args.type,
         title: args.title,
         body: args.body,
-        UserId: args.UserId
+        userId: args.userId
     });
 }
+
 exports.getAllPostRequests = async (models) => {
     const postRequests = await models.postRequests.findAll();
 
@@ -284,7 +281,7 @@ exports.getAllPostRequests = async (models) => {
 
         editedPostRequest.user = await models.users.findOne({
             where: {
-                id: postRequest.UserId
+                id: postRequest.userId
             }
         });
 
@@ -294,33 +291,37 @@ exports.getAllPostRequests = async (models) => {
     return response;
 }
 
-exports.acceptPostRequest = async (args ,models) => {
-    const postRequest = await models.postRequests.findOne({
-        where:{
-            id: args.id
-        }
-    });
+exports.approvalPostRequest = async (args ,models) => {
+    if( args.cheack == true){
+        const postRequest = await models.postRequests.findOne({
+            where:{
+                id: args.id
+            }
+        });
 
-    await models.posts.create({
-        subjectId: postRequest.subjectId,
-        type: postRequest.type,
-        title: postRequest.title,
-        body: postRequest.body,
-        UserId: postRequest.UserId
-    })
+        await models.posts.create({
+            subjectId: postRequest.subjectId,
+            type: postRequest.type,
+            title: postRequest.title,
+            body: postRequest.body,
+            userId: postRequest.userId
+        })
 
-    await postRequest.destroy();
+        await postRequest.destroy();
+    }
+
+    else
+        {
+            const postRequest = await models.postRequests.findOne({
+                where:{
+                    id: args.id
+                }
+            });
+
+            await postRequest.destroy();
+    }
 }
 
-exports.deletePostRequest = async (args ,models) => {
-    const postRequest = await models.postRequests.findOne({
-        where:{
-            id: args.id
-        }
-    });
-
-    await postRequest.destroy();
-}
 
 exports.like = async (args ,models) => {
     const like = await models.likes.findOne({
@@ -331,8 +332,8 @@ exports.like = async (args ,models) => {
 
     if( like == null ){
         return await models.likes.create({
-            UserId: args.UserId,
-            PostId: args.PostId
+            userId: args.userId,
+            postId: args.postId
         });
     }
     await like.destroy();
@@ -341,8 +342,8 @@ exports.like = async (args ,models) => {
 exports.addComment = async (args ,models) => {
     return await models.comments.create({
         body: args.body,
-        UserId: args.UserId,
-        PostId: args.PostId
+        userId: args.userId,
+        postId: args.postId
     });
 }
 
@@ -358,8 +359,8 @@ exports.deleteComment = async (args ,models) => {
 
 exports.addFavorite = async (args ,models) => {
     return await models.favorites.create({
-        UserId: args.UserId,
-        PostId: args.PostId
+        userId: args.userId,
+        postId: args.postId
     })
 }
 
@@ -375,7 +376,7 @@ exports.deleteFavorite = async (args ,models) => {
 // exports.getComments = async (args) => {
 //     const comments = await models.comments.findAll({
 //         where: {
-//             PostId: args.PostId
+//             postId: args.postId
 //         }
 //     });
 //
@@ -384,7 +385,7 @@ exports.deleteFavorite = async (args ,models) => {
 //         const editedComment = JSON.parse(JSON.stringify(comment));
 //         editedComment.user = await models.users.findOne({
 //             where: {
-//                 id: comment.UserId
+//                 id: comment.userId
 //             }
 //         });
 //         commentsRes.push(editedComment);
@@ -396,7 +397,7 @@ exports.deleteFavorite = async (args ,models) => {
 // exports.getLikes = async (args) => {
 //     const likes = await models.likes.findAll({
 //         where: {
-//             PostId: args.PostId
+//             postId: args.postId
 //         }
 //     });
 //
@@ -405,7 +406,7 @@ exports.deleteFavorite = async (args ,models) => {
 //         const editedLike = JSON.parse(JSON.stringify(like));
 //         editedLike.user = await models.users.findOne({
 //             where: {
-//                 id: like.UserId
+//                 id: like.userId
 //             }
 //         });
 //         likesRes.push(editedLike);

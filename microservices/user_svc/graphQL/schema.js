@@ -31,7 +31,7 @@ const typeDefs = gql`
     type: String!
     title: String
     body: String!
-    UserId: Int!
+    userId: Int!
     createdAt: Date!
     updatedAt: Date!
     likes: [Likes]!
@@ -47,7 +47,7 @@ const typeDefs = gql`
     type: String!
     title: String
     body: String!
-    UserId: Int!
+    userId: Int!
     createdAt: Date!
     updatedAt: Date!
     user: Users!
@@ -55,29 +55,29 @@ const typeDefs = gql`
   
   type Likes {
     id: Int!
-    UserId: Int!
-    PostId: Int!
+    userId: Int!
+    postId: Int!
     user: Users!
   }
   
   type Comments {
     id: Int!
     body: String!
-    UserId: Int!
-    PostId: Int!
+    userId: Int!
+    postId: Int!
     user: Users!
   }
   
   type Favorites {
     id: Int!
-    UserId: Int!
-    PostId: Int!
+    userId: Int!
+    postId: Int!
     post: Posts!
   }
   
   type Bans {
     id: Int!
-    UserId: Int!
+    userId: Int!
     user: Users
   }
   
@@ -98,7 +98,7 @@ const typeDefs = gql`
   
   type UsersUniversityNumbers{
     id: Int!
-    UserId: Int!
+    userId: Int!
     universityNumber: Int!
     year: String!
     user: Users!
@@ -107,11 +107,10 @@ const typeDefs = gql`
   type Query {
     getUser(id: Int!): Users
     getAllUser: [Users!]!
-    getAllPosts: [Posts]!
     getAllAds:[Ads]!
-    
+    getPost(id: Int!): [Posts]
     getAllGeneralPost: [Posts]!
-    getAllPostOfUser(UserId: Int!): [Posts]!
+    getAllPostOfUser(userId: Int!): [Posts]!
     getAllPostOfSubject(subjectId: [Int]!): [Posts]!
     
     getBansUser: [Bans]!
@@ -121,22 +120,23 @@ const typeDefs = gql`
   
   type Mutation {
     createUser(roleName: String! ,firstName: String! ,lastName: String! ,email: String! ,password: String!): Users
-    addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,UserId: Int!): Posts
-    like(UserId: Int! ,PostId: Int!): Void
+    addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!): Posts
+    like(userId: Int! ,postId: Int!): Void
     addAd(title: String! ,body: String! ,expireIn: Date!): Ads
-    addComment(body: String! ,UserId: Int! ,PostId: Int!): Comments
+    addComment(body: String! ,userId: Int! ,postId: Int!): Comments
     deleteComment(id: Int!):Void
-    addFavorite(UserId: Int! ,PostId: Int!): Favorites
+    addFavorite(userId: Int! ,postId: Int!): Favorites
     deleteFavorite(id: Int!): Void
-    banUser(UserId: Int!): Bans
-    unBanUser(UserId: Int!): Void
-    addComplaint(UserId: Int! ,title: String ,body: String!): Complaints
+    banUser(userId: Int!): Bans
+    unBanUser(userId: Int!): Void
+    addComplaint(userId: Int! ,title: String ,body: String!): Complaints
     deleteComplaint(id: Int!): Void
     makeComplaintAsDone(id: Int!): Complaints
-    addUsersUniversityNumbers(UserId: Int!,universityNumber: Int! ,year: String!): UsersUniversityNumbers
+    
+    addUsersUniversityNumbers(userId: Int!,universityNumber: Int! ,year: String!): UsersUniversityNumbers
     deleteUsersUniversityNumbers(id: Int!): Void
-    acceptPostRequest(id: Int!): PostRequests
-    deletePostRequest(id: Int!): Void
+    
+    approvalPostRequest(id: Int! ,cheack: Boolean!): PostRequests
   }
 `;
 

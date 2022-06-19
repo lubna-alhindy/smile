@@ -9,7 +9,7 @@ exports.getUser = async (args ,models) => {
 
     const favorites = await models.favorites.findAll({
         where: {
-            UserId: args.id
+            userId: args.id
         }
     });
 
@@ -19,7 +19,7 @@ exports.getUser = async (args ,models) => {
 
         editedFavorite.post = await models.posts.findOne({
             where: {
-                id: favorite.PostId
+                id: favorite.postId
             }
         });
 
@@ -31,7 +31,7 @@ exports.getUser = async (args ,models) => {
 
     const usersUniversityNumbers = await models.usersUniversityNumbers.findAll({
         where:{
-            UserId: args.id
+            userId: args.id
         }
     });
 
@@ -69,14 +69,14 @@ exports.createUser = async (args ,models) => {
 
 exports.banUser = async (args ,models) => {
     return await models.bans.create({
-        UserId: args.UserId
+        userId: args.userId
     });
 }
 
 exports.unBanUser = async (args ,models) => {
     const banUser = await models.bans.findOne({
         where: {
-            UserId: args.UserId
+            userId: args.userId
         }
     });
     await banUser.destroy();
@@ -92,7 +92,7 @@ exports.getBansUser = async (models) => {
 
         editedBan.user = await models.users.findOne({
             where: {
-                id: ban.UserId
+                id: ban.userId
             }
         });
 
@@ -104,7 +104,7 @@ exports.getBansUser = async (models) => {
 
 exports.addUsersUniversityNumbers = async (args ,models) =>{
     return await models.usersUniversityNumbers.create({
-        UserId: args.UserId,
+        userId: args.userId,
         universityNumber: args.universityNumber,
         year: args.year
     });

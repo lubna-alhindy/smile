@@ -7,9 +7,8 @@ const resolvers = {
     Query: {
         getUser:  (root, args, { models }) => Controller.User.getUser(args ,models),
         getAllUser: (root, args, { models }) => Controller.User.getAllUser(models),
-        getAllPosts:(root, args, { models }) => Controller.Post.getAllPosts(models),
         getAllAds:(root, args, { models }) => Controller.Ads.getAllAds(models),
-
+        getPost:(root, args, { models }) => Controller.Post.getPost(args,models),
         //to filter posts//
         getAllGeneralPost: (root, args, { models }) => Controller.Post.getAllGeneralPost(models),
         getAllPostOfUser: (root, args, { models }) => Controller.Post.getAllPostOfUser(args ,models),
@@ -36,8 +35,8 @@ const resolvers = {
         makeComplaintAsDone:(root, args, { models }) => Controller.Complaints.makeComplaintAsDone(args ,models),
         addUsersUniversityNumbers:(root, args, { models }) => Controller.User.addUsersUniversityNumbers(args ,models),
         deleteUsersUniversityNumbers:(root, args, { models }) => Controller.User.deleteUsersUniversityNumbers(args ,models),
-        acceptPostRequest:(root, args, { models }) => Controller.Post.acceptPostRequest(args ,models),
-        deletePostRequest:(root, args, { models }) => Controller.Post.deletePostRequest(args ,models),
+        approvalPostRequest:(root, args, { models }) => Controller.Post.approvalPostRequest(args ,models),
+
     }
 };
 

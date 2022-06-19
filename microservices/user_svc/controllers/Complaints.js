@@ -1,6 +1,6 @@
 exports.addComplaint = async (args ,models) => {
     return await models.complaints.create({
-        UserId: args.UserId,
+        userId: args.userId,
         title: args.title,
         body: args.body
     });
@@ -39,7 +39,7 @@ exports.getAllComplaints = async (models) => {
         const editedComplaint = JSON.parse(JSON.stringify(complaint));
         editedComplaint.user = await models.users.findOne({
             where: {
-                id: complaint.UserId
+                id: complaint.userId
             }
         });
 
