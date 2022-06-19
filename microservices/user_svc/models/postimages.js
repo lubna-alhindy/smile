@@ -1,38 +1,55 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class postImages extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       postImages.belongsTo(models.ads,{
-        foreignKey: 'adId',
+        foreignKey: 'adId'
       });
       postImages.belongsTo(models.posts,{
-        foreignKey: 'postId',
+        foreignKey: 'postId'
       });
       postImages.belongsTo(models.postRequests,{
-        foreignKey: 'postRequestId',
+        foreignKey: 'postRequestId'
       });
     }
   }
+
   postImages.init({
     url:{
       type: DataTypes.STRING,
       allowNull: false
     },
-    postId: DataTypes.INTEGER,
-    postRequestId: DataTypes.INTEGER,
-    adId: DataTypes.INTEGER
+    postId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'posts',
+        key: 'id'
+      }
+    },
+    postRequestId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'postRequests',
+        key: 'id'
+      }
+    },
+    adId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'ads',
+        key: 'id'
+      }
+    }
   }, {
     sequelize,
-    modelName: 'postImages',
+    modelName: 'postImages'
   });
+
   return postImages;
 };

@@ -1,24 +1,19 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class postRequests extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       postRequests.belongsTo(models.users,{
-        foreignKey: 'userId',
+        foreignKey: 'userId'
       });
       postRequests.hasMany(models.postImages,{
-        foreignKey: 'postRequestId',
+        foreignKey: 'postRequestId'
       });
     }
   }
+
   postRequests.init({
     subjectId:{
       type: DataTypes.INTEGER,
@@ -36,10 +31,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT("long"),
       allowNull: false
     },
-    userId: DataTypes.INTEGER
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id'
+      }
+    }
   }, {
     sequelize,
-    modelName: 'postRequests',
+    modelName: 'postRequests'
   });
+
   return postRequests;
 };
