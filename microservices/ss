@@ -1,0 +1,12 @@
+sequelize model:generate --name ads --attributes title:string,body:string,expireIn:date
+sequelize model:generate --name users --attributes roleName:string,firstName:string,lastName:string,email:string,password:string,birthday:date,image:string,bio:text,class:string,facebookUrl:string,telegramUrl:string,gmail:string
+sequelize model:generate --name bans --attributes userId:integer
+sequelize model:generate --name usersUniversityNumbers --attributes universityNumber:integer,year:string,userId:integer
+sequelize model:generate --name complaints --attributes title:string,body:text,isDone:boolean,userId:integer
+sequelize model:generate --name notifications --attributes title:string,body:text,isRead:boolean,userId:integer
+sequelize model:generate --name posts --attributes subjectId:integer,type:string,title:string,body:text,userId:integer
+sequelize model:generate --name postRequests --attributes subjectId:integer,type:string,title:string,body:text,userId:integer
+sequelize model:generate --name postImages --attributes url:string,postId:integer,postRequestId:integer,adId:integer
+sequelize model:generate --name likes --attributes postId:integer,userId:integer
+sequelize model:generate --name comments --attributes body:text,postId:integer,userId:integer
+sequelize model:generate --name favorites --attributes postId:integer,userId:integer
