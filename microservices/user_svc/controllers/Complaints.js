@@ -1,36 +1,3 @@
-exports.addComplaint = async (args ,models) => {
-    return await models.complaints.create({
-        userId: args.userId,
-        title: args.title,
-        body: args.body
-    });
-}
-
-exports.deleteComplaint = async (args ,models) => {
-    const complaint = await models.complaints.findOne({
-        where: {
-            id: args.id
-        }
-    });
-
-    await complaint.destroy();
-
-}
-
-exports.makeComplaintAsDone = async (args ,models) => {
-    const complaint = await models.complaints.findOne({
-        where: {
-            id: args.id
-        }
-    });
-
-    complaint.isDone = true;
-
-    await complaint.save();
-
-    return complaint
-}
-
 exports.getAllComplaints = async (models) => {
     const complaints =  await models.complaints.findAll();
 
@@ -45,6 +12,46 @@ exports.getAllComplaints = async (models) => {
 
         response.push(editedComplaint);
     }
-
     return response;
 }
+
+exports.addComplaint = async (args ,models) => {
+    return await models.complaints.create({
+        userId: args.userId,
+        title: args.title,
+        body: args.body
+    });
+}
+
+exports.changeDoneComplaint = async (args ,models) => {
+    const complaint = await models.complaints.findOne({
+        where: {
+            id: args.id
+        }
+    });
+
+    if( args.choise == true ){
+        complaint.isDone = true;
+    }
+
+    else {
+        complaint.isDone = false;
+    }
+
+    await complaint.save();
+    return complaint
+}
+
+
+exports.deleteComplaint = async (args ,models) => {
+    const complaint = await models.complaints.findOne({
+        where: {
+            id: args.id
+        }
+    });
+
+    await complaint.destroy();
+}
+
+
+

@@ -19,22 +19,21 @@ const resolvers = {
     },
 
     Mutation: {
-        createUser:(root, args, { models }) => Controller.User.createUser(args ,models),
         addPost:(root, args, { models }) => Controller.Post.addPost(args ,models),
-        like:(root, args , { models }) => Controller.Post.like(args ,models),
-        addAd:(root, args , { models }) => Controller.Ads.addAd(args,models),
+        deletePost:(root, args, { models }) => Controller.Post.deletePost(args ,models),
+        approvalPostRequest:(root, args, { models }) => Controller.Post.approvalPostRequest(args ,models),
+        changeLike:(root, args , { models }) => Controller.Post.changeLike(args ,models),
         addComment:(root, args , { models }) => Controller.Post.addComment(args ,models),
         deleteComment:(root, args , { models }) => Controller.Post.deleteComment(args ,models),
-        addFavorite:(root, args , { models }) => Controller.Post.addFavorite(args ,models),
-        deleteFavorite:(root, args , { models }) => Controller.Post.deleteFavorite(args ,models),
-        banUser:(root, args, { models }) => Controller.User.banUser(args ,models),
-        unBanUser:(root, args, { models }) => Controller.User.unBanUser(args ,models),
+        changeFavorite:(root, args , { models }) => Controller.Post.changeFavorite(args ,models),
+        changeBanUser:(root, args, { models }) => Controller.User.changeBanUser(args ,models),
         addComplaint:(root, args, { models }) => Controller.Complaints.addComplaint(args ,models),
+        changeDoneComplaint:(root, args, { models }) => Controller.Complaints.changeDoneComplaint(args ,models),
         deleteComplaint:(root, args, { models }) => Controller.Complaints.deleteComplaint(args ,models),
-        makeComplaintAsDone:(root, args, { models }) => Controller.Complaints.makeComplaintAsDone(args ,models),
         addUsersUniversityNumbers:(root, args, { models }) => Controller.User.addUsersUniversityNumbers(args ,models),
         deleteUsersUniversityNumbers:(root, args, { models }) => Controller.User.deleteUsersUniversityNumbers(args ,models),
-        approvalPostRequest:(root, args, { models }) => Controller.Post.approvalPostRequest(args ,models),
+        addAd:(root, args , { models }) => Controller.Ads.addAd(args ,models),
+        deleteAd:(root, args , { models }) => Controller.Ads.deleteAd(args ,models),
 
     }
 };

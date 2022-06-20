@@ -118,24 +118,26 @@ const typeDefs = gql`
   }
   
   type Mutation {
-    createUser(roleName: String! ,firstName: String! ,lastName: String! ,email: String! ,password: String!): Users
     addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!): Posts
-    like(userId: Int! ,postId: Int!): Void
-    addAd(title: String! ,body: String! ,expireIn: Date!): Ads
+    deletePost(id: Int!): Void
+    approvalPostRequest(id: Int! ,cheack: Boolean!): PostRequests
+    changeLike(userId: Int! ,postId: Int!): Void
     addComment(body: String! ,userId: Int! ,postId: Int!): Comments
     deleteComment(id: Int!):Void
-    addFavorite(userId: Int! ,postId: Int!): Favorites
-    deleteFavorite(id: Int!): Void
-    banUser(userId: Int!): Bans
-    unBanUser(userId: Int!): Void
+    changeFavorite(userId: Int! ,postId: Int! ): Favorites
+    changeBanUser(userId: Int! ,choise: Boolean): Bans
     addComplaint(userId: Int! ,title: String ,body: String!): Complaints
+    changeDoneComplaint(id: Int! ,choise: Boolean): Complaints
     deleteComplaint(id: Int!): Void
-    makeComplaintAsDone(id: Int!): Complaints
     addUsersUniversityNumbers(userId: Int!,universityNumber: Int! ,year: String!): UsersUniversityNumbers
     deleteUsersUniversityNumbers(id: Int!): Void
-    approvalPostRequest(id: Int! ,cheack: Boolean!): PostRequests
+    addAd(title: String! ,body: String! ,expireIn: Date!): Ads
+    deleteAd(id: Int!): Void
   }
 `;
 
+//signup,login,edit profile
 //add image to post and ads
+//cheack if ban and role befor any request
+
 module.exports = typeDefs;

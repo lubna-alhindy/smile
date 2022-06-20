@@ -107,6 +107,61 @@ exports.getAllUser = async (models) => {
     return await models.users.findAll();
 }
 
+exports.getBansUser = async (models) => {
+    const bans = await models.bans.findAll({});
+
+    const response = [];
+    for( const ban of bans){
+        const editedBan = JSON.parse(JSON.stringify(ban));
+
+        editedBan.user = await models.users.findOne({
+            where: {
+                id: ban.userId
+            }
+        });
+
+        response.push(editedBan);
+    }
+
+    return response;
+}
+
+exports.changeBanUser = async (args ,models) => {
+    if( args.choise == true ){
+        return await models.bans.create({
+            userId: args.userId
+        });
+    }
+    else {
+        const banUser = await models.bans.findOne({
+            where: {
+                userId: args.userId
+            }
+        });
+        await banUser.destroy();
+    }
+}
+
+exports.addUsersUniversityNumbers = async (args ,models) =>{
+    return await models.usersUniversityNumbers.create({
+        userId: args.userId,
+        universityNumber: args.universityNumber,
+        year: args.year
+    });
+}
+
+exports.deleteUsersUniversityNumbers = async (args ,models) => {
+    const usersUniversityNumbers  = await models.usersUniversityNumbers.findOne({
+        where: {
+            id: args.id
+        }
+    });
+
+    await usersUniversityNumbers.destroy();
+}
+
+
+
 exports.createUser = async (args ,models) => {
     let emailCnt = await models.users.count({
         where: {
@@ -128,57 +183,3 @@ exports.createUser = async (args ,models) => {
     });
 
 };
-
-
-exports.banUser = async (args ,models) => {
-    return await models.bans.create({
-        userId: args.userId
-    });
-}
-
-exports.unBanUser = async (args ,models) => {
-    const banUser = await models.bans.findOne({
-        where: {
-            userId: args.userId
-        }
-    });
-    await banUser.destroy();
-}
-
-
-exports.getBansUser = async (models) => {
-    const bans = await models.bans.findAll({});
-
-    const response = [];
-    for( const ban of bans){
-        const editedBan = JSON.parse(JSON.stringify(ban));
-
-        editedBan.user = await models.users.findOne({
-            where: {
-                id: ban.userId
-            }
-        });
-
-        response.push(editedBan);
-    }
-
-    return response;
-}
-
-exports.addUsersUniversityNumbers = async (args ,models) =>{
-    return await models.usersUniversityNumbers.create({
-        userId: args.userId,
-        universityNumber: args.universityNumber,
-        year: args.year
-    });
-}
-
-exports.deleteUsersUniversityNumbers = async (args ,models) => {
-    const usersUniversityNumbers  = await models.usersUniversityNumbers.findOne({
-        where: {
-            id: args.id
-        }
-    });
-
-    await usersUniversityNumbers.destroy();
-}
