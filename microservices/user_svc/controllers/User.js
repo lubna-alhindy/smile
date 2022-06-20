@@ -1,5 +1,60 @@
 const Helper = require('./Helper');
 
+exports.signup = async (args ,models) => {
+    const emailCnt = await models.users.count({
+        where: {
+            email: args.email
+        },
+        limit: 1
+    });
+
+    if( emailCnt === 1 ){
+        throw new Error("This email is already exist! Please try another one.");
+    }
+
+    const user = await models.users.create({
+        email: args.email,
+        roleName: "Student",
+        lastName: args.lastName,
+        firstName: args.firstName,
+        password: await Helper.hashPassword(args.password),
+    })
+    .catch(err => {
+        throw new Error("Unknown Error occurred! Please try again.");
+    });
+
+    return {
+        user: user,
+        token: Helper.generateToken({
+            id: user.id,
+            email: user.email
+        })
+    };
+};
+
+exports.login = async (args ,models) => {
+    const user = await models.users.findOne({
+        where: {
+            email: args.email
+        }
+    })
+    .catch(err => {
+        throw new Error("Unknown Error occurred! Please try again.");
+    });;
+
+    if( !user || await Helper.checkPassword(args.password ,user.password) ){
+        throw new Error('Your email or password is incorrect!');
+    }
+
+    return {
+        user: user,
+        token: Helper.generateToken({
+            id: user.id,
+            email: user.email
+        })
+    };
+};
+
 exports.getUser = async (args ,models) => {
     const user = await models.users.findOne({
         where:{
@@ -159,27 +214,3 @@ exports.deleteUsersUniversityNumbers = async (args ,models) => {
 
     await usersUniversityNumbers.destroy();
 }
-
-
-
-exports.createUser = async (args ,models) => {
-    let emailCnt = await models.users.count({
-        where: {
-            email: args.email
-        },
-        limit: 1
-    });
-
-    if( emailCnt === 1 ){
-        return null;
-    }
-
-    return await models.users.create({
-        email: args.email,
-        lastName: args.lastName,
-        firstName: args.firstName,
-        roleName: args.roleName,
-        password: await Helper.hashPassword(args.password),
-    });
-
-};
