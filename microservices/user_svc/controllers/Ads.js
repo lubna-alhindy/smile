@@ -9,3 +9,13 @@ exports.addAd = async (args ,models) => {
         expireIn: args.expireIn
     });
 }
+
+exports.deleteAd = async (args ,models) => {
+    const ad = await models.ads.findOne({
+        where: {
+            id: args.id
+        }
+    });
+
+    await ad.destroy();
+}
