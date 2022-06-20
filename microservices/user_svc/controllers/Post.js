@@ -1,44 +1,52 @@
 exports.getPost = async (args, models) => {
-    const post = await models.posts.findByPk(args.id);
+    const post = await models.posts.findOne({
+        where:{
+            id: args.id
+        }
+    });
     const editedPost = JSON.parse(JSON.stringify(post));
 
-    const likes = await models.likes.findAll({
-        where:{
-            postId: post.id
-        }
-    });
-
-    const likesRes = [];
-    for( const like of likes) {
-        const editedLike = JSON.parse(JSON.stringify(like));
-        editedLike.user = await models.users.findOne({
-            where: {
-                id: like.userId
+    if( args.like == true){
+        const likes = await models.likes.findAll({
+            where:{
+                postId: post.id
             }
         });
-        likesRes.push(editedLike);
-    }
-    editedPost.likes = likesRes;
-    editedPost.likesCnt = editedPost.likes.length;
 
-    const comments = await models.comments.findAll({
-        where:{
-            postId: post.id
+        const likesRes = [];
+        for( const like of likes) {
+            const editedLike = JSON.parse(JSON.stringify(like));
+            editedLike.user = await models.users.findOne({
+                where: {
+                    id: like.userId
+                }
+            });
+            likesRes.push(editedLike);
         }
-    });
+        editedPost.likes = likesRes;
+        editedPost.likesCnt = editedPost.likes.length;
+    }
 
-    const commentsRes = [];
-    for( const comment of comments){
-        const editedComment = JSON.parse(JSON.stringify(comment));
-        editedComment.user = await models.users.findOne({
-            where: {
-                id: comment.userId
+    if( args.comment == true ){
+        const comments = await models.comments.findAll({
+            where:{
+                postId: post.id
             }
         });
-        commentsRes.push(editedComment);
+
+        const commentsRes = [];
+        for( const comment of comments){
+            const editedComment = JSON.parse(JSON.stringify(comment));
+            editedComment.user = await models.users.findOne({
+                where: {
+                    id: comment.userId
+                }
+            });
+            commentsRes.push(editedComment);
+        }
+        editedPost.comments = commentsRes;
+        editedPost.commentsCnt = editedPost.comments.length;
     }
-    editedPost.comments = commentsRes;
-    editedPost.commentsCnt = editedPost.comments.length;
 
     const user = await models.users.findOne({
         where:{
@@ -47,133 +55,128 @@ exports.getPost = async (args, models) => {
     });
 
     editedPost.user = user;
-
     return editedPost;
 }
 
+exports.getPosts = async (args, models) => {
 
-exports.getAllGeneralPost = async (models) => {
-    const allPost = await models.posts.findAll({
-        where: {
-            subjectId: null
-        }
-    });
+    if( args.filter == null){
+        const allPost = await models.posts.findAll();
 
-    const response = [];
-    for(const post of allPost){
-        const editedPost = JSON.parse(JSON.stringify(post));
+        const response = [];
+        for( const post of allPost){
+            const editedPost = JSON.parse(JSON.stringify(post));
 
-        const likes = await models.likes.findAll({
-            where:{
-                postId: post.id
-            }
-        });
-
-        const likesRes = [];
-        for( const like of likes) {
-            const editedLike = JSON.parse(JSON.stringify(like));
-            editedLike.user = await models.users.findOne({
-                where: {
-                    id: like.userId
+            const likes = await models.likes.findAll({
+                where:{
+                    postId: post.id
                 }
             });
-            likesRes.push(editedLike);
-        }
-        editedPost.likes = likesRes;
-        editedPost.likesCnt = editedPost.likes.length;
 
-        const comments = await models.comments.findAll({
-            where:{
-                postId: post.id
+            const likesRes = [];
+            for( const like of likes) {
+                const editedLike = JSON.parse(JSON.stringify(like));
+                editedLike.user = await models.users.findOne({
+                    where: {
+                        id: like.userId
+                    }
+                });
+                likesRes.push(editedLike);
             }
-        });
-
-        const commentsRes = [];
-        for( const comment of comments){
-            const editedComment = JSON.parse(JSON.stringify(comment));
-            editedComment.user = await models.users.findOne({
-                where: {
-                    id: comment.userId
+            editedPost.likes = likesRes;
+            editedPost.likesCnt = editedPost.likes.length;
+            const comments = await models.comments.findAll({
+                where:{
+                    postId: post.id
                 }
             });
-            commentsRes.push(editedComment);
-        }
-        editedPost.comments = commentsRes;
-        editedPost.commentsCnt = editedPost.comments.length;
 
-        const user = await models.users.findOne({
-            where:{
-                id: post.userId
+            const commentsRes = [];
+            for( const comment of comments){
+                const editedComment = JSON.parse(JSON.stringify(comment));
+                editedComment.user = await models.users.findOne({
+                    where: {
+                        id: comment.userId
+                    }
+                });
+                commentsRes.push(editedComment);
             }
-        });
+            editedPost.comments = commentsRes;
+            editedPost.commentsCnt = editedPost.comments.length;
 
-        editedPost.user = user;
-        response.push(editedPost);
+
+            const user = await models.users.findOne({
+                where:{
+                    id: post.userId
+                }
+            });
+
+            editedPost.user = user;
+
+            response.push(editedPost);
+        }
+        return response;
     }
-
-    return response;
-}
-
-exports.getAllPostOfUser = async (args ,models) => {
-    const allPost = await models.posts.findAll({
-        where:{
-            userId: args.userId
-        }
-    });
-
-    const response = [];
-    for(const post of allPost){
-        const editedPost = JSON.parse(JSON.stringify(post));
-
-        const likes = await models.likes.findAll({
-            where:{
-                postId: post.id
+    else{
+        const allFilterPost = await models.posts.findAll({
+            where: {
+                type: args.filter
             }
         });
+        const response = [];
+        for( const post of allFilterPost){
+            const editedPost = JSON.parse(JSON.stringify(post));
 
-        const likesRes = [];
-        for( const like of likes) {
-            const editedLike = JSON.parse(JSON.stringify(like));
-            editedLike.user = await models.users.findOne({
-                where: {
-                    id: like.userId
+            const likes = await models.likes.findAll({
+                where:{
+                    postId: post.id
                 }
             });
-            likesRes.push(editedLike);
-        }
-        editedPost.likes = likesRes;
-        editedPost.likesCnt = editedPost.likes.length;
 
-        const comments = await models.comments.findAll({
-            where:{
-                postId: post.id
+            const likesRes = [];
+            for( const like of likes) {
+                const editedLike = JSON.parse(JSON.stringify(like));
+                editedLike.user = await models.users.findOne({
+                    where: {
+                        id: like.userId
+                    }
+                });
+                likesRes.push(editedLike);
             }
-        });
-
-        const commentsRes = [];
-        for( const comment of comments){
-            const editedComment = JSON.parse(JSON.stringify(comment));
-            editedComment.user = await models.users.findOne({
-                where: {
-                    id: comment.userId
+            editedPost.likes = likesRes;
+            editedPost.likesCnt = editedPost.likes.length;
+            const comments = await models.comments.findAll({
+                where:{
+                    postId: post.id
                 }
             });
-            commentsRes.push(editedComment);
-        }
-        editedPost.comments = commentsRes;
-        editedPost.commentsCnt = editedPost.comments.length;
 
-        const user = await models.users.findOne({
-            where:{
-                id: post.userId
+            const commentsRes = [];
+            for( const comment of comments){
+                const editedComment = JSON.parse(JSON.stringify(comment));
+                editedComment.user = await models.users.findOne({
+                    where: {
+                        id: comment.userId
+                    }
+                });
+                commentsRes.push(editedComment);
             }
-        });
+            editedPost.comments = commentsRes;
+            editedPost.commentsCnt = editedPost.comments.length;
 
-        editedPost.user = user;
-        response.push(editedPost);
+
+            const user = await models.users.findOne({
+                where:{
+                    id: post.userId
+                }
+            });
+
+            editedPost.user = user;
+
+            response.push(editedPost);
+        }
+        return response;
     }
-
-    return response;
 }
 
 exports.getAllPostOfSubject = async (args ,models) => {

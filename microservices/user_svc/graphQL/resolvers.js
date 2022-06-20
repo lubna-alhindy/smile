@@ -8,22 +8,21 @@ const resolvers = {
         getUser:  (root, args, { models }) => Controller.User.getUser(args ,models),
         getAllUser: (root, args, { models }) => Controller.User.getAllUser(models),
         getAllAds:(root, args, { models }) => Controller.Ads.getAllAds(models),
-        getPost:(root, args, { models }) => Controller.Post.getPost(args,models),
-        //to filter posts//
-        getAllGeneralPost: (root, args, { models }) => Controller.Post.getAllGeneralPost(models),
-        getAllPostOfUser: (root, args, { models }) => Controller.Post.getAllPostOfUser(args ,models),
-        getAllPostOfSubject: (root, args, { models }) => Controller.Post.getAllPostOfSubject(args ,models),
-        // end filter//
-
         getBansUser: (root, args, { models }) => Controller.User.getBansUser(models),
-        getAllComplaints:(root, args, { models }) => Controller.Complaints.getAllComplaints(models),
         getAllPostRequests:(root, args, { models }) => Controller.Post.getAllPostRequests(models),
+        getPost:(root, args, { models }) => Controller.Post.getPost(args,models),
+        getAllComplaints:(root, args, { models }) => Controller.Complaints.getAllComplaints(models),
+        getPosts:(root, args, { models }) => Controller.Post.getPosts(args,models),
+
+
+        getAllPostOfSubject: (root, args, { models }) => Controller.Post.getAllPostOfSubject(args ,models),
     },
 
     Mutation: {
         createUser:(root, args, { models }) => Controller.User.createUser(args ,models),
         addPost:(root, args, { models }) => Controller.Post.addPost(args ,models),
         like:(root, args , { models }) => Controller.Post.like(args ,models),
+        addAd:(root, args , { models }) => Controller.Ads.addAd(args,models),
         addComment:(root, args , { models }) => Controller.Post.addComment(args ,models),
         deleteComment:(root, args , { models }) => Controller.Post.deleteComment(args ,models),
         addFavorite:(root, args , { models }) => Controller.Post.addFavorite(args ,models),

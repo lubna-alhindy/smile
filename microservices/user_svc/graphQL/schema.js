@@ -20,9 +20,9 @@ const typeDefs = gql`
     gmail: String
     createdAt: Date
     updatedAt: Date
-    posts: [Posts]!
-    favorites: [Favorites]!
-    userUniversityNumbers: [UsersUniversityNumbers]!
+    posts: [Posts]
+    favorites: [Favorites]
+    userUniversityNumbers: [UsersUniversityNumbers]
   }
   
   type Posts {
@@ -34,11 +34,11 @@ const typeDefs = gql`
     userId: Int!
     createdAt: Date!
     updatedAt: Date!
-    likes: [Likes]!
-    likesCnt: Int!
+    likes: [Likes]
+    likesCnt: Int
     user: Users!
-    comments: [Comments]!
-    commentsCnt: Int!
+    comments: [Comments]
+    commentsCnt: Int
   }
   
   type PostRequests {
@@ -105,17 +105,16 @@ const typeDefs = gql`
   }
   
   type Query {
-    getUser(id: Int!): Users
+    getUser(id: Int! ,favorite: Boolean ,universityNumber: Boolean ,posts: Boolean): Users
     getAllUser: [Users!]!
     getAllAds:[Ads]!
-    getPost(id: Int!): [Posts]
-    getAllGeneralPost: [Posts]!
-    getAllPostOfUser(userId: Int!): [Posts]!
-    getAllPostOfSubject(subjectId: [Int]!): [Posts]!
-    
     getBansUser: [Bans]!
-    getAllComplaints: [Complaints]!
     getAllPostRequests: [PostRequests]!
+    getPost(id: Int! ,like: Boolean ,comment: Boolean): Posts
+    getAllComplaints: [Complaints]!
+    getPosts(filter: String): [Posts]
+    
+    getAllPostOfSubject(subjectId: [Int]!): [Posts]! 
   }
   
   type Mutation {
@@ -132,10 +131,8 @@ const typeDefs = gql`
     addComplaint(userId: Int! ,title: String ,body: String!): Complaints
     deleteComplaint(id: Int!): Void
     makeComplaintAsDone(id: Int!): Complaints
-    
     addUsersUniversityNumbers(userId: Int!,universityNumber: Int! ,year: String!): UsersUniversityNumbers
     deleteUsersUniversityNumbers(id: Int!): Void
-    
     approvalPostRequest(id: Int! ,cheack: Boolean!): PostRequests
   }
 `;
