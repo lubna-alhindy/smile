@@ -4,7 +4,6 @@ const typeDefs = gql`
   scalar Date
   scalar Void
   
-  #################################################################################
 
   type AuthPayload {
     token: String!
@@ -131,8 +130,6 @@ const typeDefs = gql`
     user: Users!
   }
   
-  ### ------------------------- ###
-  ### --------- Query --------- ###
 
   type Query {
     getUser(id: Int! ,favorite: Boolean ,universityNumber: Boolean ,posts: Boolean)
@@ -163,8 +160,6 @@ const typeDefs = gql`
       : [Posts]! 
   }
   
-  ### ---------------------------- ###
-  ### --------- Mutation --------- ###
 
   type Mutation {
     signup(firstName: String!, lastName: String!, email: String!, password: String!)
@@ -173,6 +168,10 @@ const typeDefs = gql`
     login(email: String!, password: String!)
       : AuthPayload!
 
+    editProfile(id: Int!, firstName: String, lastName: String, birthday: Date, image: String,bio: String,facebookURL: String,
+    telegramURL: String, class: String, gmail: String, oldPassword: String, firstNewPassword: String, secondNewPassword: String)
+      : Users 
+     
     addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!)
       : Posts
 
@@ -219,16 +218,12 @@ const typeDefs = gql`
       : Void
   }
 
-  ### -------------------------------- ###
-  ### --------- Subscription --------- ###
-
-  type Subscription {
-
-  }
 `;
 
-//edit profile
+// add throw error
+//add class to signup
 //add image to post and ads
 //cheack if ban and role befor any request
+//add type notification
 
 module.exports = typeDefs;

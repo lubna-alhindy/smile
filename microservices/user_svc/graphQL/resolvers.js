@@ -46,6 +46,9 @@ const resolvers = {
         login: (root ,args ,{ models }) => 
             Controller.User.login(args ,models),
 
+        editProfile: (root ,args ,{ models }) =>
+            Controller.User.editProfile(args ,models),
+
         addPost: (root, args, { models }) => 
             Controller.Post.addPost(args ,models),
 
@@ -92,13 +95,6 @@ const resolvers = {
             Controller.Ads.deleteAd(args ,models),
     },
 
-
-    /// -------------------------------- ///
-    /// --------- Subscription --------- ///
-
-    Subscription: {
-
-    }
 };
 
 module.exports = resolvers;

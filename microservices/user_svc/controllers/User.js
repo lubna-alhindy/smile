@@ -40,9 +40,9 @@ exports.login = async (args ,models) => {
     })
     .catch(err => {
         throw new Error("Unknown Error occurred! Please try again.");
-    });;
+    });
 
-    if( !user || await Helper.checkPassword(args.password ,user.password) ){
+    if( !user ||  !await Helper.checkPassword(args.password, user.password) ){
         throw new Error('Your email or password is incorrect!');
     }
 
@@ -54,6 +54,39 @@ exports.login = async (args ,models) => {
         })
     };
 };
+
+exports.editProfile = async (args ,models) => {
+    const user = await models.users.findOne({
+        where: {
+            id: args.id
+        }
+    });
+
+    user.firstName = args.firstName;
+    user.lastName = args.lastName;
+    user.birthday = args.birthday
+    user.image = args.image
+    user.bio = args.bio
+    user.class = args.class
+    user.facebookURL = args.facebookURL
+    user.telegramURL = args.telegramURL
+    user.gmail = args.gmail
+
+    if( args.oldPassword != null ){
+        if( !await Helper.checkPassword(args.oldPassword, user.password) ){
+            throw new Error('Your password is incorrect!');
+        }
+        if(args.firstNewPassword != null || args.secondNewPassword != null ){
+            if( args.firstNewPassword != args.secondNewPassword ) {
+                throw new Error('The First Password does not match the Second Password!');
+            }
+        }
+        user.password= await Helper.hashPassword(args.firstNewPassword);
+    }
+
+    await user.save();
+    return user;
+}
 
 exports.getUser = async (args ,models) => {
     const user = await models.users.findOne({
