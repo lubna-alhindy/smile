@@ -136,7 +136,7 @@ const typeDefs = gql`
   }
 `;
 
-//signup,login,edit profile
+//edit profile
 //add image to post and ads
 //cheack if ban and role befor any request
 
