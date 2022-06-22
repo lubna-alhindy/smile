@@ -52,3 +52,6 @@ exports.deleteComplaint = async (args ,models) => {
 
     await complaint.destroy();
 }
+
+
+
