@@ -13,7 +13,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getUser(id:1){\r\n        id\r\n        roleName\r\n        firstName\r\n        email\r\n        birthday\r\n        bio\r\n        image\r\n        facebookURL\r\n        telegramURL\r\n        gmail\r\n        createdAt\r\n        favorites{\r\n            post{\r\n                body\r\n                title\r\n                type\r\n            }\r\n        }\r\n        userUniversityNumbers{\r\n            id\r\n            universityNumber\r\n            year\r\n        }\r\n    }\r\n}",
+						"query": "query{\r\n    getUser(id:1 ,favorite: true ,universityNumber: true, posts: true){\r\n        id\r\n        roleName\r\n        firstName\r\n        email\r\n        birthday\r\n        bio\r\n        image\r\n        class\r\n        facebookURL\r\n        telegramURL\r\n        gmail\r\n        createdAt\r\n        updatedAt\r\n        favorites{\r\n            post{\r\n                id\r\n                subjectId\r\n                body\r\n                title\r\n                type\r\n            }\r\n        }\r\n        userUniversityNumbers{\r\n            id\r\n            universityNumber\r\n            year\r\n        }\r\n        posts{\r\n            id\r\n            subjectId\r\n            type\r\n            title\r\n            body\r\n            createdAt\r\n            updatedAt\r\n            comments{\r\n            body\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n             }   \r\n            }\r\n            commentsCnt\r\n            likes{\r\n                user{\r\n                    firstName\r\n                    lastName\r\n                    email\r\n                }\r\n            }\r\n            likesCnt\r\n         }\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -39,7 +39,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllUser{\r\n        id\r\n        roleName\r\n        firstName\r\n        email\r\n        birthday\r\n        bio\r\n        image\r\n        facebookURL\r\n        telegramURL\r\n        gmail\r\n        createdAt\r\n        updatedAt\r\n    }\r\n}",
+						"query": "query{\r\n    getAllUser{\r\n        id\r\n        roleName\r\n        firstName\r\n        email\r\n        birthday\r\n        bio\r\n        image\r\n        class\r\n        facebookURL\r\n        telegramURL\r\n        gmail\r\n        createdAt\r\n        updatedAt\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -58,14 +58,170 @@
 			"response": []
 		},
 		{
-			"name": "createUser",
+			"name": "getAllAds",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    createUser(roleName:\"sa\",firstName:\"df\",lastName:\"efef\",email:\"asd\",password:\"fkkf\"){\r\n        roleName\r\n        firstName\r\n        lastName\r\n        email\r\n        password\r\n        createdAt\r\n    }\r\n}",
+						"query": "query{\r\n    getAllAds{\r\n        id\r\n        title\r\n        body\r\n        expireIn\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getBansUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query{\r\n     getBansUser{\r\n        id\r\n        user{\r\n            roleName\r\n            firstName\r\n            lastName\r\n            email\r\n            birthday\r\n            bio\r\n            image\r\n            class\r\n            facebookURL\r\n            telegramURL\r\n            gmail\r\n            createdAt\r\n            updatedAt\r\n        }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllPostRequests",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query{\r\n    getAllPostRequests{\r\n        id\r\n        type\r\n        title\r\n        body\r\n        subjectId\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             lastName\r\n             email\r\n             class\r\n        }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query{\r\n    getPost(id: 2 ,like: false ,comment: true){\r\n        id\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n        comments{\r\n            id\r\n            body\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            id\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllComplaints",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query{\r\n    getAllComplaints{\r\n        id\r\n        title\r\n        body\r\n        isDone\r\n        user\r\n        {\r\n            roleName\r\n            firstName\r\n            email\r\n            birthday\r\n            bio\r\n            image\r\n            class\r\n            facebookURL\r\n            telegramURL\r\n            gmail\r\n            createdAt\r\n            updatedAt\r\n        }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPosts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query{\r\n    getPosts(filter: null){\r\n        id\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n        comments{\r\n        body\r\n        user{\r\n            firstName\r\n            lastName\r\n            email\r\n        }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation{\r\n    deletePost(id:1)\r\n}",
 						"variables": ""
 					}
 				},
@@ -91,7 +247,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    addPost(subjectId:6 ,type:\"we\",body:\"rfr\",UserId:1){\r\n        type\r\n        title\r\n        body\r\n        subjectId\r\n        UserId\r\n    }\r\n}",
+						"query": "mutation{\r\n    addPost(subjectId:6 ,type:\"we\", title: \" \",body:\"rfr\",userId:1){\r\n        type\r\n        title\r\n        body\r\n        subjectId\r\n        userId\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -110,14 +266,14 @@
 			"response": []
 		},
 		{
-			"name": "getAllGeneralPost",
+			"name": "approvalPostRequest",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllGeneralPost{\r\n        id\r\n        body\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n        comments{\r\n            body\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"query": "mutation{\r\n    approvalPostRequest(id:4, cheack:true){\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        userId\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -136,66 +292,14 @@
 			"response": []
 		},
 		{
-			"name": "getAllPostOfUser",
+			"name": "changeLike",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllPostOfUser(UserId:2){\r\n         id\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n         comments{\r\n        body\r\n        user{\r\n            firstName\r\n            lastName\r\n            email\r\n        }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Like",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation{\r\n    like(UserId:1,PostId:2 )\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllPostOfSubject",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query{\r\n    getAllPostOfSubject(subjectId:[2]){\r\n        id\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n         comments{\r\n        body\r\n        user{\r\n            firstName\r\n            lastName\r\n            email\r\n        }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"query": "mutation{\r\n    changeLike(userId:1,postId:2 )\r\n}",
 						"variables": ""
 					}
 				},
@@ -221,33 +325,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    addComment(body:\"waw\",UserId:1,PostId:2)\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "addFavorite",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation{\r\n    addFavorite(UserId: 1 ,PostId:2 )\r\n\r\n}",
+						"query": "mutation{\r\n    addComment(body:\"waw\",userId:1,postId:2){\r\n        id\r\n        body\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -292,14 +370,14 @@
 			"response": []
 		},
 		{
-			"name": "banUser",
+			"name": "changeFavorite",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    banUser(UserId: 1)\r\n}",
+						"query": "mutation{\r\n    changeFavorite(userId: 1 ,postId:4 ){\r\n        postId\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -318,40 +396,14 @@
 			"response": []
 		},
 		{
-			"name": "getBansUser",
+			"name": "changeBanUser",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n     getBansUser{\r\n        id\r\n        UserId\r\n        user{\r\n            roleName\r\n            firstName\r\n            email\r\n            birthday\r\n            bio\r\n            image\r\n            facebookURL\r\n            telegramURL\r\n            gmail\r\n            createdAt\r\n            updatedAt\r\n        }\r\n    }\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deleteFavorite",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation{\r\n    deleteFavorite(id:1)\r\n}",
+						"query": "mutation{\r\n    changeBanUser(userId: 1 ,choise : false){\r\n        userId\r\n    } \r\n}",
 						"variables": ""
 					}
 				},
@@ -377,7 +429,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    addComplaint(UserId:1,title:null,body:\"hsss\"){\r\n        body\r\n        title\r\n    }\r\n}",
+						"query": "mutation{\r\n    addComplaint(userId:1,title: \"gfg\",body:\"r\"){\r\n        body\r\n        title\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -396,40 +448,14 @@
 			"response": []
 		},
 		{
-			"name": "makeComplaintAsDone",
+			"name": "changeDoneComplaint",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    makeComplaintAsDone(id:2)\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllComplaints",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query{\r\n    getAllComplaints{\r\n        id\r\n        title\r\n        body\r\n        user\r\n        {\r\n            roleName\r\n            firstName\r\n            email\r\n            birthday\r\n            bio\r\n            image\r\n            facebookURL\r\n            telegramURL\r\n            gmail\r\n            createdAt\r\n            updatedAt\r\n        }\r\n    }\r\n}",
+						"query": "mutation{\r\n    changeDoneComplaint(id:3 ,choise: true){\r\n        body\r\n        title\r\n        isDone\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -455,33 +481,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    deleteComplaint(id:1)\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllPosts",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query{\r\n    getAllPosts{\r\n        id\r\n        body\r\n        title\r\n        type\r\n        subjectId\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n        comments{\r\n            body\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"query": "mutation{\r\n    deleteComplaint(id:3)\r\n}",
 						"variables": ""
 					}
 				},
@@ -552,14 +552,14 @@
 			"response": []
 		},
 		{
-			"name": "unBanUser",
+			"name": "addAd",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    unBanUser(UserId : 1)\r\n}",
+						"query": "mutation{\r\n    addAd(title: \"rrrrr\" ,body: \"ef\" ,expireIn: 2014 ){\r\n        title\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -578,14 +578,14 @@
 			"response": []
 		},
 		{
-			"name": "getAllAds",
+			"name": "deleteAd",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllAds{\r\n        id\r\n        title\r\n        body\r\n        expireIn\r\n    }\r\n}",
+						"query": "mutation{\r\n    deleteAd(id: 2)\r\n}",
 						"variables": ""
 					}
 				},
@@ -604,14 +604,14 @@
 			"response": []
 		},
 		{
-			"name": "getAllPosts",
+			"name": "signup",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllPosts{\r\n        id\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             email\r\n        }\r\n        comments{\r\n        body\r\n        user{\r\n            firstName\r\n            lastName\r\n            email\r\n        }   \r\n        }\r\n        commentsCnt\r\n        likes{\r\n            user{\r\n                firstName\r\n                lastName\r\n                email\r\n            }\r\n        }\r\n        likesCnt\r\n    }\r\n}",
+						"query": "mutation{\r\n    signup(firstName:\"loubna\", lastName:\"hn\", email:\"lloubnahn@gmail.com\", password:\"11\"){\r\n        token\r\n        user{\r\n            id\r\n            roleName\r\n            firstName\r\n            email\r\n            }\r\n        }\r\n    }",
 						"variables": ""
 					}
 				},
@@ -630,14 +630,14 @@
 			"response": []
 		},
 		{
-			"name": "getAllPostRequests",
+			"name": "login",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query{\r\n    getAllPostRequests{\r\n        id\r\n        type\r\n        title\r\n        body\r\n        subjectId\r\n        createdAt\r\n        updatedAt\r\n        user{\r\n             firstName\r\n             lastName\r\n             email\r\n        }\r\n    }\r\n}",
+						"query": "mutation{\r\n    login(email:\"lloubnahn@gmail.com\", password:\"\"){\r\n        token\r\n        user{\r\n            id\r\n            roleName\r\n            firstName\r\n            email\r\n            }\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
@@ -656,40 +656,14 @@
 			"response": []
 		},
 		{
-			"name": "acceptPostRequest",
+			"name": "editProfile",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation{\r\n    acceptPostRequest(id: 3){\r\n        subjectId\r\n        type\r\n        title\r\n        body\r\n        UserId\r\n    }\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deletePostRequest",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation{\r\n    deletePostRequest(id: 2)\r\n}",
+						"query": "mutation{\r\n    editProfile(id: 4, firstName:\"ds\", lastName:\"d\", birthday: 23, image:\"swd\" ,bio: \"d\", facebookURL: \"d\", telegramURL:\"s\", class:\"d\", gmail:\"d\",\r\n    oldPassword: \"\",firstNewPassword:null,secondNewPassword:\"\"){\r\n        firstName\r\n        lastName\r\n        bio\r\n        birthday\r\n        image\r\n        facebookURL\r\n        telegramURL\r\n        gmail\r\n        class\r\n    }\r\n}",
 						"variables": ""
 					}
 				},
