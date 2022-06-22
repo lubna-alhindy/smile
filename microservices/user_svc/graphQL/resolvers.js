@@ -49,6 +49,9 @@ const resolvers = {
         editProfile: (root ,args ,{ models }) =>
             Controller.User.editProfile(args ,models),
 
+        userDeleteAccount: (root ,args ,{ models }) =>
+            Controller.User.userDeleteAccount(args ,models),
+
         addPost: (root, args, { models }) => 
             Controller.Post.addPost(args ,models),
 

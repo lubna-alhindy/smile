@@ -1,7 +1,7 @@
 const dev = require('../config/dev');
 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const graphql = require('graphql');
 const graphqlLanguage = require('graphql/language');

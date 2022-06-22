@@ -171,6 +171,8 @@ const typeDefs = gql`
     editProfile(id: Int!, firstName: String, lastName: String, birthday: Date, image: String,bio: String,facebookURL: String,
     telegramURL: String, class: String, gmail: String, oldPassword: String, firstNewPassword: String, secondNewPassword: String)
       : Users 
+    
+    userDeleteAccount(email: String!, password: String): Void 
      
     addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!)
       : Posts
@@ -187,7 +189,7 @@ const typeDefs = gql`
     addComment(body: String! ,userId: Int! ,postId: Int!)
       : Comments
 
-    deleteComment(id: Int!)
+    deleteComment(id: Int!, userId: Int!)
       : Void
 
     changeFavorite(userId: Int! ,postId: Int! )
@@ -215,12 +217,11 @@ const typeDefs = gql`
       : Ads
 
     deleteAd(id: Int!)
-      : Void
+      : Void 
   }
 `;
 
-// add throw error
-//add class to signup
+//add delete from image to userdeleteaccount
 //add image to post and ads
 //cheack if ban and role befor any request
 //add type notification

@@ -196,6 +196,10 @@ exports.deletePost = async (args ,models) =>{
         }
     });
 
+    if( post == null ){
+        throw new Error("This Post is not found!");
+    }
+
     const likes = await models.likes.findAll({
         where: {
             postId: args.id
@@ -263,7 +267,10 @@ exports.approvalPostRequest = async (args ,models) => {
             userId: postRequest.userId
         })
 
+        const post = postRequest;
         await postRequest.destroy();
+
+        return post;
     }
 
     else
@@ -306,7 +313,8 @@ exports.addComment = async (args ,models) => {
 exports.deleteComment = async (args ,models) => {
     const comment = await models.comments.findOne({
         where: {
-            id: args.id
+            id: args.id,
+            userId: args.userId
         }
     });
     await comment.destroy();

@@ -88,12 +88,97 @@ exports.editProfile = async (args ,models) => {
     return user;
 }
 
+exports.userDeleteAccount = async (args ,models) => {
+    const user = await models.users.findOne({
+        where: {
+            email: args.email
+        }
+    })
+    .catch(err => {
+        throw new Error("Unknown Error occurred! Please try again.");
+    });
+
+    if( !user ||  !await Helper.checkPassword(args.password, user.password) ){
+        throw new Error('Your email or password is incorrect!');
+    }
+
+    const ban = await models.bans.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+    if( ban ) await ban.destroy();
+
+    const complaints = await models.complaints.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const complaint of complaints)
+         await complaint.destroy();
+
+    const favorites = await models.favorites.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const favorite of favorites)
+        await favorite.destroy();
+
+    const comments = await models.comments.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const comment of comments)
+        await comment.destroy();
+
+    const likes = await models.likes.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const like of likes)
+        await like.destroy();
+
+    const usersUniversityNumbers = await models.usersUniversityNumbers.findAll({
+        where:{
+            userId: user.id
+        }
+    });
+
+    for( const usersUniversityNumber of usersUniversityNumbers)
+        await usersUniversityNumber.destroy();
+
+    const posts = await models.posts.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const post of posts)
+        await post.destroy();
+
+    const postRequests = await models.postRequests.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+    for( const postRequest of postRequests)
+        await postRequest.destroy();
+
+    await user.destroy();
+}
+
 exports.getUser = async (args ,models) => {
     const user = await models.users.findOne({
         where:{
             id: args.id
         }
     });
+
+    if( user == null ){
+        throw new Error('This User Not Exist!');
+    }
 
     const editedUser = JSON.parse(JSON.stringify(user));
 
@@ -196,7 +281,7 @@ exports.getAllUser = async (models) => {
 }
 
 exports.getBansUser = async (models) => {
-    const bans = await models.bans.findAll({});
+    const bans = await models.bans.findAll();
 
     const response = [];
     for( const ban of bans){
@@ -226,6 +311,9 @@ exports.changeBanUser = async (args ,models) => {
                 userId: args.userId
             }
         });
+        if( banUser == null ){
+            throw new Error("This user is not banned !")
+        }
         await banUser.destroy();
     }
 }
@@ -244,6 +332,8 @@ exports.deleteUsersUniversityNumbers = async (args ,models) => {
             id: args.id
         }
     });
-
+    if( usersUniversityNumbers == null ){
+        throw new Error("This user is not banned")
+    }
     await usersUniversityNumbers.destroy();
 }
