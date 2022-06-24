@@ -1,7 +1,7 @@
 const Helper = require('./Helper');
 
-exports.signup = async (args ,models) => {
-    const emailCnt = await models.users.count({
+exports.signup = async (args ,context) => {
+    const emailCnt = await context.models.users.count({
         where: {
             email: args.email
         },
@@ -12,7 +12,7 @@ exports.signup = async (args ,models) => {
         throw new Error("This email is already exist! Please try another one.");
     }
 
-    const user = await models.users.create({
+    const user = await context.models.users.create({
         email: args.email,
         roleName: "Student",
         lastName: args.lastName,
@@ -32,8 +32,8 @@ exports.signup = async (args ,models) => {
     };
 };
 
-exports.login = async (args ,models) => {
-    const user = await models.users.findOne({
+exports.login = async (args ,context) => {
+    const user = await context.models.users.findOne({
         where: {
             email: args.email
         }
@@ -55,8 +55,8 @@ exports.login = async (args ,models) => {
     };
 };
 
-exports.editProfile = async (args ,models) => {
-    const user = await models.users.findOne({
+exports.editProfile = async (args ,context) => {
+    const user = await context.models.users.findOne({
         where: {
             id: args.id
         }
@@ -88,8 +88,8 @@ exports.editProfile = async (args ,models) => {
     return user;
 }
 
-exports.userDeleteAccount = async (args ,models) => {
-    const user = await models.users.findOne({
+exports.userDeleteAccount = async (args ,context) => {
+    const user = await context.models.users.findOne({
         where: {
             email: args.email
         }
@@ -102,14 +102,14 @@ exports.userDeleteAccount = async (args ,models) => {
         throw new Error('Your email or password is incorrect!');
     }
 
-    const ban = await models.bans.findOne({
+    const ban = await context.models.bans.findOne({
         where: {
             userId: user.id
         }
     });
     if( ban ) await ban.destroy();
 
-    const complaints = await models.complaints.findAll({
+    const complaints = await context.models.complaints.findAll({
         where: {
             userId: user.id
         }
@@ -117,7 +117,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const complaint of complaints)
          await complaint.destroy();
 
-    const favorites = await models.favorites.findAll({
+    const favorites = await context.models.favorites.findAll({
         where: {
             userId: user.id
         }
@@ -125,7 +125,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const favorite of favorites)
         await favorite.destroy();
 
-    const comments = await models.comments.findAll({
+    const comments = await context.models.comments.findAll({
         where: {
             userId: user.id
         }
@@ -133,7 +133,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const comment of comments)
         await comment.destroy();
 
-    const likes = await models.likes.findAll({
+    const likes = await context.models.likes.findAll({
         where: {
             userId: user.id
         }
@@ -141,7 +141,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const like of likes)
         await like.destroy();
 
-    const usersUniversityNumbers = await models.usersUniversityNumbers.findAll({
+    const usersUniversityNumbers = await context.models.usersUniversityNumbers.findAll({
         where:{
             userId: user.id
         }
@@ -150,7 +150,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const usersUniversityNumber of usersUniversityNumbers)
         await usersUniversityNumber.destroy();
 
-    const posts = await models.posts.findAll({
+    const posts = await context.models.posts.findAll({
         where: {
             userId: user.id
         }
@@ -158,7 +158,7 @@ exports.userDeleteAccount = async (args ,models) => {
     for( const post of posts)
         await post.destroy();
 
-    const postRequests = await models.postRequests.findAll({
+    const postRequests = await context.models.postRequests.findAll({
         where: {
             userId: user.id
         }
@@ -169,8 +169,8 @@ exports.userDeleteAccount = async (args ,models) => {
     await user.destroy();
 }
 
-exports.getUser = async (args ,models) => {
-    const user = await models.users.findOne({
+exports.getUser = async (args ,context) => {
+    const user = await context.models.users.findOne({
         where:{
             id: args.id
         }
@@ -183,7 +183,7 @@ exports.getUser = async (args ,models) => {
     const editedUser = JSON.parse(JSON.stringify(user));
 
     if( args.favorite == true){
-        const favorites = await models.favorites.findAll({
+        const favorites = await context.models.favorites.findAll({
             where: {
                 userId: args.id
             }
@@ -193,7 +193,7 @@ exports.getUser = async (args ,models) => {
         for( const favorite of favorites){
             const editedFavorite = JSON.parse(JSON.stringify(favorite));
 
-            editedFavorite.post = await models.posts.findOne({
+            editedFavorite.post = await context.models.posts.findOne({
                 where: {
                     id: favorite.postId
                 }
@@ -205,7 +205,7 @@ exports.getUser = async (args ,models) => {
     }
 
     if( args.universityNumber == true){
-        const usersUniversityNumbers = await models.usersUniversityNumbers.findAll({
+        const usersUniversityNumbers = await context.models.usersUniversityNumbers.findAll({
             where:{
                 userId: args.id
             }
@@ -214,7 +214,7 @@ exports.getUser = async (args ,models) => {
     }
 
     if( args.posts == true){
-        const allPost = await models.posts.findAll({
+        const allPost = await context.models.posts.findAll({
             where:{
                 userId: args.id
             }
@@ -224,7 +224,7 @@ exports.getUser = async (args ,models) => {
         for(const post of allPost){
             const editedPost = JSON.parse(JSON.stringify(post));
 
-            const likes = await models.likes.findAll({
+            const likes = await context.models.likes.findAll({
                 where:{
                     postId: post.id
                 }
@@ -233,7 +233,7 @@ exports.getUser = async (args ,models) => {
             const likesRes = [];
             for( const like of likes) {
                 const editedLike = JSON.parse(JSON.stringify(like));
-                editedLike.user = await models.users.findOne({
+                editedLike.user = await context.models.users.findOne({
                     where: {
                         id: like.userId
                     }
@@ -243,7 +243,7 @@ exports.getUser = async (args ,models) => {
             editedPost.likes = likesRes;
             editedPost.likesCnt = editedPost.likes.length;
 
-            const comments = await models.comments.findAll({
+            const comments = await context.models.comments.findAll({
                 where:{
                     postId: post.id
                 }
@@ -252,7 +252,7 @@ exports.getUser = async (args ,models) => {
             const commentsRes = [];
             for( const comment of comments){
                 const editedComment = JSON.parse(JSON.stringify(comment));
-                editedComment.user = await models.users.findOne({
+                editedComment.user = await context.models.users.findOne({
                     where: {
                         id: comment.userId
                     }
@@ -262,7 +262,7 @@ exports.getUser = async (args ,models) => {
             editedPost.comments = commentsRes;
             editedPost.commentsCnt = editedPost.comments.length;
 
-            const user = await models.users.findOne({
+            const user = await context.models.users.findOne({
                 where:{
                     id: post.userId
                 }
@@ -276,18 +276,18 @@ exports.getUser = async (args ,models) => {
     return editedUser;
 };
 
-exports.getAllUser = async (models) => {
-    return await models.users.findAll();
+exports.getAllUser = async (context) => {
+    return await context.models.users.findAll();
 }
 
-exports.getBansUser = async (models) => {
-    const bans = await models.bans.findAll();
+exports.getBansUser = async (context) => {
+    const bans = await context.models.bans.findAll();
 
     const response = [];
     for( const ban of bans){
         const editedBan = JSON.parse(JSON.stringify(ban));
 
-        editedBan.user = await models.users.findOne({
+        editedBan.user = await context.models.users.findOne({
             where: {
                 id: ban.userId
             }
@@ -299,14 +299,14 @@ exports.getBansUser = async (models) => {
     return response;
 }
 
-exports.changeBanUser = async (args ,models) => {
+exports.changeBanUser = async (args ,context) => {
     if( args.choise == true ){
-        return await models.bans.create({
+        return await context.models.bans.create({
             userId: args.userId
         });
     }
     else {
-        const banUser = await models.bans.findOne({
+        const banUser = await context.models.bans.findOne({
             where: {
                 userId: args.userId
             }
@@ -318,16 +318,16 @@ exports.changeBanUser = async (args ,models) => {
     }
 }
 
-exports.addUsersUniversityNumbers = async (args ,models) =>{
-    return await models.usersUniversityNumbers.create({
+exports.addUsersUniversityNumbers = async (args ,context) =>{
+    return await context.models.usersUniversityNumbers.create({
         userId: args.userId,
         universityNumber: args.universityNumber,
         year: args.year
     });
 }
 
-exports.deleteUsersUniversityNumbers = async (args ,models) => {
-    const usersUniversityNumbers  = await models.usersUniversityNumbers.findOne({
+exports.deleteUsersUniversityNumbers = async (args ,context) => {
+    const usersUniversityNumbers  = await context.models.usersUniversityNumbers.findOne({
         where: {
             id: args.id
         }

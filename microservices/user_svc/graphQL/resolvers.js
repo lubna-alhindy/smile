@@ -8,94 +8,94 @@ const resolvers = {
     /// --------- Query --------- ///
 
     Query: {
-        getUser: (root, args, { models }) => 
-            Controller.User.getUser(args ,models),
+        getUser: (root, args, context) => 
+            Controller.User.getUser(args ,context),
 
-        getAllUser: (root, args, { models }) => 
-            Controller.User.getAllUser(models),
+        getAllUser: (root, args, context) => 
+            Controller.User.getAllUser(context),
 
-        getAllAds: (root, args, { models }) => 
-            Controller.Ads.getAllAds(models),
+        getAllAds: (root, args, context) => 
+            Controller.Ads.getAllAds(context),
 
-        getBansUser: (root, args, { models }) => 
-            Controller.User.getBansUser(models),
+        getBansUser: (root, args, context) => 
+            Controller.User.getBansUser(context),
 
-        getAllPostRequests: (root, args, { models }) => 
-            Controller.Post.getAllPostRequests(models),
+        getAllPostRequests: (root, args, context) => 
+            Controller.Post.getAllPostRequests(context),
 
-        getPost: (root, args, { models }) =>
-            Controller.Post.getPost(args ,models),
+        getPost: (root, args, context) =>
+            Controller.Post.getPost(args ,context),
 
-        getAllComplaints: (root, args, { models }) => 
-            Controller.Complaints.getAllComplaints(models),
+        getAllComplaints: (root, args, context) => 
+            Controller.Complaints.getAllComplaints(context),
 
-        getPosts: (root, args, { models }) => 
-            Controller.Post.getPosts(args ,models),
+        getPosts: (root, args, context) => 
+            Controller.Post.getPosts(args ,context),
 
-        getAllPostOfSubject: (root, args, { models }) => 
-            Controller.Post.getAllPostOfSubject(args ,models),
+        getAllPostOfSubject: (root, args, context) => 
+            Controller.Post.getAllPostOfSubject(args ,context),
     },
 
     /// ---------------------------- ///
     /// --------- Mutation --------- ///
 
     Mutation: {
-        signup: (root ,args ,{ models }) => 
-            Controller.User.signup(args ,models),
+        signup: (root ,args ,context) => 
+            Controller.User.signup(args ,context),
 
-        login: (root ,args ,{ models }) => 
-            Controller.User.login(args ,models),
+        login: (root ,args ,context) => 
+            Controller.User.login(args ,context),
 
-        editProfile: (root ,args ,{ models }) =>
-            Controller.User.editProfile(args ,models),
+        editProfile: (root ,args ,context) =>
+            Controller.User.editProfile(args ,context),
 
-        userDeleteAccount: (root ,args ,{ models }) =>
-            Controller.User.userDeleteAccount(args ,models),
+        userDeleteAccount: (root ,args ,context) =>
+            Controller.User.userDeleteAccount(args ,context),
 
-        addPost: (root, args, { models }) => 
-            Controller.Post.addPost(args ,models),
+        addPost: (root, args, context) => 
+            Controller.Post.addPost(args ,context),
 
-        deletePost: (root, args, { models }) => 
-            Controller.Post.deletePost(args ,models),
+        deletePost: (root, args, context) => 
+            Controller.Post.deletePost(args ,context),
 
-        approvalPostRequest: (root, args, { models }) => 
-            Controller.Post.approvalPostRequest(args ,models),
+        approvalPostRequest: (root, args, context) => 
+            Controller.Post.approvalPostRequest(args ,context),
 
-        changeLike: (root, args , { models }) => 
-            Controller.Post.changeLike(args ,models),
+        changeLike: (root, args , context) => 
+            Controller.Post.changeLike(args ,context),
 
-        addComment: (root, args , { models }) => 
-            Controller.Post.addComment(args ,models),
+        addComment: (root, args , context) => 
+            Controller.Post.addComment(args ,context),
 
-        deleteComment: (root, args , { models }) => 
-            Controller.Post.deleteComment(args ,models),
+        deleteComment: (root, args , context) => 
+            Controller.Post.deleteComment(args ,context),
 
-        changeFavorite: (root, args , { models }) => 
-            Controller.Post.changeFavorite(args ,models),
+        changeFavorite: (root, args , context) => 
+            Controller.Post.changeFavorite(args ,context),
 
-        changeBanUser: (root, args, { models }) => 
-            Controller.User.changeBanUser(args ,models),
+        changeBanUser: (root, args, context) => 
+            Controller.User.changeBanUser(args ,context),
 
-        addComplaint: (root, args, { models }) => 
-            Controller.Complaints.addComplaint(args ,models),
+        addComplaint: (root, args, context) => 
+            Controller.Complaints.addComplaint(args ,context),
 
-        changeDoneComplaint: (root, args, { models }) => 
-            Controller.Complaints.changeDoneComplaint(args ,models),
+        changeDoneComplaint: (root, args, context) => 
+            Controller.Complaints.changeDoneComplaint(args ,context),
 
-        deleteComplaint: (root, args, { models }) => 
-            Controller.Complaints.deleteComplaint(args ,models),
+        deleteComplaint: (root, args, context) => 
+            Controller.Complaints.deleteComplaint(args ,context),
 
-        addUsersUniversityNumbers: (root, args, { models }) => 
-            Controller.User.addUsersUniversityNumbers(args ,models),
+        addUsersUniversityNumbers: (root, args, context) => 
+            Controller.User.addUsersUniversityNumbers(args ,context),
 
-        deleteUsersUniversityNumbers: (root, args, { models }) => 
-            Controller.User.deleteUsersUniversityNumbers(args ,models),
+        deleteUsersUniversityNumbers: (root, args, context) => 
+            Controller.User.deleteUsersUniversityNumbers(args ,context),
 
-        addAd: (root, args, { models }) => 
-            Controller.Ads.addAd(args ,models),
+        addAd: (root, args, context) => 
+            Controller.Ads.addAd(args ,context),
 
-        deleteAd: (root, args, { models }) => 
-            Controller.Ads.deleteAd(args ,models),
+        deleteAd: (root, args, context) => 
+            Controller.Ads.deleteAd(args ,context),
     },
 };
 

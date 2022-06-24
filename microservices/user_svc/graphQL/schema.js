@@ -168,11 +168,15 @@ const typeDefs = gql`
     login(email: String!, password: String!)
       : AuthPayload!
 
-    editProfile(id: Int!, firstName: String, lastName: String, birthday: Date, image: String,bio: String,facebookURL: String,
-    telegramURL: String, class: String, gmail: String, oldPassword: String, firstNewPassword: String, secondNewPassword: String)
-      : Users 
+    editProfile(
+        id: Int!, firstName: String, lastName: String,
+        birthday: Date, image: String, bio: String, facebookURL: String,
+        telegramURL: String, class: String, gmail: String, oldPassword: String,
+        firstNewPassword: String, secondNewPassword: String
+    ) : Users 
     
-    userDeleteAccount(email: String!, password: String): Void 
+    userDeleteAccount(email: String!, password: String)
+      : Void 
      
     addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!)
       : Posts

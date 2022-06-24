@@ -1,10 +1,10 @@
-exports.getAllComplaints = async (models) => {
-    const complaints =  await models.complaints.findAll();
+exports.getAllComplaints = async (context) => {
+    const complaints =  await context.models.complaints.findAll();
 
     const response = [];
     for( const complaint of complaints){
         const editedComplaint = JSON.parse(JSON.stringify(complaint));
-        editedComplaint.user = await models.users.findOne({
+        editedComplaint.user = await context.models.users.findOne({
             where: {
                 id: complaint.userId
             }
@@ -15,16 +15,16 @@ exports.getAllComplaints = async (models) => {
     return response;
 }
 
-exports.addComplaint = async (args ,models) => {
-    return await models.complaints.create({
+exports.addComplaint = async (args ,context) => {
+    return await context.models.complaints.create({
         userId: args.userId,
         title: args.title,
         body: args.body
     });
 }
 
-exports.changeDoneComplaint = async (args ,models) => {
-    const complaint = await models.complaints.findOne({
+exports.changeDoneComplaint = async (args ,context) => {
+    const complaint = await context.models.complaints.findOne({
         where: {
             id: args.id
         }
@@ -43,8 +43,8 @@ exports.changeDoneComplaint = async (args ,models) => {
 }
 
 
-exports.deleteComplaint = async (args ,models) => {
-    const complaint = await models.complaints.findOne({
+exports.deleteComplaint = async (args ,context) => {
+    const complaint = await context.models.complaints.findOne({
         where: {
             id: args.id
         }
@@ -52,6 +52,3 @@ exports.deleteComplaint = async (args ,models) => {
 
     await complaint.destroy();
 }
-
-
-
