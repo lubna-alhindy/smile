@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const dev = require('../config/dev');
 
 exports.getPayload = async (authHeader) => {
-    if( authHeader === '' ){
+    if( !authHeader || authHeader === null || authHeader === '' ){
         return null;
     }
 
