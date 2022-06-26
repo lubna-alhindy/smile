@@ -5,8 +5,8 @@ const { ApolloServer } = require('apollo-server');
 const Controller = require('./controllers/Controller');
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
-const dev = require('./config/dev');
 const models = require('./models');
+require('dotenv').config();
 
 // --------------------------------------- //
 
@@ -27,9 +27,9 @@ const server = new ApolloServer({
 
 server
     .listen({
-        protocol: dev.apolloServerOptions.protocol,
-        hostname: dev.apolloServerOptions.hostname,
-        port: dev.apolloServerOptions.port,
+        protocol: process.env.PROTOCOL,
+        hostname: process.env.HOSTNAME,
+        port: process.env.PORT,
     })
     .then(({url}) => {
         console.log("User service is running on " + url);

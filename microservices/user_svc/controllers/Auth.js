@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const dev = require('../config/dev');
 
 exports.getPayload = async (authHeader) => {
     if( !authHeader || authHeader === null || authHeader === '' ){
@@ -10,7 +9,7 @@ exports.getPayload = async (authHeader) => {
 
     try {
         if( token ) {
-            return await jwt.verify(token, dev.JWT_SECRET);
+            return await jwt.verify(token, process.env.JWT_SECRET);
         }
         return null;
     }

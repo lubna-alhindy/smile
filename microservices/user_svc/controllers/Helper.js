@@ -1,5 +1,3 @@
-const dev = require('../config/dev');
-
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -27,7 +25,7 @@ exports.hashPassword = async password => {
 exports.generateToken = payload => {
     return jwt.sign(
         payload,
-        dev.JWT_SECRET,
+        process.env.JWT_SECRET,
         {expiresIn: '30d'}
     );
 }
