@@ -1,4 +1,5 @@
 const Controller = require('../controllers/Controller');
+const {requiredFields} = require('./body');
 
 const resolvers = {
     Void: Controller.Helper.Void,
@@ -8,58 +9,32 @@ const resolvers = {
     /// --------- Query --------- ///
 
     Query: {
+        getUser: async (root, args, context ,info) => {
+            return Controller.User.getUser(args, context);
+        },
 
-    /*
-        Notes for get the required fields:
-
-            - you have to for loop over fieldNodes because each one is individual query
-
-            - the required field name exist in this path:
-                - info.fieldNodes[i].selectionSet.selections[j].name.value
-            
-            - you have to make a recursive function because there is types inside each other.
-
-            - you have to make a string with the resault required fields and send it by graphql-request
-              to the other services. 
-
-            Example about level 0 get required fields:
-            for(let i = 0 ; i < info.fieldNodes[0].selectionSet.selections.length ; i++){
-                console.log(info.fieldNodes[0].selectionSet.selections[i].name.value)
-            }
-
-            output the full info about the request from info object:
-
-            getUser: (root, args, context ,info) => {
-                console.log(JSON.stringify(info.fieldNodes.length,null,2));
-                return Controller.User.getUser(args ,context);
-            }
-    */
-
-        getUser: (root, args, context) => 
-            Controller.User.getUser(args ,context),
-
-        getAllUser: (root, args, context) => 
+        getAllUser: (root, args, context, info) =>
             Controller.User.getAllUser(context),
 
-        getAllAds: (root, args, context) => 
+        getAllAds: (root, args, context, info) =>
             Controller.Ads.getAllAds(context),
 
-        getBansUser: (root, args, context) => 
+        getBansUser: (root, args, context, info) =>
             Controller.User.getBansUser(context),
 
-        getAllPostRequests: (root, args, context) => 
+        getAllPostRequests: (root, args, context, info) =>
             Controller.Post.getAllPostRequests(context),
 
-        getPost: (root, args, context) =>
+        getPost: (root, args, context, info) =>
             Controller.Post.getPost(args ,context),
 
-        getAllComplaints: (root, args, context) => 
+        getAllComplaints: (root, args, context, info) =>
             Controller.Complaints.getAllComplaints(context),
 
-        getPosts: (root, args, context) => 
+        getPosts: (root, args, context, info) =>
             Controller.Post.getPosts(args ,context),
 
-        getAllPostOfSubject: (root, args, context) => 
+        getAllPostOfSubject: (root, args, context, info) =>
             Controller.Post.getAllPostOfSubject(args ,context),
     },
 
@@ -67,61 +42,61 @@ const resolvers = {
     /// --------- Mutation --------- ///
 
     Mutation: {
-        signup: (root ,args ,context) => 
+        signup: (root ,args ,context, info) =>
             Controller.User.signup(args ,context),
 
-        login: (root ,args ,context) => 
+        login: (root ,args ,context, info) =>
             Controller.User.login(args ,context),
 
-        editProfile: (root ,args ,context) =>
+        editProfile: (root ,args ,context, info) =>
             Controller.User.editProfile(args ,context),
 
-        userDeleteAccount: (root ,args ,context) =>
+        userDeleteAccount: (root ,args ,context, info) =>
             Controller.User.userDeleteAccount(args ,context),
 
-        addPost: (root, args, context) => 
+        addPost: (root, args, context, info) =>
             Controller.Post.addPost(args ,context),
 
-        deletePost: (root, args, context) => 
+        deletePost: (root, args, context, info) =>
             Controller.Post.deletePost(args ,context),
 
-        approvalPostRequest: (root, args, context) => 
+        approvalPostRequest: (root, args, context, info) =>
             Controller.Post.approvalPostRequest(args ,context),
 
-        changeLike: (root, args , context) => 
+        changeLike: (root, args , context, info) =>
             Controller.Post.changeLike(args ,context),
 
-        addComment: (root, args , context) => 
+        addComment: (root, args , context, info) =>
             Controller.Post.addComment(args ,context),
 
-        deleteComment: (root, args , context) => 
+        deleteComment: (root, args , context, info) =>
             Controller.Post.deleteComment(args ,context),
 
-        changeFavorite: (root, args , context) => 
+        changeFavorite: (root, args , context, info) =>
             Controller.Post.changeFavorite(args ,context),
 
-        changeBanUser: (root, args, context) => 
+        changeBanUser: (root, args, context, info) =>
             Controller.User.changeBanUser(args ,context),
 
-        addComplaint: (root, args, context) => 
+        addComplaint: (root, args, context, info) =>
             Controller.Complaints.addComplaint(args ,context),
 
-        changeDoneComplaint: (root, args, context) => 
+        changeDoneComplaint: (root, args, context, info) =>
             Controller.Complaints.changeDoneComplaint(args ,context),
 
-        deleteComplaint: (root, args, context) => 
+        deleteComplaint: (root, args, context, info) =>
             Controller.Complaints.deleteComplaint(args ,context),
 
-        addUsersUniversityNumbers: (root, args, context) => 
+        addUsersUniversityNumbers: (root, args, context, info) =>
             Controller.User.addUsersUniversityNumbers(args ,context),
 
-        deleteUsersUniversityNumbers: (root, args, context) => 
+        deleteUsersUniversityNumbers: (root, args, context, info) =>
             Controller.User.deleteUsersUniversityNumbers(args ,context),
 
-        addAd: (root, args, context) => 
+        addAd: (root, args, context, info) =>
             Controller.Ads.addAd(args ,context),
 
-        deleteAd: (root, args, context) => 
+        deleteAd: (root, args, context, info) =>
             Controller.Ads.deleteAd(args ,context),
     },
 };
