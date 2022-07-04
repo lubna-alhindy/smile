@@ -84,3 +84,100 @@ exports.Void = {
         }
     })
 }
+
+// -------------------------------------------- //
+
+const {writeFileSync ,unlinkSync ,existsSync, mkdirSync} = require("fs");
+const {join} = require("path");
+
+/// --------------------------- ///
+
+exports.writeImage = async (image ,name) => {
+    if( !image || name === '' ){
+        return false;
+    }
+
+    let filePath = join(
+      __dirname,
+      "..",
+      "assets"
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      'images'
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      name
+    );
+
+    await writeFileSync(filePath, image);
+    return true;
+};
+
+/// --------------------------- ///
+
+exports.deleteImage = async name => {
+    if( name === '' ){
+        return;
+    }
+
+    let filePath = join(
+      __dirname,
+      "..",
+      "assets"
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      'images'
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      name
+    );
+
+    if( existsSync(filePath) ){
+        await unlinkSync(filePath);
+    }
+};
+
+/// --------------------------- ///
+
+exports.uniqueName = suffix => {
+    const date = new Date();
+
+    return date.toLocaleDateString('sv') + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds() + '-' + date.getMilliseconds() + '-' + suffix.toString();
+};
+
+/// --------------------------- ///
+
+exports.convertBase64ToImage = base64 => {
+    const image = Buffer.from(base64, "base64");
+    if( !image ){
+        return null;
+    }
+
+    return image;
+};
+
+/// --------------------------- ///

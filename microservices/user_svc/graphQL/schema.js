@@ -33,6 +33,14 @@ const typeDefs = gql`
     userUniversityNumbers: [UsersUniversityNumbers]
   }
   
+  type PostImage {
+  	id: Int!
+  	url: String!
+  	postId: Int
+  	postRequestId: Int
+  	adId: Int
+  }
+  
   type Posts {
     id: Int!
     userId: Int!
@@ -42,6 +50,7 @@ const typeDefs = gql`
     subjectId: Int
     createdAt: Date!
     updatedAt: Date!
+    postImages: [PostImage]!
 
     user: Users!
     likesCnt: Int
@@ -59,6 +68,7 @@ const typeDefs = gql`
     subjectId: Int
     createdAt: Date!
     updatedAt: Date!
+    postImages: [PostImage]!
 
     user: Users!
   }
@@ -117,6 +127,7 @@ const typeDefs = gql`
     expireIn: Date!
     createdAt: Date
     updatedAt: Date
+    postImages: [PostImage]!
   }
   
   type UsersUniversityNumbers {
@@ -217,7 +228,7 @@ const typeDefs = gql`
     deleteUsersUniversityNumbers(id: Int!)
       : Void
 
-    addAd(title: String! ,body: String! ,expireIn: Date!)
+    addAd(title: String! ,body: String! ,expireIn: Date! ,images: [PostImage])
       : Ads
 
     deleteAd(id: Int!)

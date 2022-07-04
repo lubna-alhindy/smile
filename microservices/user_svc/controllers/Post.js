@@ -2,6 +2,9 @@ exports.getPost = async (args, context) => {
     const post = await context.models.posts.findOne({
         where:{
             id: args.id
+        },
+        include: {
+            model: context.models.postImages
         }
     });
     const editedPost = JSON.parse(JSON.stringify(post));
@@ -59,7 +62,6 @@ exports.getPost = async (args, context) => {
 }
 
 exports.getPosts = async (args, context) => {
-
     if( args.filter == null){
         const allPost = await context.models.posts.findAll();
 
@@ -182,10 +184,10 @@ exports.getPosts = async (args, context) => {
 exports.addPost = async (args ,context) => {
     return await context.models.postRequests.create({
         subjectId: args.subjectId,
-        type: args.type,
+        userId: args.userId,
         title: args.title,
-        body: args.body,
-        userId: args.userId
+        type: args.type,
+        body: args.body
     });
 }
 
@@ -278,8 +280,19 @@ exports.approvalPostRequest = async (args ,context) => {
         const postRequest = await context.models.postRequests.findOne({
             where:{
                 id: args.id
+            },
+            include: {
+                model: context.models.postImages
             }
         });
+
+        for(let image of postRequest.postImages){
+            await context.models.postImages.destroy({
+                where: {
+                    id: image.id
+                }
+            });
+        }
 
         await postRequest.destroy();
     }

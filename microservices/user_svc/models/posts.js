@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId'
       });
       posts.hasMany(models.postImages,{
-        foreignKey: 'postRequestId'
+        foreignKey: 'postId'
       });
       posts.hasMany(models.comments,{
         foreignKey: 'postId'

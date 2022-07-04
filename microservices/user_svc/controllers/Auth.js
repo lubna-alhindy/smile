@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 require('dotenv');
 
-exports.getPayload = async (authHeader) => {
-    console.log(authHeader);
+/// ---------------------------------- ///
 
+exports.getPayload = async authHeader => {
     if( !authHeader || authHeader === '' ){
         return null;
     }
@@ -20,3 +20,5 @@ exports.getPayload = async (authHeader) => {
         return null;
     }
 };
+
+/// ---------------------------------- ///
