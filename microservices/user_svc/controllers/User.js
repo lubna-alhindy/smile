@@ -65,12 +65,21 @@ exports.editProfile = async (args ,context) => {
     user.firstName = args.firstName;
     user.lastName = args.lastName;
     user.birthday = args.birthday
-    user.image = args.image
     user.bio = args.bio
     user.class = args.class
     user.facebookURL = args.facebookURL
     user.telegramURL = args.telegramURL
     user.gmail = args.gmail
+
+    const name = Helper.uniqueName("user" + "-" + args.id  + "-" + args.lastName );
+
+    const base64image = args.image.split(',')[1];
+    const image = await Helper.convertBase64ToImage(base64image);
+
+    await Helper.writeImage(image ,name);
+
+    user.image = args.image;
+
 
     if( args.oldPassword != null ){
         if( !await Helper.checkPassword(args.oldPassword, user.password) ){
@@ -153,18 +162,43 @@ exports.userDeleteAccount = async (args ,context) => {
     const posts = await context.models.posts.findAll({
         where: {
             userId: user.id
+        },
+        include: {
+            model: context.models.postImages
         }
     });
-    for( const post of posts)
+
+    for( const post of posts){
+        for(let image of post.postImages){
+            await context.models.postImages.destroy({
+                where: {
+                    id: image.id
+                }
+            });
+        }
         await post.destroy();
+    }
+
 
     const postRequests = await context.models.postRequests.findAll({
         where: {
             userId: user.id
+        },
+        include: {
+            model: context.models.postImages
         }
     });
-    for( const postRequest of postRequests)
+
+    for( const postRequest of postRequests){
+        for(let image of postRequest.postImages){
+            await context.models.postImages.destroy({
+                where: {
+                    id: image.id
+                }
+            });
+        }
         await postRequest.destroy();
+    }
 
     await user.destroy();
 }

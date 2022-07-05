@@ -182,19 +182,43 @@ exports.getPosts = async (args, context) => {
 }
 
 exports.addPost = async (args ,context) => {
-    return await context.models.postRequests.create({
+    const post = await context.models.postRequests.create({
         subjectId: args.subjectId,
         userId: args.userId,
         title: args.title,
         type: args.type,
         body: args.body
     });
+
+    post[args.images] = [];
+
+    for(let i = 0 ; i < args.images.length() ; i++){
+        const name = Helper.uniqueName("posts" + "-" + post.id  + "-" + i);
+
+        const base64image = args.images[i].split(',')[1];
+
+        const image = await Helper.convertBase64ToImage(base64image);
+
+        await Helper.writeImage(image ,name);
+
+        post[args.images].push( await context.models.postImages.create({
+            url: name,
+            adId: null,
+            postId: null,
+            postRequestId: post.id
+        }));
+    }
+
+    return post;
 }
 
 exports.deletePost = async (args ,context) =>{
     const post = await context.models.posts.findOne({
         where: {
             id: args.id
+        },
+        include: {
+            model: context.models.postImages
         }
     });
 
@@ -231,6 +255,14 @@ exports.deletePost = async (args ,context) =>{
         await favorite.destroy();
     }
 
+    for(let image of post.postImages){
+        await context.models.postImages.destroy({
+            where: {
+                id: image.id
+            }
+        });
+    }
+
     await post.destroy();
 }
 
@@ -254,38 +286,44 @@ exports.getAllPostRequests = async (context) => {
 }
 
 exports.approvalPostRequest = async (args ,context) => {
+    let post = null;
+
+    const postRequest = await context.models.postRequests.findOne({
+        where:{
+            id: args.id
+        },
+        include: {
+            model: context.models.postImages
+        }
+    });
+
     if( args.cheack == true){
-        const postRequest = await context.models.postRequests.findOne({
-            where:{
-                id: args.id
-            }
-        });
-
         await context.models.posts.create({
-            subjectId: postRequest.subjectId,
-            type: postRequest.type,
-            title: postRequest.title,
-            body: postRequest.body,
-            userId: postRequest.userId
-        })
+                subjectId: postRequest.subjectId,
+                type: postRequest.type,
+                title: postRequest.title,
+                body: postRequest.body,
+                userId: postRequest.userId
+           })
 
-        const post = postRequest;
-        await postRequest.destroy();
-
-        return post;
+        post = postRequest;
+        for( let image of postRequest.postImages) {
+            await context.models.postImages.update(
+                {
+                   postRequestId: null,
+                   postId: post.id
+                },
+                {
+                    where: {
+                        id: image.id
+                    }
+                }
+            );
+        }
     }
 
     else
     {
-        const postRequest = await context.models.postRequests.findOne({
-            where:{
-                id: args.id
-            },
-            include: {
-                model: context.models.postImages
-            }
-        });
-
         for(let image of postRequest.postImages){
             await context.models.postImages.destroy({
                 where: {
@@ -293,9 +331,9 @@ exports.approvalPostRequest = async (args ,context) => {
                 }
             });
         }
-
-        await postRequest.destroy();
     }
+    await postRequest.destroy();
+    return post;
 }
 
 exports.changeLike = async (args ,context) => {

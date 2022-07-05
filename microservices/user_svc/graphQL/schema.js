@@ -236,8 +236,6 @@ const typeDefs = gql`
   }
 `;
 
-//add delete from image to userdeleteaccount
-//add image to post and ads
 //cheack if ban and role befor any request
 //add type notification
 
