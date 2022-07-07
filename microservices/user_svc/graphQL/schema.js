@@ -185,7 +185,7 @@ const typeDefs = gql`
         id: Int!, firstName: String, lastName: String,
         birthday: Date, image: String, bio: String, facebookURL: String,
         telegramURL: String, class: String, gmail: String, oldPassword: String,
-        firstNewPassword: String, secondNewPassword: String ,image: String
+        firstNewPassword: String, secondNewPassword: String
     ) : Users 
     
     userDeleteAccount(email: String!, password: String)
