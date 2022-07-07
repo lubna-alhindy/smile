@@ -3,11 +3,17 @@ const Helper = require('./Helper');
 /// ----------------------------- ///
 
 exports.getAllAds = async (context) => {
-    return await context.models.ads.findAll({
+    const ads = await context.models.ads.findAll({
         include: {
             model: context.models.postImages
         }
     });
+
+    for(let i = 0; i < ads.postImages.length; i++){
+        ads.postImages[i].base64Image = Helper.convertImageToBase64(ads.postImages[i].name);
+    }
+
+    return ads;
 }
 
 /// ----------------------------- ///

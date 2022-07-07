@@ -93,6 +93,8 @@ const {join} = require("path");
 /// --------------------------- ///
 
 exports.writeImage = async (image ,name) => {
+    name += '.png';
+
     if( !image || name === '' ){
         return false;
     }
@@ -128,6 +130,8 @@ exports.writeImage = async (image ,name) => {
 /// --------------------------- ///
 
 exports.deleteImage = async name => {
+    name += '.png';
+
     if( name === '' ){
         return;
     }
@@ -164,6 +168,8 @@ exports.deleteImage = async name => {
 /// --------------------------- ///
 
 exports.readImage = async (name) => {
+    name += '.png';
+
     let filePath = join(
       __dirname,
       "..",
@@ -212,9 +218,34 @@ exports.convertBase64ToImage = base64 => {
 
 /// --------------------------- ///
 
-exports.convertImageToBase64 = (file) => {
-    const bitmap = readFileSync(file);
-    return new Buffer(bitmap).toString('base64');
+exports.convertImageToBase64 = (name) => {
+    name += '.png';
+
+    let filePath = join(
+      __dirname,
+      "..",
+      "assets"
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      'images'
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      name
+    );
+
+    return readFileSync(filePath ,'base64');
 }
 
 /// --------------------------- ///

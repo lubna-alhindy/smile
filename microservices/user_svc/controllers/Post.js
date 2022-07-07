@@ -1,5 +1,4 @@
-const Healper = require('./Helper');
-const {Helper} = require("./Controller");
+const Helper = require('./Helper');
 
 exports.getPost = async (args, context) => {
     const post = await context.models.posts.findOne({
@@ -236,22 +235,25 @@ exports.deletePost = async (args ,context) =>{
 }
 
 exports.getAllPostRequests = async (context) => {
-    const postRequests = await context.models.postRequests.findAll();
+    const postRequests = await context.models.postRequests.findAll({
+        include: [{
+            model: context.models.postImages
+        },{
+            model: context.models.users
+        }]
+    });
 
-    const response = [];
-    for( const postRequest of postRequests ){
-        const editedPostRequest = JSON.parse(JSON.stringify(postRequest));
-
-        editedPostRequest.user = await context.models.users.findOne({
-            where: {
-                id: postRequest.userId
-            }
-        });
-
-        response.push(editedPostRequest);
+    const editedPostRequests = [];
+    for(let post of postRequests){
+        const postImages = JSON.parse(JSON.stringify(post.postImages));
+        for(let i = 0 ; i < post.postImages.length ; i++){
+            postImages[i].base64Image = Helper.convertImageToBase64(post.postImages[i].name);
+        }
+        post.postImages = postImages;
+        editedPostRequests.push(post);
     }
 
-    return response;
+    return editedPostRequests;
 }
 
 exports.approvalPostRequest = async (args ,context) => {

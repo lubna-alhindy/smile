@@ -1,5 +1,4 @@
 const Controller = require('../controllers/Controller');
-const {requiredFields} = require('./body');
 
 const resolvers = {
     Void: Controller.Helper.Void,
@@ -9,9 +8,8 @@ const resolvers = {
     /// --------- Query --------- ///
 
     Query: {
-        getUser: async (root, args, context ,info) => {
-            return Controller.User.getUser(args, context);
-        },
+        getUser: async (root, args, context ,info) =>
+           Controller.User.getUser(args, context ,info),
 
         getAllUser: (root, args, context, info) =>
             Controller.User.getAllUser(context),

@@ -145,7 +145,7 @@ const typeDefs = gql`
   
 
   type Query {
-    getUser(id: Int! ,favorite: Boolean ,universityNumber: Boolean ,posts: Boolean)
+    getUser(id: Int!)
       : Users
 
     getAllUser

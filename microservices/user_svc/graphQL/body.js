@@ -53,3 +53,29 @@ exports.requiredFields = async (info) => {
 
     return res;
 };
+
+exports.checkIfExist = async (body ,field) => {
+    if( typeof body != "object" ){
+        return body === field;
+    }
+
+    let res = false;
+
+    for(let i in body){
+        if( typeof body[i] === "object" ){
+            if( i === field ){
+                res = true;
+                break;
+            }
+            res |= await this.checkIfExist(body[i] ,field);
+        } else {
+            res |= await this.checkIfExist(body[i] ,field);
+        }
+
+        if( res ){
+            break;
+        }
+    }
+
+    return res;
+};

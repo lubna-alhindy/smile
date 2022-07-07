@@ -1,3 +1,4 @@
+const {requiredFields ,checkIfExist} = require('../graphQL/body');
 const Helper = require('./Helper');
 
 exports.signup = async (args ,context) => {
@@ -150,7 +151,13 @@ exports.userDeleteAccount = async (args ,context) => {
     await user.destroy();
 }
 
-exports.getUser = async (args ,context) => {
+exports.getUser = async (args ,context ,info) => {
+    const body = await requiredFields(info);
+
+    args.favorite = await checkIfExist(body ,"favorites");
+    args.universityNumber = await checkIfExist(body ,"userUniversityNumbers");
+    args.posts = await checkIfExist(body ,"posts");
+
     const user = await context.models.users.findOne({
         where:{
             id: args.id
@@ -163,7 +170,7 @@ exports.getUser = async (args ,context) => {
 
     const editedUser = JSON.parse(JSON.stringify(user));
 
-    if( args.favorite == true){
+    if( args.favorite ){
         const favorites = await context.models.favorites.findAll({
             where: {
                 userId: args.id
@@ -185,71 +192,38 @@ exports.getUser = async (args ,context) => {
         editedUser.favorites = favRes;
     }
 
-    if( args.universityNumber == true){
-        const usersUniversityNumbers = await context.models.usersUniversityNumbers.findAll({
-            where:{
+    if( args.universityNumber ){
+        editedUser.userUniversityNumbers = await context.models.usersUniversityNumbers.findAll({
+            where: {
                 userId: args.id
             }
         });
-        editedUser.userUniversityNumbers = usersUniversityNumbers;
     }
 
-    if( args.posts == true){
+    if( args.posts ){
         const allPost = await context.models.posts.findAll({
             where:{
                 userId: args.id
-            }
+            },
         });
 
         const response = [];
         for(const post of allPost){
             const editedPost = JSON.parse(JSON.stringify(post));
 
-            const likes = await context.models.likes.findAll({
+            editedPost.likesCnt = await context.models.likes.count({
                 where:{
                     postId: post.id
                 }
             });
 
-            const likesRes = [];
-            for( const like of likes) {
-                const editedLike = JSON.parse(JSON.stringify(like));
-                editedLike.user = await context.models.users.findOne({
-                    where: {
-                        id: like.userId
-                    }
-                });
-                likesRes.push(editedLike);
-            }
-            editedPost.likes = likesRes;
-            editedPost.likesCnt = editedPost.likes.length;
 
-            const comments = await context.models.comments.findAll({
+            editedPost.commentsCnt = await context.models.comments.count({
                 where:{
                     postId: post.id
                 }
             });
 
-            const commentsRes = [];
-            for( const comment of comments){
-                const editedComment = JSON.parse(JSON.stringify(comment));
-                editedComment.user = await context.models.users.findOne({
-                    where: {
-                        id: comment.userId
-                    }
-                });
-                commentsRes.push(editedComment);
-            }
-            editedPost.comments = commentsRes;
-            editedPost.commentsCnt = editedPost.comments.length;
-
-            const user = await context.models.users.findOne({
-                where:{
-                    id: post.userId
-                }
-            });
-
-            editedPost.user = user;
             response.push(editedPost);
         }
         editedUser.posts = response;
@@ -258,26 +232,28 @@ exports.getUser = async (args ,context) => {
 };
 
 exports.getAllUser = async (context) => {
-    return await context.models.users.findAll();
+    const users = await context.models.users.findAll({
+        include: context.models.bans
+      }
+    );
+
+    for(let user of users) {
+        if (!user.ban) {
+            user.isBaned = false;
+        } else {
+            user.isBaned = true;
+        }
+    }
+
+    return users;
 }
 
 exports.getBansUser = async (context) => {
-    const bans = await context.models.bans.findAll();
-
-    const response = [];
-    for( const ban of bans){
-        const editedBan = JSON.parse(JSON.stringify(ban));
-
-        editedBan.user = await context.models.users.findOne({
-            where: {
-                id: ban.userId
-            }
-        });
-
-        response.push(editedBan);
-    }
-
-    return response;
+    return await context.models.bans.findAll({
+        include: {
+            model: context.models.users
+        }
+    });
 }
 
 exports.changeBanUser = async (args ,context) => {
