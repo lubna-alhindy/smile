@@ -11,6 +11,9 @@ exports.signup = async (args ,context) => {
     if( emailCnt === 1 ){
         throw new Error("This email is already exist! Please try another one.");
     }
+    if( !args.password || args.password.length < 8 ) {
+        throw new Error('The password must be more than 7 characters');
+    }
 
     const user = await context.models.users.create({
         email: args.email,
@@ -65,35 +68,43 @@ exports.editProfile = async (args ,context) => {
     user.firstName = args.firstName;
     user.lastName = args.lastName;
     user.birthday = args.birthday
-    user.bio = args.bio
-    user.class = args.class
-    user.facebookURL = args.facebookURL
-    user.telegramURL = args.telegramURL
-    user.gmail = args.gmail
+    user.bio = args.bio;
+    user.class = args.class;
+    user.facebookURL = args.facebookURL;
+    user.telegramURL = args.telegramURL;
+    user.gmail = args.gmail;
 
     const name = Helper.uniqueName("user" + "-" + args.id  + "-" + args.lastName );
-
     const base64image = args.image.split(',')[1];
     const image = await Helper.convertBase64ToImage(base64image);
+    if( !await Helper.writeImage(image ,name) ){
+        throw new Error("Internal server error, try again");
+    }
 
-    await Helper.writeImage(image ,name);
-
-    user.image = args.image;
-
-
+    user.image = name;
     if( args.oldPassword != null ){
         if( !await Helper.checkPassword(args.oldPassword, user.password) ){
             throw new Error('Your password is incorrect!');
         }
-        if(args.firstNewPassword != null || args.secondNewPassword != null ){
-            if( args.firstNewPassword != args.secondNewPassword ) {
-                throw new Error('The First Password does not match the Second Password!');
-            }
+        if( !args.firstNewPassword || !args.secondNewPassword ) {
+            throw new Error('The password must be more than 7 characters');
         }
-        user.password= await Helper.hashPassword(args.firstNewPassword);
+        if( args.firstNewPassword.length < 8 || args.secondNewPassword.length < 8 ) {
+            throw new Error('The password must be more than 7 characters');
+        }
+        if( args.firstNewPassword !== args.secondNewPassword ) {
+            throw new Error('The First Password does not match the Second Password!');
+        }
+        user.password = await Helper.hashPassword(args.firstNewPassword);
+    }
+    else {
+        if( args.firstNewPassword != null ){
+            throw new Error('Please enter the current password');
+        }
     }
 
     await user.save();
+    user.image = base64image;
     return user;
 }
 
@@ -101,103 +112,39 @@ exports.userDeleteAccount = async (args ,context) => {
     const user = await context.models.users.findOne({
         where: {
             email: args.email
-        }
-    })
-    .catch(err => {
-        throw new Error("Unknown Error occurred! Please try again.");
+        },
+        include: [{
+            model: context.models.posts,
+            include: {
+                model: context.models.postImages
+            }
+        },{
+            model: context.models.postRequests,
+            include: {
+                model: context.models.postImages
+            }
+        }]
     });
 
-    if( !user ||  !await Helper.checkPassword(args.password, user.password) ){
+    if( !user || !await Helper.checkPassword(args.password, user.password) ){
         throw new Error('Your email or password is incorrect!');
     }
 
-    const ban = await context.models.bans.findOne({
-        where: {
-            userId: user.id
+    for(const post of user.posts){
+        for(let image of user.posts.postImages){
+            await Helper.deleteImage(image.name);
         }
-    });
-    if( ban ) await ban.destroy();
-
-    const complaints = await context.models.complaints.findAll({
-        where: {
-            userId: user.id
-        }
-    });
-    for( const complaint of complaints)
-         await complaint.destroy();
-
-    const favorites = await context.models.favorites.findAll({
-        where: {
-            userId: user.id
-        }
-    });
-    for( const favorite of favorites)
-        await favorite.destroy();
-
-    const comments = await context.models.comments.findAll({
-        where: {
-            userId: user.id
-        }
-    });
-    for( const comment of comments)
-        await comment.destroy();
-
-    const likes = await context.models.likes.findAll({
-        where: {
-            userId: user.id
-        }
-    });
-    for( const like of likes)
-        await like.destroy();
-
-    const usersUniversityNumbers = await context.models.usersUniversityNumbers.findAll({
-        where:{
-            userId: user.id
-        }
-    });
-
-    for( const usersUniversityNumber of usersUniversityNumbers)
-        await usersUniversityNumber.destroy();
-
-    const posts = await context.models.posts.findAll({
-        where: {
-            userId: user.id
-        },
-        include: {
-            model: context.models.postImages
-        }
-    });
-
-    for( const post of posts){
-        for(let image of post.postImages){
-            await context.models.postImages.destroy({
-                where: {
-                    id: image.id
-                }
-            });
-        }
-        await post.destroy();
     }
 
-
-    const postRequests = await context.models.postRequests.findAll({
-        where: {
-            userId: user.id
-        },
-        include: {
-            model: context.models.postImages
-        }
-    });
-
-    for( const postRequest of postRequests){
-        for(let image of postRequest.postImages){
+    for(const postRequest of user.postRequests){
+        for(let image of user.postRequests.postImages){
+            await Helper.deleteImage(image.name);
             await context.models.postImages.destroy({
                 where: {
                     id: image.id
                 }
             });
         }
-        await postRequest.destroy();
     }
 
     await user.destroy();
@@ -334,25 +281,34 @@ exports.getBansUser = async (context) => {
 }
 
 exports.changeBanUser = async (args ,context) => {
-    if( args.choise == true ){
-        return await context.models.bans.create({
+    const user = await context.models.users.findOne({
+        where: {
+            id: args.userId
+        },
+        include: {
+            model: context.models.bans
+        }
+    });
+
+    if( !user.ban ){
+        user.isBaned = true;
+        await context.models.bans.create({
             userId: args.userId
         });
     }
     else {
-        const banUser = await context.models.bans.findOne({
+        user.isBaned = false;
+        await context.models.bans.destroy({
             where: {
-                userId: args.userId
+                id: user.ban.id
             }
         });
-        if( banUser == null ){
-            throw new Error("This user is not banned !")
-        }
-        await banUser.destroy();
     }
+
+    return user;
 }
 
-exports.addUsersUniversityNumbers = async (args ,context) =>{
+exports.addUsersUniversityNumber = async (args ,context) =>{
     return await context.models.usersUniversityNumbers.create({
         userId: args.userId,
         universityNumber: args.universityNumber,
@@ -360,14 +316,16 @@ exports.addUsersUniversityNumbers = async (args ,context) =>{
     });
 }
 
-exports.deleteUsersUniversityNumbers = async (args ,context) => {
+exports.deleteUsersUniversityNumber = async (args ,context) => {
     const usersUniversityNumbers  = await context.models.usersUniversityNumbers.findOne({
         where: {
             id: args.id
         }
     });
-    if( usersUniversityNumbers == null ){
-        throw new Error("This user is not banned")
+
+    if( !usersUniversityNumbers ){
+        throw new Error("This user is not found");
     }
+
     await usersUniversityNumbers.destroy();
 }

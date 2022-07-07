@@ -10,6 +10,9 @@ module.exports = {
       },
       postId: {
         type: Sequelize.INTEGER,
+        constraint: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         allowNull: false,
         references: {
           model: 'posts',
@@ -18,6 +21,9 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        constraint: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         allowNull: false,
         references: {
           model: 'users',

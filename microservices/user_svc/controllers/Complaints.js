@@ -30,25 +30,16 @@ exports.changeDoneComplaint = async (args ,context) => {
         }
     });
 
-    if( args.choise == true ){
-        complaint.isDone = true;
-    }
-
-    else {
-        complaint.isDone = false;
-    }
-
+    complaint.isDone = !complaint.isDone;
     await complaint.save();
-    return complaint
+
+    return complaint;
 }
 
-
 exports.deleteComplaint = async (args ,context) => {
-    const complaint = await context.models.complaints.findOne({
+    await context.models.complaints.destroy({
         where: {
             id: args.id
         }
     });
-
-    await complaint.destroy();
 }

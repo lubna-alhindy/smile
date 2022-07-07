@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dropDB": "cd database && npx sequelize db:drop",
+    "db": "cd database && npx sequelize db:create && npx sequelize db:migrate"
   },
   "repository": {
     "type": "git",

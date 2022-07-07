@@ -87,11 +87,11 @@ const resolvers = {
         deleteComplaint: (root, args, context, info) =>
             Controller.Complaints.deleteComplaint(args ,context),
 
-        addUsersUniversityNumbers: (root, args, context, info) =>
-            Controller.User.addUsersUniversityNumbers(args ,context),
+        addUsersUniversityNumber: (root, args, context, info) =>
+            Controller.User.addUsersUniversityNumber(args ,context),
 
-        deleteUsersUniversityNumbers: (root, args, context, info) =>
-            Controller.User.deleteUsersUniversityNumbers(args ,context),
+        deleteUsersUniversityNumber: (root, args, context, info) =>
+            Controller.User.deleteUsersUniversityNumber(args ,context),
 
         addAd: (root, args, context, info) =>
             Controller.Ads.addAd(args ,context),

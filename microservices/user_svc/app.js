@@ -5,7 +5,7 @@ const { ApolloServer } = require('apollo-server');
 const Controller = require('./controllers/Controller');
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
-const models = require('./models');
+const models = require('./database/models');
 require('dotenv').config();
 
 // --------------------------------------- //
@@ -34,4 +34,3 @@ server
     .then(({url}) => {
         console.log("User service is running on " + url);
     });
-

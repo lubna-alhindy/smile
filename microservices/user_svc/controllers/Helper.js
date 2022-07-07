@@ -87,7 +87,7 @@ exports.Void = {
 
 // -------------------------------------------- //
 
-const {writeFileSync ,unlinkSync ,existsSync, mkdirSync} = require("fs");
+const {readFileSync ,writeFileSync ,unlinkSync ,existsSync, mkdirSync} = require("fs");
 const {join} = require("path");
 
 /// --------------------------- ///
@@ -163,6 +163,36 @@ exports.deleteImage = async name => {
 
 /// --------------------------- ///
 
+exports.readImage = async (name) => {
+    let filePath = join(
+      __dirname,
+      "..",
+      "assets"
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      'images'
+    );
+
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(
+      filePath,
+      name
+    );
+
+    return readFileSync(filePath);
+};
+
+/// --------------------------- ///
+
 exports.uniqueName = suffix => {
     const date = new Date();
 
@@ -179,5 +209,12 @@ exports.convertBase64ToImage = base64 => {
 
     return image;
 };
+
+/// --------------------------- ///
+
+exports.convertImageToBase64 = (file) => {
+    const bitmap = readFileSync(file);
+    return new Buffer(bitmap).toString('base64');
+}
 
 /// --------------------------- ///

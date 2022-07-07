@@ -1,32 +1,37 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('notifications', {
+    await queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title:{
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      body:{
+      body: {
         type: Sequelize.TEXT('long'),
         allowNull: false
       },
-      isRead:{
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
+      postId: {
+        type: Sequelize.INTEGER,
+        constraint: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        allowNull: false,
+        references: {
+          model: 'posts',
+          key: 'id'
+        }
       },
       userId: {
         type: Sequelize.INTEGER,
+        constraint: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id',
+          key: 'id'
         }
       },
       createdAt: {
@@ -40,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('notifications');
+    await queryInterface.dropTable('comments');
   }
 };

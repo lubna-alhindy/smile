@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   postImages.init({
-    url:{
+    name:{
       type: DataTypes.STRING,
       allowNull: false
     },

@@ -1,5 +1,7 @@
 const Helper = require('./Helper');
 
+/// ----------------------------- ///
+
 exports.getAllAds = async (context) => {
     return await context.models.ads.findAll({
         include: {
@@ -7,6 +9,8 @@ exports.getAllAds = async (context) => {
         }
     });
 }
+
+/// ----------------------------- ///
 
 exports.addAd = async (args ,context) => {
     const {title ,body ,expireIn ,images} = args;
@@ -17,26 +21,28 @@ exports.addAd = async (args ,context) => {
         expireIn: expireIn
     });
 
-    ad[images] = [];
-    for(let i = 0 ; i < images.length() ; i++){
-        const name = Helper.uniqueName("ads" + i);
+    ad["postImages"] = [];
+    for(let i = 0 ; i < images.length ; i++){
+        const name = Helper.uniqueName("ads-" + ad.id + "-" + i);
 
-        const base46image = images[i].split(',')[1];
+        const base64image = images[i].split(',')[1];
 
-        const image = await Helper.convertBase64ToImage(base46image);
+        const image = await Helper.convertBase64ToImage(base64image);
+        if( !await Helper.writeImage(image ,name) ){
+            throw new Error("Internal server error, Try again!");
+        }
 
-        await Helper.writeImage(image ,name);
-
-        ad[images].push( await context.models.postImages.create({
-            url: name,
-            adId: ad.id,
-            postId: null,
-            postRequestId: null
+        ad["postImages"].push(await context.models.postImages.create({
+            name: name,
+            adId: ad.id
         }));
+        ad["postImages"][ad["postImages"].length - 1].base64Image = base64image;
     }
 
     return ad;
 }
+
+/// ----------------------------- ///
 
 exports.deleteAd = async (args ,context) => {
     const ad = await context.models.ads.findOne({
@@ -45,17 +51,15 @@ exports.deleteAd = async (args ,context) => {
         },
         include: {
             model: context.models.postImages,
-            attributes: ['id']
+            attributes: ['id' ,'name']
         }
     });
 
-    for(let i = 0 ; i < ad.postImages.length() ; i++){
-        await context.models.postImages.destroy({
-            where: {
-                id: ad.postImages[i].id
-            }
-        });
+    for(let image of ad.postImages){
+        await Helper.deleteImage(image.name);
     }
 
     await ad.destroy();
 }
+
+/// ----------------------------- ///

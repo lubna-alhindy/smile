@@ -1,3 +1,6 @@
+const Healper = require('./Helper');
+const {Helper} = require("./Controller");
+
 exports.getPost = async (args, context) => {
     const post = await context.models.posts.findOne({
         where:{
@@ -190,9 +193,8 @@ exports.addPost = async (args ,context) => {
         body: args.body
     });
 
-    post[args.images] = [];
-
-    for(let i = 0 ; i < args.images.length() ; i++){
+    post["postImages"] = [];
+    for(let i = 0 ; i < args.images.length ; i++){
         const name = Helper.uniqueName("posts" + "-" + post.id  + "-" + i);
 
         const base64image = args.images[i].split(',')[1];
@@ -201,12 +203,12 @@ exports.addPost = async (args ,context) => {
 
         await Helper.writeImage(image ,name);
 
-        post[args.images].push( await context.models.postImages.create({
-            url: name,
-            adId: null,
-            postId: null,
+        post["postImages"].push( await context.models.postImages.create({
+            name: name,
             postRequestId: post.id
         }));
+
+        post["postImages"][post["postImages"].length - 1] = base64image;
     }
 
     return post;
@@ -226,41 +228,8 @@ exports.deletePost = async (args ,context) =>{
         throw new Error("This Post is not found!");
     }
 
-    const likes = await context.models.likes.findAll({
-        where: {
-            postId: args.id
-        }
-    });
-
-    for( const like of likes ){
-        await like.destroy();
-    }
-
-    const comments = await context.models.comments.findAll({
-        where: {
-            postId: args.id
-        }
-    });
-
-    for( const comment of comments ){
-        await comment.destroy();
-    }
-    const favorites = await context.models.favorites.findAll({
-        where: {
-            postId: args.id
-        }
-    });
-
-    for( const favorite of favorites ){
-        await favorite.destroy();
-    }
-
     for(let image of post.postImages){
-        await context.models.postImages.destroy({
-            where: {
-                id: image.id
-            }
-        });
+        await Helper.deleteImage(image.name);
     }
 
     await post.destroy();
@@ -297,34 +266,33 @@ exports.approvalPostRequest = async (args ,context) => {
         }
     });
 
-    if( args.cheack == true){
-        await context.models.posts.create({
-                subjectId: postRequest.subjectId,
-                type: postRequest.type,
-                title: postRequest.title,
-                body: postRequest.body,
-                userId: postRequest.userId
-           })
+    if( args.choice === true ){
+        post = await context.models.posts.create({
+            subjectId: postRequest.subjectId,
+            type: postRequest.type,
+            title: postRequest.title,
+            body: postRequest.body,
+            userId: postRequest.userId
+        });
 
-        post = postRequest;
-        for( let image of postRequest.postImages) {
-            await context.models.postImages.update(
-                {
-                   postRequestId: null,
-                   postId: post.id
-                },
-                {
-                    where: {
-                        id: image.id
-                    }
+        post["postImages"] = [];
+        for(let image of postRequest.postImages) {
+            post["postImages"].push(await context.models.postImages.update({
+               postRequestId: null,
+               postId: post.id
+            },{
+                where: {
+                    id: image.id
                 }
-            );
+            }));
+            const imageFile = Helper.readImage(image.name);
+            post["postImages"][post["postImages"].length - 1] = Helper.convertImageToBase64(imageFile);
         }
     }
-
     else
     {
         for(let image of postRequest.postImages){
+            await Helper.deleteImage(image.name);
             await context.models.postImages.destroy({
                 where: {
                     id: image.id
@@ -332,25 +300,40 @@ exports.approvalPostRequest = async (args ,context) => {
             });
         }
     }
+
     await postRequest.destroy();
     return post;
 }
 
 exports.changeLike = async (args ,context) => {
-    const like = await context.models.likes.findOne({
+    const post = await context.models.posts.findOne({
         where:{
-            userId: args.userId,
-            postId: args.postId
+            id: args.postId
+        },
+        include: {
+            model: context.models.likes,
+            where: {
+                userId: args.userId
+            }
         }
     });
 
-    if( like == null ){
-        return await context.models.likes.create({
+    if( !post.likes ){
+        post.isLiked = true;
+        await context.models.likes.create({
             userId: args.userId,
             postId: args.postId
         });
+    } else {
+        post.isLiked = false;
+        await context.models.likes.destroy({
+            where: {
+                id: post.like.id
+            }
+        });
     }
-    await like.destroy();
+
+    return post;
 }
 
 exports.addComment = async (args ,context) => {
@@ -362,30 +345,50 @@ exports.addComment = async (args ,context) => {
 }
 
 exports.deleteComment = async (args ,context) => {
-    const comment = await context.models.comments.findOne({
+    await context.models.comments.destroy({
         where: {
             id: args.id,
             userId: args.userId
         }
     });
-    await comment.destroy();
 }
 
 exports.changeFavorite = async (args ,context) => {
-    const favorite = await context.models.favorites.findOne({
+    const post = await context.models.posts.findOne({
         where:{
-            userId: args.userId,
-            postId: args.postId
-        }
+            id: args.postId
+        },
+        include: [{
+            model: context.models.favorites,
+            where: {
+                userId: args.userId
+            }
+        },{
+            model: context.models.postImages
+        }]
     });
 
-    if( favorite == null ){
-        return await context.models.favorites.create({
+    for(let i = 0 ; i < post.postImages ; i++){
+        const image = await Helper.readImage(post.postImages[i].name);
+        post.postImages[i].base64Image = Helper.convertImageToBase64(image);
+    }
+
+    if( !post.favorite ){
+        post.isFavorite = true;
+        await context.models.favorites.create({
             userId: args.userId,
             postId: args.postId
-        })
+        });
+    } else {
+        post.isFavorite = false;
+        await context.models.favorites.destroy({
+            where: {
+                id: post.favorite.id
+            }
+        });
     }
-    await favorite.destroy();
+
+    return post;
 }
 
 

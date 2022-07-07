@@ -27,6 +27,7 @@ const typeDefs = gql`
     firstName: String!
     facebookURL: String
     telegramURL: String
+    isBaned: Boolean
 
     posts: [Posts]
     favorites: [Favorites]
@@ -35,9 +36,10 @@ const typeDefs = gql`
   
   type PostImage {
   	id: Int!
-  	url: String!
+  	name: String!
   	postId: Int
   	postRequestId: Int
+  	base64image: String
   	adId: Int
   }
   
@@ -51,7 +53,8 @@ const typeDefs = gql`
     createdAt: Date!
     updatedAt: Date!
     postImages: [PostImage]!
-
+    isLiked: Boolean
+    isFavorite: Boolean
     user: Users!
     likesCnt: Int
     likes: [Likes]
@@ -116,7 +119,6 @@ const typeDefs = gql`
     isDone: Boolean
     createdAt: Date
     updatedAt: Date
-
     user: Users
   }
   
@@ -183,23 +185,23 @@ const typeDefs = gql`
         id: Int!, firstName: String, lastName: String,
         birthday: Date, image: String, bio: String, facebookURL: String,
         telegramURL: String, class: String, gmail: String, oldPassword: String,
-        firstNewPassword: String, secondNewPassword: String
+        firstNewPassword: String, secondNewPassword: String ,image: String
     ) : Users 
     
     userDeleteAccount(email: String!, password: String)
       : Void 
      
-    addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int!)
+    addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int! ,images: [String]!)
       : Posts
 
     deletePost(id: Int!)
       : Void
 
-    approvalPostRequest(id: Int! ,cheack: Boolean!)
-      : PostRequests
+    approvalPostRequest(id: Int! ,choice: Boolean!)
+      : Posts
 
     changeLike(userId: Int! ,postId: Int!)
-      : Void
+      : Posts
 
     addComment(body: String! ,userId: Int! ,postId: Int!)
       : Comments
@@ -207,28 +209,28 @@ const typeDefs = gql`
     deleteComment(id: Int!, userId: Int!)
       : Void
 
-    changeFavorite(userId: Int! ,postId: Int! )
-      : Favorites
+    changeFavorite(userId: Int! ,postId: Int!)
+      : Posts
 
-    changeBanUser(userId: Int! ,choise: Boolean)
-      : Bans
+    changeBanUser(userId: Int!)
+      : Users
 
     addComplaint(userId: Int! ,title: String ,body: String!)
       : Complaints
 
-    changeDoneComplaint(id: Int! ,choise: Boolean)
+    changeDoneComplaint(id: Int!)
       : Complaints
 
     deleteComplaint(id: Int!)
       : Void
 
-    addUsersUniversityNumbers(userId: Int!,universityNumber: Int! ,year: String!)
+    addUsersUniversityNumber(userId: Int!,universityNumber: Int! ,year: String!)
       : UsersUniversityNumbers
 
-    deleteUsersUniversityNumbers(id: Int!)
+    deleteUsersUniversityNumber(id: Int!)
       : Void
 
-    addAd(title: String! ,body: String! ,expireIn: Date! ,images: [PostImage])
+    addAd(title: String! ,body: String! ,expireIn: Date! ,images: [String]!)
       : Ads
 
     deleteAd(id: Int!)
