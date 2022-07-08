@@ -11,7 +11,7 @@ exports.getAllAds = async (context) => {
         });
 
         for (let i = 0; i < ads.postImages.length; i++) {
-            ads.postImages[i].base64Image = Helper.convertImageToBase64(ads.postImages[i].name);
+            ads.postImages[i].base64image = Helper.convertImageToBase64(ads.postImages[i].name);
         }
 
         return ads;
@@ -35,9 +35,17 @@ exports.addAd = async (args ,context) => {
 
         ad["postImages"] = [];
         for (let i = 0; i < images.length; i++) {
-            const name = Helper.uniqueName("ads-" + ad.id + "-" + i);
-
             const base64image = images[i].split(',')[1];
+
+            const name = Helper.uniqueName("ads-" + ad.id + "-" + i).concat(
+              base64image[0] === "/"
+                ? ".jpg"
+                : base64image[0] === "i"
+                  ? ".png"
+                  : base64image[0] === "R"
+                    ? ".gif"
+                    : ".webp"
+            );
 
             const image = await Helper.convertBase64ToImage(base64image);
 
@@ -49,7 +57,7 @@ exports.addAd = async (args ,context) => {
                 name: name,
                 adId: ad.id
             }));
-            ad["postImages"][ad["postImages"].length - 1].base64Image = base64image;
+            ad["postImages"][ad["postImages"].length - 1].base64image = base64image;
         }
 
         return ad;

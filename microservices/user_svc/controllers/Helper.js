@@ -92,8 +92,6 @@ exports.Void = {
 
 exports.writeImage = async (image ,name) => {
     try {
-        name += '.png';
-
         if (!image || name === '') {
             return false;
         }
@@ -134,8 +132,6 @@ exports.writeImage = async (image ,name) => {
 
 exports.deleteImage = async name => {
     try {
-        name += '.png';
-
         if (name === '') {
             return;
         }
@@ -175,10 +171,8 @@ exports.deleteImage = async name => {
 
 /// --------------------------- ///
 
-exports.readImage = async (name) => {
+exports.getImagePath = name => {
     try {
-        name += '.png';
-
         let filePath = join(
           __dirname,
           "..",
@@ -203,7 +197,7 @@ exports.readImage = async (name) => {
           name
         );
 
-        return readFileSync(filePath);
+        return filePath;
     }
     catch(err){
         throw new Error(err);
@@ -215,7 +209,7 @@ exports.readImage = async (name) => {
 exports.uniqueName = suffix => {
     const date = new Date();
 
-    return date.toLocaleDateString('sv') + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds() + '-' + date.getMilliseconds() + '-' + suffix.toString();
+    return date.toLocaleDateString('sv') + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds() + '-' + date.getMilliseconds() + '-' + suffix.toString();
 };
 
 /// --------------------------- ///
@@ -233,35 +227,9 @@ exports.convertBase64ToImage = base64 => {
 
 /// --------------------------- ///
 
-exports.convertImageToBase64 = (name) => {
+exports.convertImageToBase64 = filePath => {
     try {
-        name += '.png';
-
-        let filePath = join(
-          __dirname,
-          "..",
-          "assets"
-        );
-
-        if (!existsSync(filePath)) {
-            mkdirSync(filePath);
-        }
-
-        filePath = join(
-          filePath,
-          'images'
-        );
-
-        if (!existsSync(filePath)) {
-            mkdirSync(filePath);
-        }
-
-        filePath = join(
-          filePath,
-          name
-        );
-
-        return readFileSync(filePath, 'base64');
+        return readFileSync(filePath ,'base64');
     }
     catch(err){
         throw new Error(err);

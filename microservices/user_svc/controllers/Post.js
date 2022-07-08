@@ -201,12 +201,17 @@ exports.addPost = async (args ,context) => {
 
         post["postImages"] = [];
         for (let i = 0; i < args.images.length; i++) {
-            const name = Helper.uniqueName("posts" + "-" + post.id + "-" + i);
-
             const base64image = args.images[i].split(',')[1];
-
+            const name = Helper.uniqueName("posts" + "-" + post.id + "-" + i).concat(
+              base64image[0] === "/"
+                ? ".jpg"
+                : base64image[0] === "i"
+                  ? ".png"
+                  : base64image[0] === "R"
+                    ? ".gif"
+                    : ".webp"
+            );
             const image = await Helper.convertBase64ToImage(base64image);
-
             await Helper.writeImage(image, name);
 
             post["postImages"].push(await context.models.postImages.create({
@@ -264,17 +269,14 @@ exports.getAllPostRequests = async (context) => {
             }]
         });
 
-        const editedPostRequests = [];
-        for (let post of postRequests) {
-            const postImages = JSON.parse(JSON.stringify(post.postImages));
-            for (let i = 0; i < post.postImages.length; i++) {
-                postImages[i].base64Image = Helper.convertImageToBase64(post.postImages[i].name);
+        for(let i = 0 ; i < postRequests.length ; i++){
+            for(let j = 0 ; j < postRequests[i].postImages.length ; j++){
+                const imagePath = Helper.getImagePath(postRequests[i].postImages[j].name);
+                postRequests[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
             }
-            post.postImages = postImages;
-            editedPostRequests.push(post);
         }
 
-        return editedPostRequests;
+        return postRequests;
     }
     catch(err){
         throw new Error(err);
@@ -315,8 +317,8 @@ exports.approvalPostRequest = async (args ,context) => {
                         id: image.id
                     }
                 }));
-                const imageFile = Helper.readImage(image.name);
-                post["postImages"][post["postImages"].length - 1] = Helper.convertImageToBase64(imageFile);
+                const imagePath = Helper.getImagePath(image.name);
+                post["postImages"][post["postImages"].length - 1] = Helper.convertImageToBase64(imagePath);
             }
         } else {
             for (let image of postRequest.postImages) {
@@ -425,8 +427,8 @@ exports.changeFavorite = async (args ,context) => {
         });
 
         for (let i = 0; i < post.postImages; i++) {
-            const image = await Helper.readImage(post.postImages[i].name);
-            post.postImages[i].base64Image = Helper.convertImageToBase64(image);
+            const imagePath = await Helper.getImagePath(post.postImages[i].name);
+            post.postImages[i].base64image = Helper.convertImageToBase64(imagePath);
         }
 
         if (!post.favorite) {

@@ -92,8 +92,16 @@ exports.editProfile = async (args ,context) => {
         user.telegramURL = args.telegramURL;
         user.gmail = args.gmail;
 
-        const name = Helper.uniqueName("user" + "-" + args.id + "-" + args.lastName);
         const base64image = args.image.split(',')[1];
+        const name = Helper.uniqueName("user" + "-" + args.id + "-" + args.lastName).concat(
+          base64image[0] === "/"
+            ? ".jpg"
+            : base64image[0] === "i"
+              ? ".png"
+              : base64image[0] === "R"
+                ? ".gif"
+                : ".webp"
+        );;
         const image = await Helper.convertBase64ToImage(base64image);
         if (!await Helper.writeImage(image, name)) {
             throw new Error("Internal server error, try again");
