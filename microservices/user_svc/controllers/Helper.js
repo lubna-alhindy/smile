@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+const {readFileSync ,writeFileSync ,unlinkSync ,existsSync, mkdirSync} = require("fs");
+const {join} = require("path");
+
 const graphql = require('graphql');
 const graphqlLanguage = require('graphql/language');
 
@@ -85,116 +88,126 @@ exports.Void = {
     })
 }
 
-// -------------------------------------------- //
-
-const {readFileSync ,writeFileSync ,unlinkSync ,existsSync, mkdirSync} = require("fs");
-const {join} = require("path");
-
 /// --------------------------- ///
 
 exports.writeImage = async (image ,name) => {
-    name += '.png';
+    try {
+        name += '.png';
 
-    if( !image || name === '' ){
-        return false;
+        if (!image || name === '') {
+            return false;
+        }
+
+        let filePath = join(
+          __dirname,
+          "..",
+          "assets"
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          'images'
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          name
+        );
+
+        await writeFileSync(filePath, image);
+        return true;
     }
-
-    let filePath = join(
-      __dirname,
-      "..",
-      "assets"
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
+    catch(err){
+        throw new Error(err);
     }
-
-    filePath = join(
-      filePath,
-      'images'
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
-    }
-
-    filePath = join(
-      filePath,
-      name
-    );
-
-    await writeFileSync(filePath, image);
-    return true;
 };
 
 /// --------------------------- ///
 
 exports.deleteImage = async name => {
-    name += '.png';
+    try {
+        name += '.png';
 
-    if( name === '' ){
-        return;
+        if (name === '') {
+            return;
+        }
+
+        let filePath = join(
+          __dirname,
+          "..",
+          "assets"
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          'images'
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          name
+        );
+
+        if (existsSync(filePath)) {
+            await unlinkSync(filePath);
+        }
     }
-
-    let filePath = join(
-      __dirname,
-      "..",
-      "assets"
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
-    }
-
-    filePath = join(
-      filePath,
-      'images'
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
-    }
-
-    filePath = join(
-      filePath,
-      name
-    );
-
-    if( existsSync(filePath) ){
-        await unlinkSync(filePath);
+    catch(err){
+        throw new Error(err);
     }
 };
 
 /// --------------------------- ///
 
 exports.readImage = async (name) => {
-    name += '.png';
+    try {
+        name += '.png';
 
-    let filePath = join(
-      __dirname,
-      "..",
-      "assets"
-    );
+        let filePath = join(
+          __dirname,
+          "..",
+          "assets"
+        );
 
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          'images'
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          name
+        );
+
+        return readFileSync(filePath);
     }
-
-    filePath = join(
-      filePath,
-      'images'
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
+    catch(err){
+        throw new Error(err);
     }
-
-    filePath = join(
-      filePath,
-      name
-    );
-
-    return readFileSync(filePath);
 };
 
 /// --------------------------- ///
@@ -208,44 +221,51 @@ exports.uniqueName = suffix => {
 /// --------------------------- ///
 
 exports.convertBase64ToImage = base64 => {
-    const image = Buffer.from(base64, "base64");
-    if( !image ){
-        return null;
-    }
+    try {
+        const image = Buffer.from(base64, "base64");
 
-    return image;
+        return !image ? null : image;
+    }
+    catch(err){
+        throw new Error(err);
+    }
 };
 
 /// --------------------------- ///
 
 exports.convertImageToBase64 = (name) => {
-    name += '.png';
+    try {
+        name += '.png';
 
-    let filePath = join(
-      __dirname,
-      "..",
-      "assets"
-    );
+        let filePath = join(
+          __dirname,
+          "..",
+          "assets"
+        );
 
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          'images'
+        );
+
+        if (!existsSync(filePath)) {
+            mkdirSync(filePath);
+        }
+
+        filePath = join(
+          filePath,
+          name
+        );
+
+        return readFileSync(filePath, 'base64');
     }
-
-    filePath = join(
-      filePath,
-      'images'
-    );
-
-    if( !existsSync(filePath) ){
-        mkdirSync(filePath);
+    catch(err){
+        throw new Error(err);
     }
-
-    filePath = join(
-      filePath,
-      name
-    );
-
-    return readFileSync(filePath ,'base64');
 }
 
 /// --------------------------- ///

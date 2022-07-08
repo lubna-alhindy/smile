@@ -25,6 +25,8 @@ const server = new ApolloServer({
     playground: true
 });
 
+// --------------------------------------- //
+
 server
     .listen({
         protocol: process.env.PROTOCOL,
@@ -34,3 +36,5 @@ server
     .then(({url}) => {
         console.log("User service is running on " + url);
     });
+
+// --------------------------------------- //
