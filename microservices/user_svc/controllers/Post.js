@@ -1,3 +1,4 @@
+const {Sequelize ,Op} = require('sequelize');
 const Helper = require('./Helper');
 
 // -------------------------------- //
@@ -73,114 +74,52 @@ exports.getPost = async (args, context) => {
 
 exports.getPosts = async (args, context) => {
     try {
-        if (args.filter == null) {
-            const allPost = await context.models.posts.findAll();
+        const posts = await context.models.posts.findAll({
+            where: {
+                type: args.type !== undefined ? args.type : {
+                    [Op.ne]: null
+                },
 
-            const response = [];
-            for (const post of allPost) {
-                const editedPost = JSON.parse(JSON.stringify(post));
-
-                const likes = await context.models.likes.findAll({
-                    where: {
-                        postId: post.id
-                    }
-                });
-
-                const likesRes = [];
-                for (const like of likes) {
-                    const editedLike = JSON.parse(JSON.stringify(like));
-                    editedLike.user = await context.models.users.findOne({
-                        where: {
-                            id: like.userId
-                        }
-                    });
-                    likesRes.push(editedLike);
+                subjectId: args.subjectId !== undefined ? args.subjectId : {
+                    [Op.or]:[{
+                        [Op.ne]: null
+                    }, {
+                        [Op.eq]: null
+                    }]
                 }
-                editedPost.likes = likesRes;
-                editedPost.likesCnt = editedPost.likes.length;
-                const comments = await context.models.comments.findAll({
-                    where: {
-                        postId: post.id
-                    }
-                });
+            },
 
-                const commentsRes = [];
-                for (const comment of comments) {
-                    const editedComment = JSON.parse(JSON.stringify(comment));
-                    editedComment.user = await context.models.users.findOne({
-                        where: {
-                            id: comment.userId
-                        }
-                    });
-                    commentsRes.push(editedComment);
-                }
-                editedPost.comments = commentsRes;
-                editedPost.commentsCnt = editedPost.comments.length;
-                editedPost.user = await context.models.users.findOne({
-                    where: {
-                        id: post.userId
-                    }
-                });
+            attributes: {
+                include: [[
+                    Sequelize.fn("COUNT", Sequelize.col("likes.postId")),
+                    "likesCnt"
+                ],[
+                    Sequelize.fn("COUNT", Sequelize.col("comments.postId")),
+                    "commentsCnt"
+                ]]
+            },
 
-                response.push(editedPost);
-            }
-            return response;
-        } else {
-            const allFilterPost = await context.models.posts.findAll({
-                where: {
-                    type: args.filter
-                }
-            });
-            const response = [];
-            for (const post of allFilterPost) {
-                const editedPost = JSON.parse(JSON.stringify(post));
+            include: [{
+                model: context.models.postImages,
+                attributes: ['name']
+            },{
+                model: context.models.users,
+                attributes: ['firstName' ,'lastName' ,'image' ,'class']
+            },{
+                model: context.models.likes,
+                attributes: []
+            },{
+                model: context.models.comments,
+                attributes: []
+            }]
+        });
 
-                const likes = await context.models.likes.findAll({
-                    where: {
-                        postId: post.id
-                    }
-                });
-
-                const likesRes = [];
-                for (const like of likes) {
-                    const editedLike = JSON.parse(JSON.stringify(like));
-                    editedLike.user = await context.models.users.findOne({
-                        where: {
-                            id: like.userId
-                        }
-                    });
-                    likesRes.push(editedLike);
-                }
-                editedPost.likes = likesRes;
-                editedPost.likesCnt = editedPost.likes.length;
-                const comments = await context.models.comments.findAll({
-                    where: {
-                        postId: post.id
-                    }
-                });
-
-                const commentsRes = [];
-                for (const comment of comments) {
-                    const editedComment = JSON.parse(JSON.stringify(comment));
-                    editedComment.user = await context.models.users.findOne({
-                        where: {
-                            id: comment.userId
-                        }
-                    });
-                    commentsRes.push(editedComment);
-                }
-                editedPost.comments = commentsRes;
-                editedPost.commentsCnt = editedPost.comments.length;
-                editedPost.user = await context.models.users.findOne({
-                    where: {
-                        id: post.userId
-                    }
-                });
-
-                response.push(editedPost);
-            }
-            return response;
+        for(let post of posts){
+            post.likesCnt = post.dataValues.likesCnt;
+            post.commentsCnt = post.dataValues.commentsCnt;
         }
+
+        return posts;
     }
     catch(err){
         throw new Error(err);
@@ -212,14 +151,16 @@ exports.addPost = async (args ,context) => {
                     : ".webp"
             );
             const image = await Helper.convertBase64ToImage(base64image);
-            await Helper.writeImage(image, name);
+            if( !await Helper.writeImage(image, name) ){
+                throw new Error("Ibternal server error, please try again");
+            }
 
             post["postImages"].push(await context.models.postImages.create({
                 name: name,
                 postRequestId: post.id
             }));
 
-            post["postImages"][post["postImages"].length - 1] = base64image;
+            post["postImages"][i] = base64image;
         }
 
         return post;
@@ -346,16 +287,17 @@ exports.changeLike = async (args ,context) => {
         const post = await context.models.posts.findOne({
             where: {
                 id: args.postId
-            },
-            include: {
-                model: context.models.likes,
-                where: {
-                    userId: args.userId
-                }
             }
         });
 
-        if (!post.likes) {
+        const like = await context.models.likes.findOne({
+           where: {
+               postId: args.postId,
+               userId: args.userId
+           }
+        });
+
+        if (!like) {
             post.isLiked = true;
             await context.models.likes.create({
                 userId: args.userId,
@@ -365,11 +307,10 @@ exports.changeLike = async (args ,context) => {
             post.isLiked = false;
             await context.models.likes.destroy({
                 where: {
-                    id: post.like.id
+                    id: like.id
                 }
             });
         }
-
         return post;
     }
     catch(err){
@@ -417,21 +358,23 @@ exports.changeFavorite = async (args ,context) => {
                 id: args.postId
             },
             include: [{
-                model: context.models.favorites,
-                where: {
-                    userId: args.userId
-                }
-            }, {
                 model: context.models.postImages
             }]
         });
 
+        const favorite = await context.models.favorites.findOne({
+            where: {
+                postId: args.postId,
+                userId: args.userId
+            }
+        });
+
         for (let i = 0; i < post.postImages; i++) {
-            const imagePath = await Helper.getImagePath(post.postImages[i].name);
+            const imagePath = Helper.getImagePath(post.postImages[i].name);
             post.postImages[i].base64image = Helper.convertImageToBase64(imagePath);
         }
 
-        if (!post.favorite) {
+        if( !favorite ) {
             post.isFavorite = true;
             await context.models.favorites.create({
                 userId: args.userId,
@@ -441,7 +384,7 @@ exports.changeFavorite = async (args ,context) => {
             post.isFavorite = false;
             await context.models.favorites.destroy({
                 where: {
-                    id: post.favorite.id
+                    id: favorite.id
                 }
             });
         }

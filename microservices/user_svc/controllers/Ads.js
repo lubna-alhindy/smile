@@ -10,8 +10,11 @@ exports.getAllAds = async (context) => {
             }
         });
 
-        for (let i = 0; i < ads.postImages.length; i++) {
-            ads.postImages[i].base64image = Helper.convertImageToBase64(ads.postImages[i].name);
+        for(let i = 0 ; i < ads.length ; i++){
+            for(let j = 0 ; j < ads[i].postImages.length ; j++){
+                const imagePath = Helper.getImagePath(ads[i].postImages[j].name);
+                ads[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
+            }
         }
 
         return ads;
@@ -58,6 +61,78 @@ exports.addAd = async (args ,context) => {
                 adId: ad.id
             }));
             ad["postImages"][ad["postImages"].length - 1].base64image = base64image;
+        }
+
+        return ad;
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+/// ----------------------------- ///
+
+exports.updateAd = async (args ,context) => {
+    try {
+        const {id ,title, body, expireIn, images} = args;
+
+        const ad = await context.models.ads.findOne({
+            where: {
+                id: id
+            },
+            include: {
+                model: context.models.postImages
+            }
+        });
+
+        if( title !== undefined ){
+            ad.title = title;
+        }
+        if( body !== undefined ){
+            ad.body = body;
+        }
+        if( expireIn !== undefined ){
+            ad.expireIn = expireIn;
+        }
+
+        ad["postImages"] = [];
+        if( images !== undefined ){
+            for(let i = 0 ; i < ad.postImages.length ; i++){
+                await Helper.deleteImage(ad.postImages[i].name);
+                await context.models.postImages.destroy({
+                    where: {
+                        id: ad.postImages[i].id
+                    }
+                });
+            }
+
+            for (let i = 0 ; i < images.length ; i++){
+                const base64image = images[i].split(',')[1];
+
+                const name = Helper.uniqueName("ads-" + ad.id + "-" + i).concat(
+                  base64image[0] === "/"
+                    ? ".jpg"
+                    : base64image[0] === "i"
+                      ? ".png"
+                      : base64image[0] === "R"
+                        ? ".gif"
+                        : ".webp"
+                );
+
+                const image = await Helper.convertBase64ToImage(base64image);
+                if (!await Helper.writeImage(image, name)) {
+                    throw new Error("Internal server error, Try again!");
+                }
+
+                ad["postImages"].push(
+                  await context.models.postImages.create({
+                    name: name,
+                    adId: ad.id
+                  })
+                );
+
+                ad["postImages"][i].base64image = base64image;
+            }
         }
 
         return ad;

@@ -8,8 +8,7 @@ exports.signup = async (args ,context) => {
         const emailCnt = await context.models.users.count({
             where: {
                 email: args.email
-            },
-            limit: 1
+            }
         });
 
         if (emailCnt === 1) {
@@ -21,7 +20,7 @@ exports.signup = async (args ,context) => {
 
         const user = await context.models.users.create({
             email: args.email,
-            roleName: "Student",
+            roleName: "USER",
             lastName: args.lastName,
             firstName: args.firstName,
             password: await Helper.hashPassword(args.password),
@@ -31,7 +30,6 @@ exports.signup = async (args ,context) => {
           });
 
         return {
-            user: user,
             token: Helper.generateToken({
                 id: user.id,
                 email: user.email
@@ -51,17 +49,13 @@ exports.login = async (args ,context) => {
             where: {
                 email: args.email
             }
-        })
-          .catch(err => {
-              throw new Error("Unknown Error occurred! Please try again.");
-          });
+        });
 
         if (!user || !await Helper.checkPassword(args.password, user.password)) {
             throw new Error('Your email or password is incorrect!');
         }
 
         return {
-            user: user,
             token: Helper.generateToken({
                 id: user.id,
                 email: user.email
@@ -83,59 +77,96 @@ exports.editProfile = async (args ,context) => {
             }
         });
 
-        user.firstName = args.firstName;
-        user.lastName = args.lastName;
-        user.birthday = args.birthday
-        user.bio = args.bio;
-        user.class = args.class;
-        user.facebookURL = args.facebookURL;
-        user.telegramURL = args.telegramURL;
-        user.gmail = args.gmail;
-
-        const base64image = args.image.split(',')[1];
-        const name = Helper.uniqueName("user" + "-" + args.id + "-" + args.lastName).concat(
-          base64image[0] === "/"
-            ? ".jpg"
-            : base64image[0] === "i"
-              ? ".png"
-              : base64image[0] === "R"
-                ? ".gif"
-                : ".webp"
-        );;
-        const image = await Helper.convertBase64ToImage(base64image);
-        if (!await Helper.writeImage(image, name)) {
-            throw new Error("Internal server error, try again");
+        if( args.firstName !== undefined ){
+            user.firstName = args.firstName;
+        }
+        if( args.lastName !== undefined ){
+            user.lastName = args.lastName;
+        }
+        if( args.birthday !== undefined ){
+            user.birthday = args.birthday;
+        }
+        if( args.bio !== undefined ){
+            user.bio = args.bio;
+        }
+        if( args.class !== undefined ){
+            user.class = args.class;
+        }
+        if( args.facebookURL !== undefined ){
+            user.facebookURL = args.facebookURL;
+        }
+        if( args.telegramURL !== undefined ){
+            user.telegramURL = args.telegramURL;
+        }
+        if( args.gmail !== undefined ){
+            user.gmail = args.gmail;
         }
 
-        user.image = name;
-        if (args.oldPassword != null) {
-            if (!await Helper.checkPassword(args.oldPassword, user.password)) {
-                throw new Error('Your password is incorrect!');
+        let base64image = null;
+        if( args.image !== undefined ) {
+            base64image = args.image.split(',')[1];
+            const name = Helper.uniqueName("user" + "-" + user.id + "-" + user.lastName).concat(
+              base64image[0] === "/"
+                ? ".jpg"
+                : base64image[0] === "i"
+                  ? ".png"
+                  : base64image[0] === "R"
+                    ? ".gif"
+                    : ".webp"
+            );
+
+            const image = await Helper.convertBase64ToImage(base64image);
+            if (!await Helper.writeImage(image, name)) {
+                throw new Error("Internal server error, try again");
             }
-            if (!args.firstNewPassword || !args.secondNewPassword) {
-                throw new Error('The password must be more than 7 characters');
-            }
-            if (args.firstNewPassword.length < 8 || args.secondNewPassword.length < 8) {
-                throw new Error('The password must be more than 7 characters');
-            }
-            if (args.firstNewPassword !== args.secondNewPassword) {
-                throw new Error('The First Password does not match the Second Password!');
-            }
-            user.password = await Helper.hashPassword(args.firstNewPassword);
-        } else {
-            if (args.firstNewPassword != null) {
-                throw new Error('Please enter the current password');
-            }
+            user.image = name;
         }
 
         await user.save();
+
         user.image = base64image;
         return user;
     }
     catch(err){
         throw new Error(err);
     }
-}
+};
+
+/// ------------------------------------ ///
+
+exports.userChangePassword = async (args ,context) => {
+    try {
+        if (args.newPassword1 !== args.newPassword2) {
+            throw new Error("The new password doesn't match the confermation password!");
+        }
+
+        const user = await context.models.users.findOne({
+            where: {
+                id: args.id
+            }
+        });
+
+        if( !await Helper.checkPassword(args.oldPassword, user.password) ) {
+            throw new Error('Your password is incorrect!');
+        }
+        if( args.newPassword1.length < 8 ) {
+            throw new Error('The new password must be more than 7 characters');
+        }
+
+        user.password = await Helper.hashPassword(args.newPassword1);
+        await user.save();
+
+        if( user.image !== null ) {
+            const imagePath = Helper.getImagePath(user.image);
+            user.image = Helper.convertImageToBase64(imagePath);
+        }
+
+        return user;
+    }
+    catch(err){
+        throw new Error(err);
+    }
+};
 
 // -------------------------------- //
 
@@ -278,11 +309,15 @@ exports.getUser = async (args ,context ,info) => {
 exports.getAllUser = async (context) => {
     try {
         const users = await context.models.users.findAll({
-              include: context.models.bans
-          }
-        );
+            include: context.models.bans
+        });
 
         for (let user of users) {
+            if( user.image !== null ) {
+                const imagePath = Helper.getImagePath(user.image);
+                user.image = Helper.convertImageToBase64(imagePath);
+            }
+
             if (!user.ban) {
                 user.isBaned = false;
             } else {
@@ -339,6 +374,11 @@ exports.changeBanUser = async (args ,context) => {
             });
         }
 
+        if( user.image !== null ) {
+            const imagePath = Helper.getImagePath(user.image);
+            user.image = Helper.convertImageToBase64(imagePath);
+        }
+
         return user;
     }
     catch(err){
@@ -365,17 +405,61 @@ exports.addUsersUniversityNumber = async (args ,context) =>{
 
 exports.deleteUsersUniversityNumber = async (args ,context) => {
     try {
-        const usersUniversityNumbers = await context.models.usersUniversityNumbers.findOne({
+        const result = await context.models.usersUniversityNumbers.destroy({
             where: {
                 id: args.id
             }
         });
 
-        if (!usersUniversityNumbers) {
-            throw new Error("This user is not found");
+        if (result === 0) {
+            throw new Error("This university number doesn't exist");
+        }
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+// -------------------------------- //
+
+exports.getBanState = async (args ,context) => {
+    try {
+        const user = await context.models.bans.findOne({
+            where: {
+                userId: args.id
+            }
+        });
+
+        if( !user ){
+            return false;
         }
 
-        await usersUniversityNumbers.destroy();
+        return true;
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+// -------------------------------- //
+
+exports.changeUserRole = async (args ,context) => {
+    try {
+        const user = await context.models.users.findOne({
+            where: {
+                id: args.id
+            }
+        });
+
+        user.roleName = args.roleName;
+        await user.save();
+
+        if( user.image !== null ) {
+            const imagePath = Helper.getImagePath(user.image);
+            user.image = Helper.convertImageToBase64(imagePath);
+        }
+
+        return user;
     }
     catch(err){
         throw new Error(err);

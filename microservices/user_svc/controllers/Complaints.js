@@ -1,21 +1,23 @@
+const Helper = require("./Helper");
+
 // --------------------------------------- //
 
 exports.getAllComplaints = async (context) => {
     try {
-        const complaints = await context.models.complaints.findAll();
+        const complaints = await context.models.complaints.findAll({
+            include: {
+                model: context.models.users
+            }
+        });
 
-        const response = [];
-        for (const complaint of complaints) {
-            const editedComplaint = JSON.parse(JSON.stringify(complaint));
-            editedComplaint.user = await context.models.users.findOne({
-                where: {
-                    id: complaint.userId
-                }
-            });
-
-            response.push(editedComplaint);
+        for(let complaint of complaints) {
+            if (complaint.user.image !== null) {
+                const imagePath = Helper.getImagePath(complaint.user.image);
+                complaint.user.image = Helper.convertImageToBase64(imagePath);
+            }
         }
-        return response;
+
+        return complaints;
     }
     catch(err){
         throw new Error(err);

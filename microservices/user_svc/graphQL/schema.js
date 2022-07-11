@@ -4,10 +4,20 @@ const typeDefs = gql`
   scalar Date
   scalar Void
   
+	enum Roles {
+		USER
+		ADMIN
+		PRIVATE_SUPERVISOR
+		PUBLIC_SUPERVISOR
+	}
+
+	enum PostTypes {
+		Announcement
+		Inquiry
+	}
 
   type AuthPayload {
     token: String!
-    user: Users!
   }
 
   type Users {
@@ -46,7 +56,7 @@ const typeDefs = gql`
   type Posts {
     id: Int!
     userId: Int!
-    type: String!
+    type: PostTypes!
     body: String!
     title: String
     subjectId: Int
@@ -65,7 +75,7 @@ const typeDefs = gql`
   type PostRequests {
     id: Int!
     userId: Int!
-    type: String!
+    type: PostTypes!
     body: String!
     title: String
     subjectId: Int
@@ -166,13 +176,16 @@ const typeDefs = gql`
     getAllComplaints
       : [Complaints]!
 
-    getPosts(filter: String)
+    getPosts(type: PostTypes ,subjectId: [Int])
       : [Posts]
     
     getAllPostOfSubject(subjectId: [Int]!)
       : [Posts]! 
+    
+    getBanState(id: Int!)
+    	: Boolean
   }
-  
+
 
   type Mutation {
     signup(firstName: String!, lastName: String!, email: String!, password: String!)
@@ -184,14 +197,19 @@ const typeDefs = gql`
     editProfile(
         id: Int!, firstName: String, lastName: String,
         birthday: Date, image: String, bio: String, facebookURL: String,
-        telegramURL: String, class: String, gmail: String, oldPassword: String,
-        firstNewPassword: String, secondNewPassword: String
+        telegramURL: String, class: String, gmail: String
     ) : Users 
+    
+    userChangePassword(id: Int! ,oldPassword: String! ,newPassword1: String! ,newPassword2: String!)
+    	: Users
+    	
+    changeUserRole(id: Int! ,roleName: Roles)
+    	: Users
     
     userDeleteAccount(email: String!, password: String)
       : Void 
      
-    addPost(subjectId: Int ,type: String! ,title: String ,body: String! ,userId: Int! ,images: [String]!)
+    addPost(subjectId: Int ,type: PostTypes! ,title: String! ,body: String! ,userId: Int! ,images: [String]!)
       : Posts
 
     deletePost(id: Int!)
@@ -232,6 +250,9 @@ const typeDefs = gql`
 
     addAd(title: String! ,body: String! ,expireIn: Date! ,images: [String]!)
       : Ads
+      
+    updateAd(id: Int! ,title: String ,body: String ,expireIn: Date ,images: [String])
+      : Ads
 
     deleteAd(id: Int!)
       : Void 
@@ -240,5 +261,6 @@ const typeDefs = gql`
 
 //cheack if ban and role befor any request
 //add type notification
+//add schendual ads deleter
 
 module.exports = typeDefs;
