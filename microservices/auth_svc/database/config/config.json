@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "user_svc",
+    "database": "auth_svc",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "logging": false
