@@ -58,6 +58,9 @@ const resolvers = {
         userDeleteAccount: (root ,args ,context, info) =>
           Controller.User.userDeleteAccount(args ,context),
 
+        subervisorAddPost: (root, args, context, info) =>
+          Controller.Post.subervisorAddPost(args ,context),
+
         addPost: (root, args, context, info) =>
           Controller.Post.addPost(args ,context),
 

@@ -89,16 +89,6 @@ exports.getPosts = async (args, context) => {
                 }
             },
 
-            attributes: {
-                include: [[
-                    Sequelize.fn("COUNT", Sequelize.col("likes.postId")),
-                    "likesCnt"
-                ],[
-                    Sequelize.fn("COUNT", Sequelize.col("comments.postId")),
-                    "commentsCnt"
-                ]]
-            },
-
             include: [{
                 model: context.models.postImages,
                 attributes: ['name']
@@ -107,16 +97,16 @@ exports.getPosts = async (args, context) => {
                 attributes: ['firstName' ,'lastName' ,'image' ,'class']
             },{
                 model: context.models.likes,
-                attributes: []
+                attributes: ['id']
             },{
                 model: context.models.comments,
-                attributes: []
+                attributes: ['id']
             }]
         });
 
         for(let post of posts){
-            post.likesCnt = post.dataValues.likesCnt;
-            post.commentsCnt = post.dataValues.commentsCnt;
+            post.likesCnt = post.likes.length;
+            post.commentsCnt = post.comments.length;
         }
 
         return posts;
@@ -172,6 +162,50 @@ exports.addPost = async (args ,context) => {
 
 // -------------------------------- //
 
+exports.subervisorAddPost = async (args ,context) => {
+    try {
+        const post = await context.models.posts.create({
+            subjectId: args.subjectId,
+            userId: args.userId,
+            title: args.title,
+            type: args.type,
+            body: args.body
+        });
+
+        post["postImages"] = [];
+        for (let i = 0; i < args.images.length; i++) {
+            const base64image = args.images[i].split(',')[1];
+            const name = Helper.uniqueName("posts" + "-" + post.id + "-" + i).concat(
+              base64image[0] === "/"
+                ? ".jpg"
+                : base64image[0] === "i"
+                  ? ".png"
+                  : base64image[0] === "R"
+                    ? ".gif"
+                    : ".webp"
+            );
+            const image = await Helper.convertBase64ToImage(base64image);
+            if( !await Helper.writeImage(image, name) ){
+                throw new Error("Ibternal server error, please try again");
+            }
+
+            post["postImages"].push(await context.models.postImages.create({
+                name: name,
+                postId: post.id
+            }));
+
+            post["postImages"][i] = base64image;
+        }
+
+        return post;
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+// -------------------------------- //
+
 exports.deletePost = async (args ,context) =>{
     try {
         const post = await context.models.posts.findOne({
@@ -183,8 +217,14 @@ exports.deletePost = async (args ,context) =>{
             }
         });
 
-        if (post == null) {
+        if (post === null) {
             throw new Error("This Post is not found!");
+        }
+
+        if( context.payload.roleName === "USER" ){
+            if( post.userId !== context.payload.id ){
+                throw new Error("Unauthorized");
+            }
         }
 
         for (let image of post.postImages) {
@@ -228,8 +268,6 @@ exports.getAllPostRequests = async (context) => {
 
 exports.approvalPostRequest = async (args ,context) => {
     try {
-        let post = null;
-
         const postRequest = await context.models.postRequests.findOne({
             where: {
                 id: args.id
@@ -240,7 +278,7 @@ exports.approvalPostRequest = async (args ,context) => {
         });
 
         if (args.choice === true) {
-            post = await context.models.posts.create({
+            const post = await context.models.posts.create({
                 subjectId: postRequest.subjectId,
                 type: postRequest.type,
                 title: postRequest.title,
@@ -273,7 +311,6 @@ exports.approvalPostRequest = async (args ,context) => {
         }
 
         await postRequest.destroy();
-        return post;
     }
     catch(err){
         throw new Error(err);
@@ -337,12 +374,19 @@ exports.addComment = async (args ,context) => {
 
 exports.deleteComment = async (args ,context) => {
     try {
-        await context.models.comments.destroy({
+        const comment = await context.models.comments.findOne({
             where: {
-                id: args.id,
-                userId: args.userId
+                id: args.id
             }
         });
+
+        if( context.payload.roleName === "USER" ){
+            if( comment.userId !== context.payload.id ){
+                throw new Error("Unauthorized");
+            }
+        }
+
+        await comment.destroy();
     }
     catch(err){
         throw new Error(err);

@@ -32,7 +32,8 @@ exports.signup = async (args ,context) => {
         return {
             token: Helper.generateToken({
                 id: user.id,
-                email: user.email
+                email: user.email,
+                roleName: user.roleName
             })
         };
     }
@@ -58,7 +59,8 @@ exports.login = async (args ,context) => {
         return {
             token: Helper.generateToken({
                 id: user.id,
-                email: user.email
+                email: user.email,
+                roleName: user.roleName
             })
         };
     }

@@ -209,6 +209,9 @@ const typeDefs = gql`
     userDeleteAccount(email: String!, password: String)
       : Void 
      
+    subervisorAddPost(subjectId: Int ,type: PostTypes! ,title: String! ,body: String! ,userId: Int! ,images: [String]!)
+      : Posts
+      
     addPost(subjectId: Int ,type: PostTypes! ,title: String! ,body: String! ,userId: Int! ,images: [String]!)
       : Posts
 
@@ -216,7 +219,7 @@ const typeDefs = gql`
       : Void
 
     approvalPostRequest(id: Int! ,choice: Boolean!)
-      : Posts
+      : Void
 
     changeLike(userId: Int! ,postId: Int!)
       : Posts
@@ -224,7 +227,7 @@ const typeDefs = gql`
     addComment(body: String! ,userId: Int! ,postId: Int!)
       : Comments
 
-    deleteComment(id: Int!, userId: Int!)
+    deleteComment(id: Int!)
       : Void
 
     changeFavorite(userId: Int! ,postId: Int!)
