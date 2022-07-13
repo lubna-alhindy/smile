@@ -1,0 +1,19 @@
+{
+  "name": "quize_svc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Ismail & Loubna",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.10.0",
+    "express": "^4.18.1",
+    "graphql": "^16.5.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.3",
+    "sequelize-cli": "^6.4.1"
+  }
+}
