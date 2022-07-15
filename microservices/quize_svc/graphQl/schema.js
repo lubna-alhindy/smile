@@ -13,7 +13,7 @@ const typeDefs = gql`
     updatedAt: Date
   }
   
-  typy quizRequests{
+  typy quizRequests {
     id: Int!
     subjectName: String!
     question: String!
@@ -23,12 +23,22 @@ const typeDefs = gql`
   }
   
   type Query {
-   
+    getQuizRequests
+      : [quizRequests]!
+        
+    getQuizs(subjectName: String)
+      : [quizs]!
   }
 
-
   type Mutation {
-   
+    addQuiz(subjectName: String! ,question: String! ,answer: String!)
+      : quizs
+    
+    deleteQuiz(id: Int!)
+      : Void
+    
+    approvalQuizRequest(id: Int! ,choice: Boolean!)
+      : Void
   }
 `;
 
