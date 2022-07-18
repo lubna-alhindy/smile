@@ -67,7 +67,7 @@ exports.approvalQuizRequest = async (args ,context) => {
         });
 
         if( !quizRequest ){
-            throw new Error("The quize not found");
+            throw new Error("The quiz not found");
         }
 
         if( args.choice === true ) {

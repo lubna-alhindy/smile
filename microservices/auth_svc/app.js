@@ -27,7 +27,7 @@ server
 		port: process.env.PORT,
 	})
 	.then(({url}) => {
-		console.log("Auth service is running on " + url);
+		console.log("🚀 Auth service is running on " + url);
 	});
 
 // --------------------------------------- //

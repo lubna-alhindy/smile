@@ -25,7 +25,7 @@ server
         port: process.env.PORT,
     })
     .then(({url}) => {
-        console.log("User service is running on " + url);
+        console.log("🚀 Quiz service is running on " + url);
     });
 
 // --------------------------------------- //
