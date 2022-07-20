@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   scalar Date
@@ -10,10 +10,16 @@ const typeDefs = gql`
 		PRIVATE_SUPERVISOR
 		PUBLIC_SUPERVISOR
 	}
-
+	
 	enum PostTypes {
 		Announcement
 		Inquiry
+	}
+	
+	type Payload {
+    id: Int!,
+    email: String!
+    roleName: String!
 	}
 
   type AuthPayload {
@@ -184,8 +190,10 @@ const typeDefs = gql`
     
     getBanState(id: Int!)
     	: Boolean
+    	
+    checkToken(token: String!)
+      : Payload
   }
-
 
   type Mutation {
     signup(firstName: String!, lastName: String!, email: String!, password: String!)
@@ -262,7 +270,6 @@ const typeDefs = gql`
   }
 `;
 
-//cheack if ban and role befor any request
 //add type notification
 //add schendual ads deleter
 

@@ -3,16 +3,12 @@ require('dotenv').config();
 
 /// ---------------------------------- ///
 
-exports.getPayload = async authHeader => {
+exports.checkToken = async (args ,context) => {
     try {
-        if( !authHeader || authHeader === '' ){
+        if( !args.token || args.token === '' ){
             return null;
         }
-        const token = authHeader.split(' ')[1];
-        if( token ) {
-            return await jwt.verify(token, process.env.JWT_SECRET);
-        }
-        return null;
+        return await jwt.verify(args.token, process.env.JWT_SECRET);
     }
     catch(error) {
         throw new Error("Unauthorized");

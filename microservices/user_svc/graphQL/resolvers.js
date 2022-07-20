@@ -37,6 +37,9 @@ const resolvers = {
 
         getBanState: (root ,args ,context ,info) =>
           Controller.User.getBanState(args ,context),
+
+        checkToken: (root ,args ,context ,info) =>
+          Controller.Auth.checkToken(args ,context),
     },
 
     /// ---------------------------- ///

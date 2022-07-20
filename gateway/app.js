@@ -12,6 +12,15 @@ async function startServer() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+
+    context: async ({req}) => {
+        return {
+            token: !req.get('Authorization') ? null : (!req.get('Authorization').split(' ')[1] ? null : req.get('Authorization').split(' ')[1])
+        };
+    },
+
+    introspection: true,
+    playground: true
   });
 
   await server.start();

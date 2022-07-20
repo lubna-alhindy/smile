@@ -1,40 +1,42 @@
-// ------- 3rd Party Pkg imports --------- //
-const { ApolloServer } = require('apollo-server');
+const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
+require("dotenv").config();
 
-// ------------ My imports --------------- //
 const Controller = require('./controllers/Controller');
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
 const models = require('./database/models');
 require('dotenv').config();
 
-// --------------------------------------- //
+/// -------------------------------------------- ///
 
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-
-    context: async ({req}) => {
-        return {
-            models: await models,
-            payload: await Controller.Auth.getPayload(req.get('Authorization'))
-        };
-    },
-
-    introspection: true,
-    playground: true
-});
-
-// --------------------------------------- //
-
-server
-    .listen({
-        protocol: process.env.PROTOCOL,
-        hostname: process.env.HOSTNAME,
-        port: process.env.PORT,
-    })
-    .then(({url}) => {
-        console.log("🚀 User service is running on " + url);
+async function startServer() {
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: {
+            models: models
+        },
     });
+
+    await server.start();
+    const app = express();
+
+    app.use(graphqlUploadExpress());
+    server.applyMiddleware({ app });
+
+    app.listen(process.env.PORT ,result => {
+        console.log(`🚀 User service is ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
+    });
+}
+
+/// -------------------------------------------- ///
+
+startServer()
+  .then()
+  .catch(err => {
+      console.error(err);
+  });
 
 // --------------------------------------- //

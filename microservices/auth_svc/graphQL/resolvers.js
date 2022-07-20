@@ -4,7 +4,7 @@ const resolvers = {
 
 	Query: {
 		authorize: async (root ,args ,context) => {
-			return !await context.model.rolePermissions.findOne({
+			return !await context.models.rolePermissions.findOne({
 				where: {
 					roleName: args.roleName,
 					permissionName: args.permissionName,

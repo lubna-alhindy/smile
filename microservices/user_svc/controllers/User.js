@@ -235,6 +235,7 @@ exports.getUser = async (args ,context ,info) => {
             }
         });
 
+        console.log(JSON.stringify(user ,null ,2));
         if (user == null) {
             throw new Error('This User Not Exist!');
         }
