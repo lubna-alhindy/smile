@@ -8,7 +8,10 @@ exports.checkToken = async (args ,context) => {
         if( !args.token || args.token === '' ){
             return null;
         }
-        return await jwt.verify(args.token, process.env.JWT_SECRET);
+
+        jwt.verify(args.token, process.env.JWT_SECRET ,(err ,payload) => {
+            return !err ? payload : null;
+        });
     }
     catch(error) {
         throw new Error("Unauthorized");

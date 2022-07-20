@@ -62,7 +62,7 @@ exports.approvalQuizRequest = async (args ,context) => {
     try {
         const quizRequest = await context.models.quizRequests.findOne({
             where: {
-                id: id
+                id: args.id
             }
         });
 

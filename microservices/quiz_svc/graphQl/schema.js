@@ -13,7 +13,7 @@ const typeDefs = gql`
     updatedAt: Date
   }
   
-  typy quizRequests {
+  type quizRequests {
     id: Int!
     subjectName: String!
     question: String!
