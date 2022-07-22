@@ -1,5 +1,6 @@
 const GraphQLUpload = require("graphql-upload/GraphQLUpload.js");
 const {request, gql} = require('graphql-request');
+const {requiredFields ,checkIfExist} = require('../graphQL/body');
 
 const {getAuthorization} = require("../middleware/Authorization");
 const Helper = require("../controllers/Helper");
@@ -55,6 +56,77 @@ const resolvers = {
       const res = await request('http://localhost:6000', query);
       return res.getQuizs;
     },
+
+
+    getAllAds: async (root, args, context) => {
+      if( ! await getAuthorization(context.token ,"getUser") ){
+          throw new Error("Unauthorized");
+        }
+
+      const query = gql`
+        {
+          getAllAds{
+          id
+          body
+          title
+          expireIn
+          createdAt
+          updatedAt
+          postImages{
+            id
+            name
+            postId
+            postRequestId
+            base64image
+            adId
+           }
+          }
+        }
+      `;
+
+      const res = await request('http://localhost:3000/graphql',query);
+      return res.getAllAds;
+    },
+
+    getUser: async (root, args, context, info) => {
+      // if( ! await getAuthorization(context.token ,"getUser") ){
+      //   throw new Error("Unauthorized");
+      // }
+      // const body = await requiredFields(info);
+      // let user = "getUser" + `(id: ${args.id}){
+      //   id
+      //   email
+      //   password
+      //   roleName
+      //   bio
+      //   gmail
+      //   image
+      //   class
+      //   birthday
+      //   createdAt
+      //   updatedAt
+      //   lastName
+      //   firstName
+      //   facebookURL
+      //   telegramURL
+      //   isBaned
+      // `
+      // if( checkIfExist(body, "favorites") ){
+      //
+      //   user += 'favorites'
+      // }
+      // args.universityNumber = await checkIfExist(body, "userUniversityNumbers");
+      // args.posts = await checkIfExist(body, "posts");
+    //   const query = gql`
+    //     {
+    //       ${user}
+    //       }
+    //     }
+    //   `;
+    //
+    //   const res = await request('http://localhost:3000',query);
+    //   return res.getUser;
+     }
   },
 
   Mutation: {
