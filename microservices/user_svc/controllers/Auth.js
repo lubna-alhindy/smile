@@ -9,7 +9,7 @@ exports.checkToken = async (args ,context) => {
             return null;
         }
 
-        jwt.verify(args.token, process.env.JWT_SECRET ,(err ,payload) => {
+        return jwt.verify(args.token, process.env.JWT_SECRET, (err, payload) => {
             return !err ? payload : null;
         });
     }

@@ -17,7 +17,7 @@ const typeDefs = gql`
 	}
 	
 	type Payload {
-    id: Int!,
+    id: Int!
     email: String!
     roleName: String!
 	}

@@ -14,7 +14,6 @@ exports.checkToken = async token => {
   `;
 
   const res = await request('http://localhost:3000/graphql', query);
-
   return res.checkToken;
 };
 

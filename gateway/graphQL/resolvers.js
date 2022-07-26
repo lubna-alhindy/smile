@@ -15,7 +15,6 @@ const resolvers = {
       if( ! await getAuthorization(context.token ,"getQuizRequests") ){
         throw new Error("Unauthorized");
       }
-
       const query = gql`
         {
           getQuizRequests{
