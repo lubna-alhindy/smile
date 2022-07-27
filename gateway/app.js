@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
-const body = require('./graphQL/body');
+const {getBody} = require('./graphQL/body');
 
 /// -------------------------------------------- ///
 
@@ -15,9 +15,15 @@ async function startServer() {
     resolvers,
 
     context: async ({req}) => {
-      return {
+      console.log("HEADERS:");
+      console.log(req.headers);
+      console.log("BODY:");
+      console.log(req.body);
+      console.log("==========================================");
+
+      return  {
         token: !req.get('Authorization') ? null : (!req.get('Authorization').split(' ')[1] ? null : req.get('Authorization').split(' ')[1]),
-        query: await body.getBody(req.body.query)
+        query: await getBody(req.body.query)
       };
     },
 

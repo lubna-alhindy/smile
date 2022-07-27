@@ -15,9 +15,18 @@ async function startServer() {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        context: {
-            models: models
-        },
+
+        context: async ({req}) => {
+            console.log("HEADERS:");
+            console.log(req.headers);
+            console.log("BODY:");
+            console.log(req.body);
+            console.log("==========================================");
+
+            return  {
+                models: models
+            };
+        }
     });
 
     await server.start();

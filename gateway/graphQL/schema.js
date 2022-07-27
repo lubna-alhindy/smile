@@ -1,8 +1,8 @@
 const { gql } = require('apollo-server-express');
 
-const typeDefs = gql`
-  ##############################
-  
+/// ------------------------------------------------------------------------------------ ///
+
+const typeDefs = gql`  
   scalar Date
   scalar Void
   scalar Upload
@@ -13,47 +13,123 @@ const typeDefs = gql`
     encoding: String!
   }
   
-  ########## QUIZ-SVC ##########
+  # ------------------------------------- QUIZ-SVC ------------------------------------- # 
   
-  type quizs {
-    id: Int!
-    subjectName: String!
-    question: String!
-    answer: String!
-    createdAt: Date
-    updatedAt: Date
-  }
+    type quizs {
+      id: Int!
+      subjectName: String!
+      question: String!
+      answer: String!
+      createdAt: Date
+      updatedAt: Date
+    }
   
-  type quizRequests {
-    id: Int!
-    subjectName: String!
-    question: String!
-    answer: String!
-    createdAt: Date
-    updatedAt: Date
-  }
+  # ------------------------------------- AUTH-SVC ------------------------------------- #
   
-  ########## AUTH-SVC ##########
-  
-	enum Roles {
-		USER
-		ADMIN
-		PUBLIC_SUPERVISOR
-		PRIVATE_SUPERVISOR
-	}
+    enum Roles {
+      USER
+      ADMIN
+      PUBLIC_SUPERVISOR
+      PRIVATE_SUPERVISOR
+    }
 	
-  ########## USER-SVC ##########
+  # ------------------------------------- POST-SVC ------------------------------------- #
+  
     enum PostTypes {
-		Announcement
-		Inquiry
-	}
-	
+      Announcement
+      Inquiry
+    }
+  
+    type Ads {
+      id: Int!
+      body: String!
+      title: String!
+      expireIn: Date!
+      createdAt: Date
+      updatedAt: Date
+      postImages: [PostImage]!
+    }
+    
+    type PostRequests {
+      id: Int!
+      userId: Int!
+      type: PostTypes!
+      body: String!
+      title: String
+      subjectId: Int
+      createdAt: Date!
+      updatedAt: Date!
+      postImages: [PostImage]!
+      user: Users!
+    }
+    
+    type Posts {
+      id: Int!
+      userId: Int!
+      type: PostTypes!
+      body: String!
+      title: String
+      subjectId: Int
+      createdAt: Date!
+      updatedAt: Date!
+      postImages: [PostImage]!
+      isLiked: Boolean
+      isFavorite: Boolean
+      user: Users!
+      likesCnt: Int
+      likes: [Likes]
+      commentsCnt: Int
+      comments: [Comments]
+    }
+    
+    type PostImage {
+      id: Int!
+      name: String!
+      postId: Int
+      postRequestId: Int
+      base64image: String
+      adId: Int
+    }
+    
+    type Likes {
+      id: Int!
+      userId: Int!
+      postId: Int!
+      user: Users!
+      createdAt: Date
+      updatedAt: Date
+    }
+    
+    type Comments {
+      id: Int!
+      body: String!
+      userId: Int!
+      postId: Int!
+      user: Users!
+      createdAt: Date
+      updatedAt: Date
+    }
+    
+    type Favorites {
+      id: Int!
+      userId: Int!
+      postId: Int!
+      post: Posts!
+      createdAt: Date
+      updatedAt: Date
+    }
+    
+  # ------------------------------------- USER-SVC ------------------------------------- #
+  
+    type AuthPayload {
+      token: String!
+    }
+  
     type Users {
         id: Int!
         email: String!
         password: String!
         roleName: String!
-    
         bio: String
         gmail: String
         image: String
@@ -66,154 +142,181 @@ const typeDefs = gql`
         facebookURL: String
         telegramURL: String
         isBaned: Boolean
-    
         posts: [Posts]
         favorites: [Favorites]
         userUniversityNumbers: [UsersUniversityNumbers]
     }
-      	
-    type PostImage {
-  	id: Int!
-  	name: String!
-  	postId: Int
-  	postRequestId: Int
-  	base64image: String
-  	adId: Int
-  }
-  
-  type Posts {
-    id: Int!
-    userId: Int!
-    type: PostTypes!
-    body: String!
-    title: String
-    subjectId: Int
-    createdAt: Date!
-    updatedAt: Date!
-    postImages: [PostImage]!
-    isLiked: Boolean
-    isFavorite: Boolean
-    user: Users!
-    likesCnt: Int
-    likes: [Likes]
-    commentsCnt: Int
-    comments: [Comments]
-  }
-  
-  type PostRequests {
-    id: Int!
-    userId: Int!
-    type: PostTypes!
-    body: String!
-    title: String
-    subjectId: Int
-    createdAt: Date!
-    updatedAt: Date!
-    postImages: [PostImage]!
+    
+    type Bans {
+      id: Int!
+      userId: Int!
+      user: Users
+      createdAt: Date
+      updatedAt: Date
+    }
+    
+    type Complaints {
+      id: Int!
+      body: String!
+      title: String
+      isDone: Boolean
+      createdAt: Date
+      updatedAt: Date
+      user: Users
+    }
+    
+    type UsersUniversityNumbers {
+      id: Int!
+      userId: Int!
+      year: String!
+      createdAt: Date
+      updatedAt: Date
+      universityNumber: Int!
+      user: Users!
+    }
 
-    user: Users!
-  }
+  # ------------------------------------- QUERY ------------------------------------- #
   
-  type Likes {
-    id: Int!
-    userId: Int!
-    postId: Int!
-    user: Users!
-    createdAt: Date
-    updatedAt: Date
-  }
-  
-  type Comments {
-    id: Int!
-    body: String!
-    userId: Int!
-    postId: Int!
-    user: Users!
-    createdAt: Date
-    updatedAt: Date
-  }
-  
-  type Favorites {
-    id: Int!
-    userId: Int!
-    postId: Int!
-    post: Posts!
-    createdAt: Date
-    updatedAt: Date
-  }
-  
-  type Bans {
-    id: Int!
-    userId: Int!
-    user: Users
-    createdAt: Date
-    updatedAt: Date
-  }
-  
-  type Complaints {
-    id: Int!
-    body: String!
-    title: String
-    isDone: Boolean
-    createdAt: Date
-    updatedAt: Date
-    user: Users
-  }
-  
-  type Ads {
-    id: Int!
-    body: String!
-    title: String!
-    expireIn: Date!
-    createdAt: Date
-    updatedAt: Date
-    postImages: [PostImage]!
-  }
-  
-  type UsersUniversityNumbers {
-    id: Int!
-    userId: Int!
-    year: String!
-    createdAt: Date
-    updatedAt: Date
-    universityNumber: Int!
+    type Query {
+    
+      # --------------------------------- QUIZ-SVC --------------------------------- #
 
-    user: Users!
-  }
-   ##############################
-
-  type Query {
-    getQuizRequests
-      : [quizRequests]!
+        getQuizs(subjectName: String)
+          : [quizs]!
+          
+        getQuizRequests
+          : [quizs]!  
         
-    getQuizs(subjectName: String)
-      : [quizs]!
+      # --------------------------------- USER-SVC --------------------------------- #
       
-    getUser(id: Int!)
-      : Users
-      
-    getAllAds
-      : [Ads]!
+        getUser(id: Int!)
+          : Users
+    
+        getAllUser
+          : [Users!]!
         
-  }
-
-	##############################
-
-  type Mutation {
-    singleUpload(file: Upload!)
-       : File!
-    
-    addQuiz(subjectName: String! ,question: String! ,answer: String!)
-      : quizs
-    
-    deleteQuiz(id: Int!)
-      : Void
-    
-    approvalQuizRequest(id: Int! ,choice: Boolean!)
-      : Void
-  }
+        getBanState(id: Int!)
+    	    : Boolean
+         
+        getBansUser
+          : [Bans]!
+        
+        getAllComplaints
+          : [Complaints]!
+         
+      # --------------------------------- POST-SVC --------------------------------- #
   
-	##############################
+        getAllAds
+          : [Ads]!
+    
+        getAllPostRequests
+          : [PostRequests]!
+    
+        getPost(id: Int! ,like: Boolean ,comment: Boolean)
+          : Posts
+    
+        getPosts(type: PostTypes ,subjectId: [Int])
+          : [Posts]
+        
+        getAllPostOfSubject(subjectId: [Int]!)
+          : [Posts]! 
+    }
+
+  # ------------------------------------- MUTATION ------------------------------------- #
+
+    type Mutation {
+      singleUpload(file: Upload!)
+         : File!
+      
+      # --------------------------------- QUIZ-SVC --------------------------------- #
+
+        addQuiz(subjectName: String! ,question: String! ,answer: String!)
+          : quizs
+        
+        deleteQuiz(id: Int!)
+          : Void
+        
+        approvalQuizRequest(id: Int! ,choice: Boolean!)
+          : Void
+      
+      # --------------------------------- USER-SVC --------------------------------- #
+      
+        signup(firstName: String!, lastName: String!, email: String!, password: String!)
+        : AuthPayload!
+    
+        login(email: String!, password: String!)
+          : AuthPayload!
+    
+        editProfile(
+            id: Int!, firstName: String, lastName: String,
+            birthday: Date, image: String, bio: String, facebookURL: String,
+            telegramURL: String, class: String, gmail: String
+        ) : Users 
+        
+        userChangePassword(id: Int! ,oldPassword: String! ,newPassword1: String! ,newPassword2: String!)
+          : Users
+          
+        changeUserRole(id: Int! ,roleName: Roles)
+          : Users
+        
+        userDeleteAccount(email: String!, password: String)
+          : Void 
+       
+        changeBanUser(userId: Int!)
+          : Users
+    
+        addComplaint(userId: Int! ,title: String ,body: String!)
+          : Complaints
+    
+        changeDoneComplaint(id: Int!)
+          : Complaints
+    
+        deleteComplaint(id: Int!)
+          : Void
+    
+        addUsersUniversityNumber(userId: Int!,universityNumber: Int! ,year: String!)
+          : UsersUniversityNumbers
+    
+        deleteUsersUniversityNumber(id: Int!)
+          : Void
+      
+      # --------------------------------- POST-SVC --------------------------------- #
+      
+        addAd(title: String! ,body: String! ,expireIn: Date! ,images: [String]!)
+          : Ads
+          
+        updateAd(id: Int! ,title: String ,body: String ,expireIn: Date ,images: [String])
+          : Ads
+    
+        deleteAd(id: Int!)
+          : Void
+        
+        subervisorAddPost(subjectId: Int ,type: PostTypes! ,title: String! ,body: String! ,userId: Int! ,images: [String]!)
+          : Posts
+          
+        addPost(subjectId: Int ,type: PostTypes! ,title: String! ,body: String! ,userId: Int! ,images: [String]!)
+          : Posts
+    
+        deletePost(id: Int!)
+          : Void
+    
+        approvalPostRequest(id: Int! ,choice: Boolean!)
+          : Void
+    
+        changeLike(userId: Int! ,postId: Int!)
+          : Posts
+    
+        addComment(body: String! ,userId: Int! ,postId: Int!)
+          : Comments
+    
+        deleteComment(id: Int!)
+          : Void
+    
+        changeFavorite(userId: Int! ,postId: Int!)
+          : Posts
+    }
 `;
+
+/// ------------------------------------------------------------------------------------ ///
 
 module.exports = typeDefs;

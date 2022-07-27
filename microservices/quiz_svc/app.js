@@ -11,11 +11,20 @@ require('dotenv').config();
 // --------------------------------------- //
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: {
+  typeDefs,
+  resolvers,
+
+  context: async ({req}) => {
+    console.log("HEADERS:");
+    console.log(req.headers);
+    console.log("BODY:");
+    console.log(req.body);
+    console.log("==========================================");
+
+    return  {
       models: models
-    }
+    };
+  }
 });
 
 // --------------------------------------- //

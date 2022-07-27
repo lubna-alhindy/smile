@@ -17,8 +17,10 @@ function fixQuery(query) {
 /// -------------------------------------- ///
 
 exports.getBody = async query => {
-  query = fixQuery(query);
   if (!query) return {};
+
+  const prefix = query[0] === 'q' ? 'query' : (query[0] === 'm' ? 'mutation' : 'subscription');
+  query = fixQuery(query);
 
   let res = {} ,cnt = 0, state = 0, subQuery = "", resolverName = "";
   for (let c of query) {
@@ -26,6 +28,7 @@ exports.getBody = async query => {
       if (isAlpha(c)) { // find start of query
         state = 1;
         resolverName += c;
+        subQuery += prefix + '{';
         subQuery += c;
       }
     } else if (state === 1) { // fill the name of resolver
@@ -55,7 +58,8 @@ exports.getBody = async query => {
       }
       subQuery += c;
       if (cnt === 0) { // the end of the resolver son add it to the res and init the variables
-        res[resolverName] = subQuery;
+        subQuery += '}';
+        res[`${resolverName}`] = subQuery;
         resolverName = "";
         subQuery = "";
         state = 0;
@@ -63,7 +67,8 @@ exports.getBody = async query => {
       }
     } else if (state === 4) { // maybe resolver has a complete in the next line
       if (isAlpha(c)) { // char from the next resolver name so we should add the current one and init variables and start with the next one
-        res[resolverName] = subQuery;
+        subQuery += '}';
+        res[`${resolverName}`] = subQuery;
         resolverName = "";
         subQuery = "";
         state = 1;
