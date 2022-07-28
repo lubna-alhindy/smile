@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
     "dropDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:drop && cd .. && cd ..",
     "createDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:create && cd .. && cd ..",
     "migrateDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd ..",
-    "seedDB": "cd .. && cd microservices && cd auth_svc && cd database && npx sequelize-cli db:seed:all"
+    "seedDB": "cd .. && cd microservices && cd auth_svc && cd database && npx sequelize-cli db:seed:all",
+    "start_user_svc": "cd .. && cd microservices && cd user_svc && npm start",
+    "start_auth_svc": "cd .. && cd microservices && cd auth_svc && npm start",
+    "start_quiz_svc": "cd .. && cd microservices && cd quiz_svc && npm start",
+    "start_gateway": "nodemon app.js"
   },
   "author": "Loubna & Ismail",
   "license": "ISC",
