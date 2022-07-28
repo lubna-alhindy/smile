@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       posts.hasMany(models.favorites ,{
         foreignKey: 'postId'
       });
+      posts.belongsTo(models.subjects,{
+        foreignKey: 'subjectId'
+      });
     }
   }
 

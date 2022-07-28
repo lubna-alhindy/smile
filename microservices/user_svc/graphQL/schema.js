@@ -25,7 +25,25 @@ const typeDefs = gql`
   type AuthPayload {
     token: String!
   }
-
+  
+  enum Section {
+    COMMON
+    SOFTWARE_ENGINEERING
+    ARTIFICIAL_INTELLIGENCE
+    COMPUTER_SYSTEMS_AND_NETWORKING
+  }
+  
+  type subjects {
+    id: Int!
+    name: String!
+    class: Int!
+    semester: Int!
+    section: Section!
+    type: String!
+    createdAt: Date
+    updatedAt: Date
+  }
+  
   type Users {
     id: Int!
     email: String!
@@ -76,6 +94,7 @@ const typeDefs = gql`
     likes: [Likes]
     commentsCnt: Int
     comments: [Comments]
+    subject: subjects
   }
   
   type PostRequests {
@@ -90,6 +109,7 @@ const typeDefs = gql`
     postImages: [PostImage]!
 
     user: Users!
+    subject: subjects
   }
   
   type Likes {

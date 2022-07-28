@@ -9,9 +9,11 @@ exports.getPost = async (args, context) => {
             where: {
                 id: args.id
             },
-            include: {
+            include: [{
                 model: context.models.postImages
-            }
+            },{
+                model: context.models.subjects
+            }]
         });
         const editedPost = JSON.parse(JSON.stringify(post));
 
@@ -101,6 +103,8 @@ exports.getPosts = async (args, context) => {
             },{
                 model: context.models.comments,
                 attributes: ['id']
+            },{
+                model: context.models.subjects
             }]
         });
 
@@ -247,6 +251,8 @@ exports.getAllPostRequests = async (context) => {
                 model: context.models.postImages
             }, {
                 model: context.models.users
+            }, {
+                model: context.models.subjects
             }]
         });
 
@@ -447,6 +453,9 @@ exports.getAllPostOfSubject = async (args ,context) => {
         const allPost = await context.models.posts.findAll({
             where: {
                 subjectId: args.subjectId
+            },
+            include: {
+                model: context.models.subjects
             },
             order: [['createdAt', 'DESC']]
         });

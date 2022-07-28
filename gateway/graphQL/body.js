@@ -85,6 +85,8 @@ exports.getBody = async query => {
       subQuery += c;
     }
   }
+  console.log("HERE")
+  console.log(res);
   return res;
 };
 

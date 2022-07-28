@@ -2,7 +2,11 @@
 
 exports.getQuizRequests = async (args ,context) => {
     try {
-        return await context.models.quizRequests.findAll();
+        return await context.models.quizRequests.findAll({
+            include: {
+                model: context.models.subjects
+            }
+        });
     }
     catch(err) {
         throw new Error(err);
@@ -15,9 +19,12 @@ exports.getQuizs = async (args ,context) => {
     try {
         return await context.models.quizs.findAll({
             where: {
-                subjectName: args.subjectName !== undefined ? args.subjectName : {
+                subjectId: args.subjectId !== undefined ? args.subjectId : {
                     [context.models.Sequelize.Op.ne]: null
                 }
+            },
+            include: {
+                model: context.models.subjects
             }
         });
     }
@@ -31,7 +38,7 @@ exports.getQuizs = async (args ,context) => {
 exports.addQuiz = async (args ,context) => {
     try {
         return await context.models.quizRequests.create({
-            subjectName: args.subjectName,
+            subjectId: args.subjectId,
             question: args.question,
             answer: args.answer,
         });
@@ -72,7 +79,7 @@ exports.approvalQuizRequest = async (args ,context) => {
 
         if( args.choice === true ) {
             await context.models.quizs.create({
-                subjectName: quizRequest.subjectName,
+                subjectId: quizRequest.subjectId,
                 question: quizRequest.question,
                 answer: quizRequest.answer,
             });

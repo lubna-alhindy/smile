@@ -23,16 +23,16 @@ const resolvers = {
 
     /// ----------------------- USER-SVC ----------------------- ///
 
-      getUser: (root, args, context ,info) =>
+      getUser: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getUser"),
 
-      getAllUser: (root, args, context, info) =>
+      getAllUser: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getAllUser"),
 
-      getBansUser: (root, args, context, info) =>
+      getBansUser: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getBansUser"),
 
-      getAllComplaints: (root, args, context, info) =>
+      getAllComplaints: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getAllComplaints"),
 
       getBanState: (root ,args ,context ,info) =>
@@ -43,16 +43,16 @@ const resolvers = {
       getAllAds: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getAllAds"),
 
-      getAllPostRequests: (root, args, context, info) =>
+      getAllPostRequests: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getAllPostRequests"),
 
-      getPost: (root, args, context, info) =>
+      getPost: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getPost"),
 
-      getPosts: (root, args, context, info) =>
+      getPosts: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getPosts"),
 
-      getAllPostOfSubject: (root, args, context, info) =>
+      getAllPostOfSubject: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getAllPostOfSubject"),
 
   },
@@ -81,75 +81,75 @@ const resolvers = {
 
     /// ----------------------- USER-SVC ----------------------- ///
 
-      signup: (root ,args ,context, info) =>
+      signup: (root ,args ,context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "signup"),
 
-      login: (root ,args ,context, info) =>
+      login: (root ,args ,context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "login"),
 
-      editProfile: (root ,args ,context, info) =>
+      editProfile: (root ,args ,context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "editProfile"),
 
-      userChangePassword: (root ,args ,context, info) =>
+      userChangePassword: (root ,args ,context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "userChangePassword"),
 
-      userDeleteAccount: (root ,args ,context, info) =>
+      userDeleteAccount: (root ,args ,context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "userDeleteAccount"),
 
-      changeBanUser: (root, args, context, info) =>
+      changeBanUser: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "changeBanUser"),
 
-      addComplaint: (root, args, context, info) =>
+      addComplaint: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "addComplaint"),
 
-      changeDoneComplaint: (root, args, context, info) =>
+      changeDoneComplaint: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "changeDoneComplaint"),
 
-      deleteComplaint: (root, args, context, info) =>
+      deleteComplaint: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "deleteComplaint"),
 
-      addUsersUniversityNumber: (root, args, context, info) =>
+      addUsersUniversityNumber: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "addUsersUniversityNumber"),
 
-      deleteUsersUniversityNumber: (root, args, context, info) =>
+      deleteUsersUniversityNumber: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "deleteUsersUniversityNumber"),
 
-      changeUserRole: (root, args, context, info) =>
+      changeUserRole: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "changeUserRole"),
 
     /// ----------------------- POST-SVC ----------------------- ///
 
-      subervisorAddPost: (root, args, context, info) =>
+      subervisorAddPost: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "subervisorAddPost"),
 
-      addPost: (root, args, context, info) =>
+      addPost: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "addPost"),
 
-      deletePost: (root, args, context, info) =>
+      deletePost: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "deletePost"),
 
-      approvalPostRequest: (root, args, context, info) =>
+      approvalPostRequest: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "approvalPostRequest"),
 
-      changeLike: (root, args , context, info) =>
+      changeLike: (root, args , context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "changeLike"),
 
-      addComment: (root, args , context, info) =>
+      addComment: (root, args , context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "addComment"),
 
-      deleteComment: (root, args , context, info) =>
+      deleteComment: (root, args , context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "deleteComment"),
 
-      changeFavorite: (root, args , context, info) =>
+      changeFavorite: (root, args , context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "changeFavorite"),
 
-      addAd: (root, args, context, info) =>
+      addAd: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "addAd"),
 
-      updateAd: (root, args, context, info) =>
+      updateAd: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "updateAd"),
 
-      deleteAd: (root, args, context, info) =>
+      deleteAd: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_SVC, "deleteAd"),
   }
 };

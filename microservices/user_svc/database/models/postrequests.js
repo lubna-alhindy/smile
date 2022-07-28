@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       postRequests.hasMany(models.postImages,{
         foreignKey: 'postRequestId'
       });
+      postRequests.belongsTo(models.subjects,{
+        foreignKey: 'subjectId'
+      });
     }
   }
 
