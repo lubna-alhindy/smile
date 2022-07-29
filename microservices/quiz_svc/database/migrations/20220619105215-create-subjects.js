@@ -13,15 +13,15 @@ module.exports = {
         allowNull: false
       },
       class: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       semester: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       section: {
-        type: Sequelize.ENUM('COMMON', 'SOFTWARE_ENGINEERING' ,'ARTIFICIAL_INTELLIGENCE', 'COMPUTER_SYSTEMS_AND_NETWORKING'),
+        type: Sequelize.STRING,
         allowNull: false
       },
       type: {

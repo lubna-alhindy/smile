@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   subjects.init({
     name: DataTypes.STRING,
-    class: DataTypes.INTEGER,
-    semester: DataTypes.INTEGER,
-    section: DataTypes.ENUM('COMMON', 'SOFTWARE_ENGINEERING' ,'ARTIFICIAL_INTELLIGENCE', 'COMPUTER_SYSTEMS_AND_NETWORKING'),
+    class: DataTypes.STRING,
+    semester: DataTypes.STRING,
+    section: DataTypes.STRING,
     type: DataTypes.STRING
   }, {
     sequelize,

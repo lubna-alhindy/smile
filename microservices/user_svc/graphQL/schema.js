@@ -36,8 +36,8 @@ const typeDefs = gql`
   type subjects {
     id: Int!
     name: String!
-    class: Int!
-    semester: Int!
+    class: String!
+    semester: String!
     section: Section!
     type: String!
     createdAt: Date
