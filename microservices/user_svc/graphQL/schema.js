@@ -5,17 +5,37 @@ const typeDefs = gql`
   scalar Void
   
 	enum Roles {
-		USER
-		ADMIN
-		PRIVATE_SUPERVISOR
-		PUBLIC_SUPERVISOR
+		طالب
+		مدير
+		مشرف_عام
+		مشرف_خاص
 	}
 	
 	enum PostTypes {
-		Announcement
-		Inquiry
+		إعلان
+		استفسار
 	}
 	
+  enum Section {
+    مشترك
+    هندسة_البرمجيات
+    الذكاء_الصنعي
+    النظم_و_الشبكات_الحاسوبية
+  }
+  
+  enum Semester {
+    الاول
+    الثاني
+  }
+  
+  enum Class {
+    الأولى
+    الثانية
+    الثالثة
+    الرابعة
+    الخامسة
+  }
+  
 	type Payload {
     id: Int!
     email: String!
@@ -26,18 +46,11 @@ const typeDefs = gql`
     token: String!
   }
   
-  enum Section {
-    COMMON
-    SOFTWARE_ENGINEERING
-    ARTIFICIAL_INTELLIGENCE
-    COMPUTER_SYSTEMS_AND_NETWORKING
-  }
-  
   type subjects {
     id: Int!
     name: String!
-    class: String!
-    semester: String!
+    class: Class!
+    semester: Semester!
     section: Section!
     type: String!
     createdAt: Date
@@ -53,7 +66,7 @@ const typeDefs = gql`
     bio: String
     gmail: String
     image: String
-    class: String
+    class: Class
     birthday: Date
     createdAt: Date
     updatedAt: Date
@@ -225,7 +238,7 @@ const typeDefs = gql`
     editProfile(
         id: Int!, firstName: String, lastName: String,
         birthday: Date, image: String, bio: String, facebookURL: String,
-        telegramURL: String, class: String, gmail: String
+        telegramURL: String, class: Class, gmail: String
     ) : Users 
     
     userChangePassword(id: Int! ,oldPassword: String! ,newPassword1: String! ,newPassword2: String!)

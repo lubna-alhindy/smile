@@ -22,23 +22,56 @@ const typeDefs = gql`
       answer: String!
       createdAt: Date
       updatedAt: Date
+      subject: subjects
+    }
+   
+    type subjects {
+      id: Int!
+      name: String!
+      class: Class!
+      semester: Semester!
+      section: Section!
+      type: String!
+      createdAt: Date
+      updatedAt: Date
     }
   
   # ------------------------------------- AUTH-SVC ------------------------------------- #
   
     enum Roles {
-      USER
-      ADMIN
-      PUBLIC_SUPERVISOR
-      PRIVATE_SUPERVISOR
+      طالب
+      مدير
+      مشرف_عام
+      مشرف_خاص
     }
-	
+  
   # ------------------------------------- POST-SVC ------------------------------------- #
   
-    enum PostTypes {
-      Announcement
-      Inquiry
+    enum Section {
+      مشترك
+      هندسة_البرمجيات
+      الذكاء_الصنعي
+      النظم_و_الشبكات_الحاسوبية
     }
+    
+    enum Semester {
+      الاول
+      الثاني
+    }
+    
+    enum Class {
+      الأولى
+      الثانية
+      الثالثة
+      الرابعة
+      الخامسة
+    }
+    
+    enum PostTypes {
+      إعلان
+      استفسار
+    }
+  
   
     type Ads {
       id: Int!
@@ -61,6 +94,7 @@ const typeDefs = gql`
       updatedAt: Date!
       postImages: [PostImage]!
       user: Users!
+      subject: subjects
     }
     
     type Posts {
@@ -80,6 +114,7 @@ const typeDefs = gql`
       likes: [Likes]
       commentsCnt: Int
       comments: [Comments]
+      subject: subjects
     }
     
     type PostImage {
@@ -133,7 +168,7 @@ const typeDefs = gql`
         bio: String
         gmail: String
         image: String
-        class: String
+        class: Class
         birthday: Date
         createdAt: Date
         updatedAt: Date
@@ -250,7 +285,7 @@ const typeDefs = gql`
         editProfile(
             id: Int!, firstName: String, lastName: String,
             birthday: Date, image: String, bio: String, facebookURL: String,
-            telegramURL: String, class: String, gmail: String
+            telegramURL: String, class: Class, gmail: String
         ) : Users 
         
         userChangePassword(id: Int! ,oldPassword: String! ,newPassword1: String! ,newPassword2: String!)

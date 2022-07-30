@@ -3,11 +3,12 @@ const { gql } = require('apollo-server');
 /// ----------------------------- ///
 
 const typeDefs = gql`
-	enum Roles {
-		USER
-		ADMIN
-		PUBLIC_SUPERVISOR
-		PRIVATE_SUPERVISOR
+
+  enum Roles {
+		طالب
+		مدير
+		مشرف_عام
+		مشرف_خاص
 	}
 	
   ############

@@ -5,17 +5,30 @@ const typeDefs = gql`
   scalar Void
   
   enum Section {
-    COMMON
-    SOFTWARE_ENGINEERING
-    ARTIFICIAL_INTELLIGENCE
-    COMPUTER_SYSTEMS_AND_NETWORKING
+    مشترك
+    هندسة_البرمجيات
+    الذكاء_الصنعي
+    النظم_و_الشبكات_الحاسوبية
+  }
+  
+  enum Semester {
+    الاول
+    الثاني
+  }
+  
+  enum Class {
+    الأولى
+    الثانية
+    الثالثة
+    الرابعة
+    الخامسة
   }
   
   type subjects {
     id: Int!
     name: String!
-    class: String!
-    semester: String!
+    class: Class!
+    semester: Semester!
     section: Section!
     type: String!
     createdAt: Date
