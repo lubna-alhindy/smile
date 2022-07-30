@@ -20,7 +20,7 @@ exports.signup = async (args ,context) => {
 
         const user = await context.models.users.create({
             email: args.email,
-            roleName: "USER",
+            roleName: "Student",
             lastName: args.lastName,
             firstName: args.firstName,
             password: await Helper.hashPassword(args.password),
