@@ -5,23 +5,23 @@ const typeDefs = gql`
   scalar Void
   
   enum Section {
-    مشترك
-    هندسة_البرمجيات
-    الذكاء_الصنعي
-    النظم_و_الشبكات_الحاسوبية
+    Joint
+    Software_Engineering  
+    Artificial_Intelligence
+    Computer_System_And_Networks
   }
   
-  enum Semester {
-    الاول
-    الثاني
+   enum Semester {
+    First
+    Second
   }
   
-  enum Class {
-    الأولى
-    الثانية
-    الثالثة
-    الرابعة
-    الخامسة
+   enum Class {
+    First
+    Second
+    Third
+    Fourth
+    Fifth
   }
   
   type subjects {
