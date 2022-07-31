@@ -35,7 +35,17 @@ async function startServer() {
   const app = express();
 
   app.use(graphqlUploadExpress());
-  server.applyMiddleware({ app });
+
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: true,
+      credentials: true,
+    },
+    bodyParserConfig: {
+      limit:"50mb"
+    }
+  });
 
   app.listen(process.env.PORT ,result => {
     console.log(`🚀 Gateway Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
