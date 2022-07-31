@@ -39,37 +39,37 @@ const typeDefs = gql`
   # ------------------------------------- AUTH-SVC ------------------------------------- #
   
     enum Roles {
-      طالب
-      مدير
-      مشرف_عام
-      مشرف_خاص
+      Student
+      Admin
+      Public_Supervisor
+      Private_Supervisor
     }
   
   # ------------------------------------- POST-SVC ------------------------------------- #
   
     enum Section {
-      مشترك
-      هندسة_البرمجيات
-      الذكاء_الصنعي
-      النظم_و_الشبكات_الحاسوبية
+      Joint
+      Software_Engineering  
+      Artificial_Intelligence
+      Computer_System_And_Networks
     }
     
     enum Semester {
-      الاول
-      الثاني
+      First
+      Second
     }
     
     enum Class {
-      الأولى
-      الثانية
-      الثالثة
-      الرابعة
-      الخامسة
+      First
+      Second
+      Third
+      Fourth
+      Fifth
     }
     
     enum PostTypes {
-      إعلان
-      استفسار
+      Advertisement
+      Inquiry
     }
   
   
