@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const {gql} = require('apollo-server-express');
 
 /// ------------------------------------------------------------------------------------ ///
 
@@ -44,32 +44,33 @@ const typeDefs = gql`
 		Public_Supervisor
 		Private_Supervisor
 	}
+	
   # ------------------------------------- POST-SVC ------------------------------------- #
   
- enum Section {
-    Joint
-    Software_Engineering  
-    Artificial_Intelligence
-    Computer_System_And_Networks
-  }
+    enum Section {
+      Joint
+      Software_Engineering  
+      Artificial_Intelligence
+      Computer_System_And_Networks
+    }
     
-  enum Semester {
-    First
-    Second
-  }
+    enum Semester {
+      First
+      Second
+    }
     
     enum Class {
-        First
-        Second
-        Third
-        Fourth
-        Fifth
+      First
+      Second
+      Third
+      Fourth
+      Fifth
     }
-   enum PostTypes {
-		Advertisement
-		Inquiry
-	}
-  
+
+    enum PostTypes {
+      Advertisement
+      Inquiry
+    }
   
     type Ads {
       id: Int!
