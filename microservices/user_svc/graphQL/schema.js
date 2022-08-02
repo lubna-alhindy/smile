@@ -36,6 +36,16 @@ const typeDefs = gql`
     Fifth
   }
   
+  enum Groups {
+    First
+    Second
+    Third
+    Fourth
+    Fifth
+    General
+    Special
+  }
+  
 	type Payload {
     id: Int!
     email: String!
@@ -215,7 +225,7 @@ const typeDefs = gql`
     getAllComplaints
       : [Complaints]!
 
-    getPosts(type: PostTypes ,subjectId: [Int])
+    getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
       : [Posts]
     
     getAllPostOfSubject(subjectId: [Int]!)
@@ -226,6 +236,9 @@ const typeDefs = gql`
     	
     checkToken(token: String!)
       : Payload
+      
+    getSubjects(group: Groups!)
+      : [subjects]!
   }
 
   type Mutation {

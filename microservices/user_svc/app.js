@@ -1,13 +1,13 @@
 const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
 const { ApolloServer } = require('apollo-server-express');
+const jwt = require('jsonwebtoken');
 const express = require('express');
-require("dotenv").config();
+require('dotenv').config();
 
 const Controller = require('./controllers/Controller');
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
 const models = require('./database/models');
-require('dotenv').config();
 
 /// -------------------------------------------- ///
 
@@ -24,6 +24,7 @@ async function startServer() {
             console.log("==========================================");
 
             return  {
+                payload: !req.get('token') ? null : jwt.decode(req.get('token') ,process.env.JWT_SECRET),
                 models: models
             };
         }

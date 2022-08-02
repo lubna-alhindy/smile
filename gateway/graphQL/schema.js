@@ -47,6 +47,16 @@ const typeDefs = gql`
 	
   # ------------------------------------- POST-SVC ------------------------------------- #
   
+    enum Groups {
+      First
+      Second
+      Third
+      Fourth
+      Fifth
+      General
+      Special
+    }
+  
     enum Section {
       Joint
       Software_Engineering  
@@ -249,11 +259,14 @@ const typeDefs = gql`
         getPost(id: Int! ,like: Boolean ,comment: Boolean)
           : Posts
     
-        getPosts(type: PostTypes ,subjectId: [Int])
+        getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
           : [Posts]
         
         getAllPostOfSubject(subjectId: [Int]!)
-          : [Posts]! 
+          : [Posts]!
+           
+        getSubjects(group: Groups!)
+          : [subjects]!
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #

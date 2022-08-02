@@ -158,6 +158,10 @@ module.exports = {
       name: 'deleteAd',
       createdAt: new Date(),
       updatedAt: new Date(),
+    },{
+      name: 'getSubjects',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

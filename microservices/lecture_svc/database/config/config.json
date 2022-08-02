@@ -2,21 +2,22 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "database_development",
+    "database": "lecture_svc",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test",
+    "database": "lecture_svc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "database_production",
+    "database": "lecture_svc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
