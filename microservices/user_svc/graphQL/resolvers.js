@@ -114,6 +114,10 @@ const resolvers = {
 
         changeUserRole: (root, args, context, info) =>
           Controller.User.changeUserRole(args ,context),
+
+        adsDeleter: (root, args, context, info) =>
+            Controller.Ads.adsDeleter(args ,context),
+
     },
 };
 

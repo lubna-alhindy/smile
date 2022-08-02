@@ -1,5 +1,7 @@
 const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
-const { ApolloServer } = require('apollo-server-express');
+const {ApolloServer} = require('apollo-server-express');
+const {request, gql} = require('graphql-request');
+const schedule = require('node-schedule');
 const express = require('express');
 require("dotenv").config();
 
@@ -21,7 +23,7 @@ async function startServer() {
       console.log(req.body);
       console.log("==========================================");
 
-      return  {
+      return {
         token: !req.get('Authorization') ? null : (!req.get('Authorization').split(' ')[1] ? null : req.get('Authorization').split(' ')[1]),
         query: await getBody(req.body.query)
       };
@@ -35,9 +37,18 @@ async function startServer() {
   const app = express();
 
   app.use(graphqlUploadExpress());
-  server.applyMiddleware({ app });
 
-  app.listen(process.env.PORT ,result => {
+  schedule.scheduleJob('2 0 0 * * *', () => {
+    request(process.env.USER_URL, gql`
+    mutation {
+      adsDeleter
+    }
+  `);
+  });
+
+  server.applyMiddleware({app});
+
+  app.listen(process.env.PORT, result => {
     console.log(`🚀 Gateway Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
   });
 }

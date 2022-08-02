@@ -300,10 +300,12 @@ const typeDefs = gql`
 
     deleteAd(id: Int!)
       : Void 
+      
+     adsDeleter
+        : Void
   }
 `;
 
 //add type notification
-//add schendual ads deleter
 
 module.exports = typeDefs;
