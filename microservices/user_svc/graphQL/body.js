@@ -19,7 +19,6 @@
         output the full info about the request from info object:
 
         getUser: (root, args, context ,info) => {
-            console.log(JSON.stringify(info.fieldNodes.length,null,2));
             return Controller.User.getUser(args ,context);
         }
 

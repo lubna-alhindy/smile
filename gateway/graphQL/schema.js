@@ -266,7 +266,7 @@ const typeDefs = gql`
           : [subjects]!
         
         getGroupsOfUser
-          : [Groups!]!
+          : [Groups]!
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #

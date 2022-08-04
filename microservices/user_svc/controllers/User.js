@@ -121,12 +121,10 @@ exports.editProfile = async (args ,context) => {
             if (!await Helper.writeImage(image, name)) {
                 throw new Error("Internal server error, try again");
             }
-            user.image = name;
+            user.image = await Helper.getImagePath(name);
         }
 
         await user.save();
-
-        user.image = base64image;
         return user;
     }
     catch(err){

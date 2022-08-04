@@ -56,7 +56,7 @@ exports.addAd = async (args, context) => {
       }
 
       ad["postImages"].push(await context.models.postImages.create({
-        name: name,
+        name: await Helper.getImagePath(name),
         adId: ad.id
       }));
       ad["postImages"][ad["postImages"].length - 1].base64image = base64image;
@@ -124,7 +124,7 @@ exports.updateAd = async (args, context) => {
 
         ad["postImages"].push(
           await context.models.postImages.create({
-            name: name,
+            name: await Helper.getImagePath(name),
             adId: ad.id
           })
         );
@@ -173,11 +173,7 @@ exports.adsDeleter = async (args, context) => {
     }
   });
 
-  console.log(JSON.stringify(ads ,null ,2))
-
   for (let ad of ads) {
-    console.log("-------------")
-    console.log(new Date(ad.expireIn) , new Date() ,new Date(ad.expireIn) < new Date())
     if (new Date(ad.expireIn) < new Date()) {
       for (let image of ad.postImages) {
         await Helper.deleteImage(image.name);

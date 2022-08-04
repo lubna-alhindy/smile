@@ -85,8 +85,12 @@ exports.getBody = async query => {
       subQuery += c;
     }
   }
-  console.log("HERE")
-  console.log(res);
+
+  if( resolverName && subQuery && state === 4 ){
+    subQuery += '}';
+    res[`${resolverName}`] = subQuery;
+  }
+
   return res;
 };
 

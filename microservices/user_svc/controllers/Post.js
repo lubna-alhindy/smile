@@ -239,7 +239,7 @@ exports.addPost = async (args, context) => {
       }
 
       post["postImages"].push(await context.models.postImages.create({
-        name: name,
+        name: await Helper.getImagePath(name),
         postRequestId: post.id
       }));
 
@@ -282,7 +282,7 @@ exports.subervisorAddPost = async (args, context) => {
       }
 
       post["postImages"].push(await context.models.postImages.create({
-        name: name,
+        name: await Helper.getImagePath(name),
         postId: post.id
       }));
 
@@ -585,10 +585,9 @@ exports.getGroupsOfUser = async (args ,context) => {
       attributes: ["class"]
     });
 
-    const result = ["Special" ,"General"];
+    const allClasses = ["Special" ,"General" ,"First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
 
-    const allClasses = ["First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
-
+    const result = [];
     if( user.class !== null ){
       for(let Class of allClasses){
         result.push(Class);

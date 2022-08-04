@@ -238,7 +238,7 @@ const typeDefs = gql`
       : [subjects]!
       
     getGroupsOfUser
-      : [Groups!]!
+      : [Groups]!
   }
 
   type Mutation {

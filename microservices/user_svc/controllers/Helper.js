@@ -121,7 +121,7 @@ exports.writeImage = async (image ,name) => {
         );
 
         await writeFileSync(filePath, image);
-        return true;
+        return filePath;
     }
     catch(err){
         throw new Error(err);
