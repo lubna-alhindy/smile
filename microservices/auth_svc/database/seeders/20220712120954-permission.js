@@ -55,10 +55,6 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },{
-      name: 'getAllPostOfSubject',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },{
       name: 'getBanState',
       createdAt: new Date(),
       updatedAt: new Date(),

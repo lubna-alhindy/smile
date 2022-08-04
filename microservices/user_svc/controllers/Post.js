@@ -74,13 +74,13 @@ exports.getPost = async (args, context) => {
 // -------------------------------- //
 
 //TODO: make the special function
+//TODO: make detect the year of user
 async function getSpecialSubjects(userId){
   return [1 ,2 ,3];
 }
 
 // -------------------------------- //
 
-//TODO: make the special function
 async function getSpecialPosts(args ,context){
   const subjects = await getSpecialSubjects(context.payload.id);
 
@@ -119,11 +119,48 @@ async function getSpecialPosts(args ,context){
 }
 
 // -------------------------------- //
-//TODO: GENERAL state
+
+async function getGeneralPosts(args ,context){
+  const posts = await context.models.posts.findAll({
+    where: {
+      type: args.type !== undefined ? args.type : {
+        [Op.ne]: null
+      },
+      subjectId: null
+    },
+
+    include: [{
+      model: context.models.postImages,
+      attributes: ['name']
+    }, {
+      model: context.models.users,
+      attributes: ['firstName', 'lastName', 'image', 'class']
+    }, {
+      model: context.models.likes,
+      attributes: ['id']
+    }, {
+      model: context.models.comments,
+      attributes: ['id']
+    }]
+  });
+
+  for (let post of posts) {
+    post.likesCnt = post.likes.length;
+    post.commentsCnt = post.comments.length;
+  }
+
+  return posts;
+}
+
+// -------------------------------- //
+
 exports.getPosts = async (args, context) => {
   try {
     if( args.group === "Special" ){
       return await getSpecialPosts(args ,context);
+    }
+    if( args.group === "General" ){
+      return await getGeneralPosts(args ,context);
     }
 
     const posts = await context.models.posts.findAll({
@@ -293,15 +330,50 @@ exports.deletePost = async (args, context) => {
 
 // -------------------------------- //
 
+exports.getAllGeneralPostRequests = async (context) => {
+  try {
+    const postRequests = await context.models.postRequests.findAll({
+      where: {
+        subjectId: null,
+      },
+      include: [{
+        model: context.models.postImages
+      }, {
+        model: context.models.users
+      }]
+    });
+
+    for (let i = 0; i < postRequests.length; i++) {
+      for (let j = 0; j < postRequests[i].postImages.length; j++) {
+        const imagePath = Helper.getImagePath(postRequests[i].postImages[j].name);
+        postRequests[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
+      }
+    }
+
+    return postRequests;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+// -------------------------------- //
+
 exports.getAllPostRequests = async (context) => {
   try {
+    if( args.group === "General" ){
+      return await getAllGeneralPostRequests(args ,context);
+    }
+
     const postRequests = await context.models.postRequests.findAll({
       include: [{
         model: context.models.postImages
       }, {
         model: context.models.users
       }, {
-        model: context.models.subjects
+        model: context.models.subjects,
+        where: {
+          class: args.group
+        }
       }]
     });
 
@@ -491,72 +563,46 @@ exports.changeFavorite = async (args, context) => {
 
 // -------------------------------- //
 
-exports.getAllPostOfSubject = async (args, context) => {
+exports.getSubjects = async (args ,context) => {
   try {
-    const allPost = await context.models.posts.findAll({
-      where: {
-        subjectId: args.subjectId
-      },
-      include: {
-        model: context.models.subjects
-      },
-      order: [['createdAt', 'DESC']]
-    });
-
-    const response = [];
-    for (const post of allPost) {
-      const editedPost = JSON.parse(JSON.stringify(post));
-
-      const likes = await context.models.likes.findAll({
-        where: {
-          postId: post.id
-        }
-      });
-
-      const likesRes = [];
-      for (const like of likes) {
-        const editedLike = JSON.parse(JSON.stringify(like));
-        editedLike.user = await context.models.users.findOne({
-          where: {
-            id: like.userId
-          }
-        });
-        likesRes.push(editedLike);
-      }
-      editedPost.likes = likesRes;
-      editedPost.likesCnt = editedPost.likes.length;
-
-      const comments = await context.models.comments.findAll({
-        where: {
-          postId: post.id
-        }
-      });
-
-      const commentsRes = [];
-      for (const comment of comments) {
-        const editedComment = JSON.parse(JSON.stringify(comment));
-        editedComment.user = await context.models.users.findOne({
-          where: {
-            id: comment.userId
-          }
-        });
-        commentsRes.push(editedComment);
-      }
-      editedPost.comments = commentsRes;
-      editedPost.commentsCnt = editedPost.comments.length;
-      editedPost.user = await context.models.users.findOne({
-        where: {
-          id: post.userId
-        }
-      });
-
-      response.push(editedPost);
-    }
-
-    return response;
-  } catch (err) {
+    return await context.models.subjects.findAll();
+  }
+  catch(err){
     throw new Error(err);
   }
-}
+};
+
+// -------------------------------- //
+
+exports.getGroupsOfUser = async (args ,context) => {
+  try {
+    const {id} = context.payload;
+
+    const user = await context.models.users.findOne({
+      where: {
+        id: id
+      },
+      attributes: ["class"]
+    });
+
+    const result = ["Special" ,"General"];
+
+    const allClasses = ["First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
+
+    if( user.class !== null ){
+      for(let Class of allClasses){
+        result.push(Class);
+        if( user.class === Class ){
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
+  catch(err){
+    throw new Error(err);
+  }
+};
 
 // -------------------------------- //

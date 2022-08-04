@@ -253,7 +253,7 @@ const typeDefs = gql`
         getAllAds
           : [Ads]!
     
-        getAllPostRequests
+        getAllPostRequests(group: Groups!)
           : [PostRequests]!
     
         getPost(id: Int! ,like: Boolean ,comment: Boolean)
@@ -262,11 +262,11 @@ const typeDefs = gql`
         getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
           : [Posts]
         
-        getAllPostOfSubject(subjectId: [Int]!)
-          : [Posts]!
-           
         getSubjects(group: Groups!)
           : [subjects]!
+        
+        getGroupsOfUser
+          : [Groups!]!
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #

@@ -216,7 +216,7 @@ const typeDefs = gql`
     getBansUser
       : [Bans]!
 
-    getAllPostRequests
+    getAllPostRequests(group: Groups!)
       : [PostRequests]!
 
     getPost(id: Int! ,like: Boolean ,comment: Boolean)
@@ -228,9 +228,6 @@ const typeDefs = gql`
     getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
       : [Posts]
     
-    getAllPostOfSubject(subjectId: [Int]!)
-      : [Posts]! 
-    
     getBanState(id: Int!)
     	: Boolean
     	
@@ -239,6 +236,9 @@ const typeDefs = gql`
       
     getSubjects(group: Groups!)
       : [subjects]!
+      
+    getGroupsOfUser
+      : [Groups!]!
   }
 
   type Mutation {

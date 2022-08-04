@@ -32,14 +32,17 @@ const resolvers = {
         getPosts: (root, args, context, info) =>
           Controller.Post.getPosts(args ,context),
 
-        getAllPostOfSubject: (root, args, context, info) =>
-          Controller.Post.getAllPostOfSubject(args ,context),
-
         getBanState: (root ,args ,context ,info) =>
           Controller.User.getBanState(args ,context),
 
         checkToken: (root ,args ,context ,info) =>
           Controller.Auth.checkToken(args ,context),
+
+        getSubjects: (root ,args ,context ,info) =>
+          Controller.Post.getSubjects(args ,context),
+
+        getGroupsOfUser: (root ,args ,context ,info) =>
+          Controller.Post.getGroupsOfUser(args ,context),
     },
 
     /// ---------------------------- ///

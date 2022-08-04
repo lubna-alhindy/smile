@@ -52,9 +52,11 @@ const resolvers = {
       getPosts: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getPosts"),
 
-      getAllPostOfSubject: (root, args, context) =>
-        Controller.Connection.fetch(context, process.env.USER_URL, "getAllPostOfSubject"),
+      getSubjects: (root ,args ,context ,info) =>
+        Controller.Post.getSubjects(args ,context),
 
+      getGroupsOfUser: (root ,args ,context ,info) =>
+        Controller.Post.getGroupsOfUser(args ,context),
   },
 
   /// ------------------------------ MUTATION ------------------------------ ///
