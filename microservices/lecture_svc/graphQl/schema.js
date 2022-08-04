@@ -50,13 +50,28 @@ const typeDefs = gql`
     subject: subjects
   }
   
+  type weeklyschedules {
+    id: Int!
+    url: String!
+    year: String!
+  }
+  
+  type lectures{
+    subjectId: Int!,
+    name: String!,
+    type: SubjectTypes!,
+    url: String!,
+    year: String!,
+    subject: subjects
+  }
+  
   type Query {
     getSummary(id: Int!)
       : summarys
       
     getAllSummary(group: Class ,semester: Semester ,type: SubjectTypes)
       : [summarys]!
-
+    
   }
   
   type Mutation {
