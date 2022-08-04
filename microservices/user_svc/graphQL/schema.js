@@ -16,6 +16,11 @@ const typeDefs = gql`
 		Inquiry
 	}
 	
+	enum SubjectTypes {
+		Practical
+		Theoretical
+	}
+	
   enum Section {
     Joint
     Software_Engineering  
@@ -62,7 +67,7 @@ const typeDefs = gql`
     class: Class!
     semester: Semester!
     section: Section!
-    type: String!
+    type: SubjectTypes!
     createdAt: Date
     updatedAt: Date
   }
@@ -234,7 +239,7 @@ const typeDefs = gql`
     checkToken(token: String!)
       : Payload
       
-    getSubjects(group: Groups!)
+    getSubjects(semester: Semester ,group: Groups ,type: SubjectTypes)
       : [subjects]!
       
     getGroupsOfUser

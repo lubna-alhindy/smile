@@ -47,6 +47,11 @@ const typeDefs = gql`
 	
   # ------------------------------------- POST-SVC ------------------------------------- #
   
+    enum SubjectTypes {
+      Practical
+      Theoretical
+    }
+    
     enum Groups {
       First
       Second
@@ -219,6 +224,17 @@ const typeDefs = gql`
       user: Users!
     }
 
+  # --------------------------------- LECTURE-SVC --------------------------------- #
+  
+    type summarys {
+      id: Int!
+      subjectId: Int!
+      title: String!
+      body: String!
+      subject: subjects
+    }
+
+
   # ------------------------------------- QUERY ------------------------------------- #
   
     type Query {
@@ -262,11 +278,19 @@ const typeDefs = gql`
         getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
           : [Posts]
         
-        getSubjects(group: Groups!)
+        getSubjects(semester: Semester ,group: Groups ,type: SubjectTypes)
           : [subjects]!
         
         getGroupsOfUser
           : [Groups]!
+          
+      # --------------------------------- LECTURE-SVC --------------------------------- #
+
+        getSummary(id: Int!)
+          : summarys
+          
+        getAllSummary(group: Class ,semester: Semester ,type: SubjectTypes)
+          : [summarys]!
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #
@@ -361,6 +385,14 @@ const typeDefs = gql`
     
         changeFavorite(userId: Int! ,postId: Int!)
           : Posts
+      
+      # --------------------------------- LECTURE-SVC --------------------------------- #
+      
+        addSummary(subjectId: Int! ,title: String! ,body: String!)
+          : summarys
+        
+        deleteSummary(id: Int!)
+          : Void
     }
 `;
 

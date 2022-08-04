@@ -565,7 +565,19 @@ exports.changeFavorite = async (args, context) => {
 
 exports.getSubjects = async (args ,context) => {
   try {
-    return await context.models.subjects.findAll();
+    return await context.models.subjects.findAll({
+      where: {
+        class: args.group ? args.group : {
+          [context.models.Sequelize.Op.ne]: null
+        },
+        semester: args.semester ? args.semester : {
+          [context.models.Sequelize.Op.ne]: null
+        },
+        type: args.type ? args.type : {
+          [context.models.Sequelize.Op.ne]: null
+        }
+      }
+    });
   }
   catch(err){
     throw new Error(err);

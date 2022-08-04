@@ -158,6 +158,22 @@ module.exports = {
       name: 'getSubjects',
       createdAt: new Date(),
       updatedAt: new Date(),
+    },{
+      name: 'getSummary',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getAllSummary',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'addSummary',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'deleteSummary',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

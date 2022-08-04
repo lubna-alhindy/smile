@@ -57,6 +57,15 @@ const resolvers = {
 
       getGroupsOfUser: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getGroupsOfUser"),
+
+
+    /// ----------------------- LECTURE-SVC ----------------------- ///
+
+      getSummary: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getSummary"),
+
+      getAllSummary: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getAllSummary"),
   },
 
   /// ------------------------------ MUTATION ------------------------------ ///
@@ -153,6 +162,14 @@ const resolvers = {
 
       deleteAd: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "deleteAd"),
+
+    /// ----------------------- LECTURE-SVC ----------------------- ///
+
+      addSummary: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "addSummary"),
+
+      deleteSummary: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteSummary"),
   }
 };
 
