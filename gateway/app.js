@@ -25,7 +25,14 @@ async function startServer() {
 
       return {
         token: !req.get('Authorization') ? null : (!req.get('Authorization').split(' ')[1] ? null : req.get('Authorization').split(' ')[1]),
-        query: await getBody(req.body.query)
+        query: await getBody(req.body.query),
+        data: !req.body ? undefined : (
+          !req.body.variables ? undefined : (
+            !req.body.variables.data ? undefined : (
+              req.body.variables.data
+            )
+          )
+        )
       };
     },
 

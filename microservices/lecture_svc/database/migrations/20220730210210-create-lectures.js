@@ -16,19 +16,15 @@ module.exports = {
           key: 'id',
         }
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       url: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       year: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      type: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dropDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:drop && cd .. && cd ..",
-    "createDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:create && cd .. && cd ..",
-    "migrateDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd ..",
-    "seedDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd ..",
+    "dropDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:drop && cd .. && cd .. && cd lecture_svc && cd database && npx sequelize-cli db:drop",
+    "createDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:create && cd .. && cd .. && cd lecture_svc && cd database && npx sequelize-cli db:create",
+    "migrateDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:migrate && cd .. && cd .. && cd lecture_svc && cd database && npx sequelize-cli db:migrate",
+    "seedDB": "cd .. && cd microservices && cd user_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd .. && cd auth_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd .. && cd quiz_svc && cd database && npx sequelize-cli db:seed:all && cd .. && cd .. && cd lecture_svc && cd database && npx sequelize-cli db:seed:all",
+    "npmInstall": "cd .. && cd microservices && cd user_svc && npm i && cd .. && cd .. && cd auth_svc && npm i && cd .. && cd .. && cd quiz_svc && npm i && cd .. && cd .. && cd lecture_svc && npm i",
+    "start_lecture_svc": "cd .. && cd microservices && cd lecture_svc && npm start",
     "start_user_svc": "cd .. && cd microservices && cd user_svc && npm start",
     "start_auth_svc": "cd .. && cd microservices && cd auth_svc && npm start",
     "start_quiz_svc": "cd .. && cd microservices && cd quiz_svc && npm start",
@@ -16,6 +18,7 @@
   "author": "Loubna & Ismail",
   "license": "ISC",
   "devDependencies": {
+    "crypto-js": "^4.1.1",
     "nodemon": "^2.0.19"
   },
   "dependencies": {

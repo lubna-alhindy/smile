@@ -10,10 +10,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   lectures.init({
     subjectId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    type: DataTypes.STRING,
     url: DataTypes.STRING,
-    year: DataTypes.STRING
+    year: DataTypes.STRING,
+    type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'lectures',

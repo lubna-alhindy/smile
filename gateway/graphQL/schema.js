@@ -39,11 +39,15 @@ const typeDefs = gql`
   # ------------------------------------- AUTH-SVC ------------------------------------- #
   
     enum Roles {
-		Student
-		Admin
-		Public_Supervisor
-		Private_Supervisor
-	}
+      Student
+      Admin
+      Public_Supervisor
+      First_Supervisor
+      Second_Supervisor
+      Third_Supervisor
+      Fourth_Supervisor
+      Fifth_Supervisor
+	  }
 	
   # ------------------------------------- POST-SVC ------------------------------------- #
   
@@ -225,6 +229,14 @@ const typeDefs = gql`
     }
 
   # --------------------------------- LECTURE-SVC --------------------------------- #
+  	enum LectureTypes {
+      RBCs
+      Other
+      Binary
+      Slides
+      References
+      StudentWrite
+    }
   
     type summarys {
       id: Int!
@@ -232,8 +244,27 @@ const typeDefs = gql`
       title: String!
       body: String!
       subject: subjects
+      createdAt: Date
+      updatedAt: Date
     }
-
+    
+    type weeklyschedules {
+      id: Int!
+      url: String!
+      year: String!
+      createdAt: Date
+      updatedAt: Date
+    }
+    
+    type lectures{
+      subjectId: Int!
+      url: String!
+      year: String!
+      type: LectureTypes!
+      subject: subjects
+      createdAt: Date
+      updatedAt: Date
+    }
 
   # ------------------------------------- QUERY ------------------------------------- #
   
@@ -289,16 +320,22 @@ const typeDefs = gql`
         getSummary(id: Int!)
           : summarys
           
-        getAllSummary(group: Class ,semester: Semester ,type: SubjectTypes)
+        getAllSummary(class: Class ,semester: Semester ,type: SubjectTypes)
           : [summarys]!
+        
+        getLecture(id: Int!)
+          : lectures
+          
+        getAllLecture(class: Class ,semester: Semester ,type: SubjectTypes ,lectureType: LectureTypes ,year: String)
+          : [lectures]!
+        
+        getWeeklySchedule(year: String!)
+          : weeklyschedules
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #
 
     type Mutation {
-      singleUpload(file: Upload!)
-         : File!
-      
       # --------------------------------- QUIZ-SVC --------------------------------- #
 
         addQuiz(subjectName: String! ,question: String! ,answer: String!)
@@ -389,13 +426,39 @@ const typeDefs = gql`
       # --------------------------------- LECTURE-SVC --------------------------------- #
       
         addSummary(subjectId: Int! ,title: String! ,body: String!)
-          : summarys
-        
+           : summarys
+          
         deleteSummary(id: Int!)
-          : Void
+           : Void
+    
+        deleteLecture(id: Int!)
+           : Void
+           
+        deleteWeeklySchedule(id: Int!)
+           : Void
+           
+        addLecture(file: Upload!)
+           : File!
+           
+        addWeeklySchedule(file: Upload!)
+           : File!
     }
 `;
 
 /// ------------------------------------------------------------------------------------ ///
 
 module.exports = typeDefs;
+
+/*
+{
+    "query": "mutation addLecture($file: Upload!) { addLecture(file: $file) { filename mimetype encoding }}",
+    "variables":
+    {
+        "data":
+        {
+          "year": "2002",
+          "subjectId": 1
+        }
+    }
+}
+*/

@@ -24,6 +24,8 @@ async function startServer() {
       console.log("==========================================");
 
       return  {
+        // payload: !req.get('Authorization').split(' ')[1] ? null : jwt.decode(req.get('Authorization').split(' ')[1] ,process.env.JWT_SECRET),
+        payload: !req.get('token') ? null : jwt.decode(req.get('token') ,process.env.JWT_SECRET),
         models: models
       };
     }

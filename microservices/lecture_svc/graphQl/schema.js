@@ -1,11 +1,11 @@
-const { gql } = require('apollo-server');
+const {gql} = require('apollo-server');
 
 /// ----------------------------- ///
 
 const typeDefs = gql`
   scalar Date
   scalar Void
-  
+
   enum Section {
     Joint
     Software_Engineering  
@@ -30,6 +30,15 @@ const typeDefs = gql`
 		Practical
 		Theoretical
 	}
+	 
+	enum LectureTypes {
+	  RBCs
+	  Other
+	  Binary
+	  Slides
+	  References
+	  StudentWrite
+	}
 	
   type subjects {
     id: Int!
@@ -48,39 +57,63 @@ const typeDefs = gql`
     title: String!
     body: String!
     subject: subjects
+    createdAt: Date
+    updatedAt: Date
   }
   
   type weeklyschedules {
     id: Int!
     url: String!
     year: String!
+    createdAt: Date
+    updatedAt: Date
   }
   
   type lectures{
-    subjectId: Int!,
-    name: String!,
-    type: SubjectTypes!,
-    url: String!,
-    year: String!,
+    subjectId: Int!
+    url: String!
+    year: String!
+    type: LectureTypes!
     subject: subjects
+    createdAt: Date
+    updatedAt: Date
   }
   
   type Query {
     getSummary(id: Int!)
       : summarys
       
-    getAllSummary(group: Class ,semester: Semester ,type: SubjectTypes)
+    getAllSummary(class: Class ,semester: Semester ,type: SubjectTypes)
       : [summarys]!
     
+    getLecture(id: Int!)
+      : lectures
+      
+    getAllLecture(class: Class ,semester: Semester ,type: SubjectTypes ,lectureType: LectureTypes ,year: String)
+      : [lectures]!
+    
+    getWeeklySchedule(year: String!)
+      : weeklyschedules
   }
   
   type Mutation {
-   addSummary(subjectId: Int! ,title: String! ,body: String!)
-    : summarys
-    
-   deleteSummary(id: Int!)
-    : Void
+    addSummary(subjectId: Int! ,title: String! ,body: String!)
+       : summarys
+      
+    deleteSummary(id: Int!)
+       : Void
 
+    addLecture(url: String ,year: String ,subjectId: Int ,type: LectureTypes!)
+       : Void
+       
+    deleteLecture(id: Int!)
+       : Void
+       
+    deleteWeeklySchedule(id: Int!)
+       : Void
+       
+    addWeeklySchedule(url: String! ,year: String!)
+       : Void
   }
 `;
 

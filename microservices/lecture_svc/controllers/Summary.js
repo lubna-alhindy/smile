@@ -19,7 +19,7 @@ exports.getAllSummary = async (args, context) => {
       include: {
         model: context.models.subjects,
         where: {
-          class: args.group ? args.group : {
+          class: args.class ? args.class : {
             [context.models.Sequelize.Op.ne]: null
           },
           semester: args.semester ? args.semester : {

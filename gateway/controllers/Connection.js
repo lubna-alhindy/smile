@@ -9,7 +9,6 @@ exports.fetch = async (context ,url ,resolverName) => {
     if (!await getAuthorization(context.token, resolverName)) {
       throw new Error("Unauthorized");
     }
-    console.log(url ,context.query ,context.token)
     const res = await request(url, context.query[`${resolverName}`] ,{} ,{token: context.token});
     return res[`${resolverName}`];
   } catch (err) {

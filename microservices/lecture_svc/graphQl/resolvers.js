@@ -13,6 +13,15 @@ const resolvers = {
 
     getAllSummary: (root ,args ,context ,info) =>
       Controller.Summary.getAllSummary(args ,context),
+
+    getLecture: (root ,args ,context ,info) =>
+      Controller.Lecture.getLecture(args ,context),
+
+    getAllLecture: (root ,args ,context ,info) =>
+      Controller.Lecture.getAllLecture(args ,context),
+
+    getWeeklySchedule: (root ,args ,context ,info) =>
+      Controller.WeeklySchedule.getWeeklySchedule(args ,context),
   },
 
   Mutation: {
@@ -21,6 +30,18 @@ const resolvers = {
 
     deleteSummary: (root ,args ,context ,info) =>
       Controller.Summary.deleteSummary(args ,context),
+
+    addLecture: (root ,args ,context ,info) =>
+      Controller.Lecture.addLecture(args ,context),
+
+    deleteLecture: (root ,args ,context ,info) =>
+      Controller.Lecture.deleteLecture(args ,context),
+
+    deleteWeeklySchedule: (root ,args ,context ,info) =>
+      Controller.WeeklySchedule.deleteWeeklySchedule(args ,context),
+
+    addWeeklySchedule: (root ,args ,context ,info) =>
+      Controller.WeeklySchedule.addWeeklySchedule(args ,context),
   }
 };
 

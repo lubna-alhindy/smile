@@ -8,7 +8,11 @@ const typeDefs = gql`
 		Student
 		Admin
 		Public_Supervisor
-		Private_Supervisor
+		First_Supervisor
+		Second_Supervisor
+		Third_Supervisor
+		Fourth_Supervisor
+		Fifth_Supervisor
 	}
 	
 	enum PostTypes {

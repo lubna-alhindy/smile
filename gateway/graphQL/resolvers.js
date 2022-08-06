@@ -66,18 +66,20 @@ const resolvers = {
 
       getAllSummary: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "getAllSummary"),
+
+      getLecture: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getLecture"),
+
+      getAllLecture: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getAllLecture"),
+
+      getWeeklySchedule: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getWeeklySchedule"),
   },
 
   /// ------------------------------ MUTATION ------------------------------ ///
 
   Mutation: {
-    singleUpload: async (parent, { file }) => {
-      const { createReadStream, filename, mimetype, encoding } = await file;
-      const stream = createReadStream();
-      const out = require('fs').createWriteStream('local-file-output.jpg');
-      await stream.pipe(out);
-      return { filename, mimetype, encoding };
-    },
 
     /// ----------------------- QUIZ-SVC ----------------------- ///
 
@@ -170,6 +172,18 @@ const resolvers = {
 
       deleteSummary: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteSummary"),
+
+      addLecture: (root ,args ,context) =>
+        Controller.Lecture.addLecture(args ,context),
+
+      addWeeklySchedule: (root ,args ,context) =>
+        Controller.WeeklySchedule.addWeeklySchedule(args ,context),
+
+      deleteLecture: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteLecture"),
+
+      deleteWeeklySchedule: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteWeeklySchedule"),
   }
 };
 

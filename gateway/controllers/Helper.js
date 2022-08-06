@@ -1,5 +1,6 @@
 const graphql = require('graphql');
 const graphqlLanguage = require('graphql/language');
+
 // -------------------------------------------- //
 
 exports.resolverMap = {
@@ -43,5 +44,48 @@ exports.Void = {
     })
 }
 
-/// --------------------------- ///
+// -------------------------------------------- //
 
+const {existsSync ,mkdirSync ,createWriteStream} = require('fs');
+const CryptoJS = require("crypto-js");
+const {join} = require('path');
+
+// -------------------------------------------- //
+
+exports.encryptB64 = (message) => {
+    const ciphertext = CryptoJS.AES.encrypt(
+      JSON.stringify(message),
+      "ENCRYPTSECRETKEY"
+    ).toString();
+    return Buffer.from(ciphertext, "utf8").toString("base64");
+};
+
+exports.uniqueName = (suffix) => {
+    const date = new Date();
+
+    const name
+      = date.toLocaleDateString('sv')
+      + date.getHours() + '-'
+      + date.getMinutes() + '-'
+      + date.getSeconds() + '-'
+      + date.getMilliseconds() + '-'
+      + suffix.toString();
+
+    return this.encryptB64(name);
+};
+
+exports.getUploadPath = (folder) => {
+    let filePath = join(__dirname ,".." ,".." ,"microservices" ,"lecture_svc" ,"upload");
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    filePath = join(filePath ,folder);
+    if( !existsSync(filePath) ){
+        mkdirSync(filePath);
+    }
+
+    return filePath;
+};
+
+// -------------------------------------------- //
