@@ -328,6 +328,4 @@ const typeDefs = gql`
   }
 `;
 
-//add type notification
-
 module.exports = typeDefs;

@@ -2,25 +2,22 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "auth_svc",
+    "database": "marks_svc",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "logging": false
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "auth_svc",
+    "database": "marks_svc",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "logging": false
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "auth_svc",
+    "database": "marks_svc",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "logging": false
+    "dialect": "mysql"
   }
 }
