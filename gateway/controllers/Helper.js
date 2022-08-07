@@ -74,8 +74,8 @@ exports.uniqueName = (suffix) => {
     return this.encryptB64(name);
 };
 
-exports.getUploadPath = (folder) => {
-    let filePath = join(__dirname ,".." ,".." ,"microservices" ,"lecture_svc" ,"upload");
+exports.getUploadPath = (folder ,service) => {
+    let filePath = join(__dirname ,".." ,".." ,"microservices" ,service ,"upload");
     if( !existsSync(filePath) ){
         mkdirSync(filePath);
     }

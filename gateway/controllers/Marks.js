@@ -12,7 +12,7 @@ exports.addMarksFile = async (args ,context) => {
   const {year ,subjectId} = await context.data;
   const stream = createReadStream();
   filename = Helper.uniqueName(filename) + '.' + mimetype.split('/')[1];
-  const filePath = join(Helper.getUploadPath("marksFiles") ,filename);
+  const filePath = join(Helper.getUploadPath("marksFiles" ,"marks_svc") ,filename);
 
   const out = createWriteStream(filePath);
   await stream.pipe(out);

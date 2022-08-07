@@ -1,4 +1,3 @@
-const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
 const { ApolloServer } = require('apollo-server-express');
 const jwt = require('jsonwebtoken');
 const express = require('express');
@@ -34,8 +33,6 @@ async function startServer() {
   await server.start();
   const app = express();
 
-  app.use(graphqlUploadExpress());
-
   server.applyMiddleware({
     app,
     cors: {
@@ -60,4 +57,4 @@ startServer()
     console.error(err);
   });
 
-// --------------------------------------- //
+/// -------------------------------------------- ///

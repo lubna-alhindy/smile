@@ -13,7 +13,7 @@ exports.addLecture = async (args ,context) => {
   const stream = createReadStream();
 
   filename = Helper.uniqueName(filename) + '.' + mimetype.split('/')[1];
-  const filePath = join(Helper.getUploadPath("lectures") ,filename);
+  const filePath = join(Helper.getUploadPath("lectures" ,"lecture_svc") ,filename);
 
   const out = createWriteStream(filePath);
   await stream.pipe(out);
