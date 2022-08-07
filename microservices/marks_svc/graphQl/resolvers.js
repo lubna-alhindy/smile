@@ -8,14 +8,22 @@ const resolvers = {
   /// --------- Query --------- ///
 
   Query: {
+    getMarksFiles: (root ,args ,context ,info) =>
+      Controller.Marks.getMarksFiles(args ,context),
 
+    getAllMarksFiles: (root ,args ,context ,info) =>
+      Controller.Marks.getAllMarksFiles(args ,context),
   },
 
   /// ---------------------------- ///
   /// --------- Mutation --------- ///
 
   Mutation: {
+    addMarksFile: (root ,args ,context ,info) =>
+      Controller.Marks.addMarksFile(args ,context),
 
+    deleteMarksFile: (root ,args ,context ,info) =>
+      Controller.Marks.deleteMarksFile(args ,context),
 
   },
 };

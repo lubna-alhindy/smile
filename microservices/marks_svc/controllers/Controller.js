@@ -1,5 +1,7 @@
 const Helper = require('./Helper');
+const Marks = require('./Marks');
 
 module.exports = {
-    Helper: Helper
+    Helper: Helper,
+    Marks: Marks
 };

@@ -171,18 +171,52 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },{
-      name: 'deleteSummary',
+      name: 'getLecture',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getAllLecture',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getWeeklySchedule',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'addLecture',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'deleteLecture',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'deleteWeeklySchedule',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'addWeeklySchedule',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getMarksFiles',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getAllMarksFiles',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'addMarksFile',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'deleteMarksFile',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
   }
 };

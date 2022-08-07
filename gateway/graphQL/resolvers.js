@@ -74,7 +74,16 @@ const resolvers = {
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "getAllLecture"),
 
       getWeeklySchedule: (root ,args ,context ,info) =>
-        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getWeeklySchedule"),
+        Controller.Connection.fetch(context, process.env.LECTURE_URL, "getWeeklySchedule"),/// ----------------------- LECTURE-SVC ----------------------- ///
+
+      /// ----------------------- LECTURE-SVC ----------------------- ///
+
+      getMarksFiles: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.MARKS_URL, "getMarksFiles"),
+
+      getAllMarksFiles: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.MARKS_URL, "getAllMarksFiles"),
+
   },
 
   /// ------------------------------ MUTATION ------------------------------ ///
@@ -184,6 +193,16 @@ const resolvers = {
 
       deleteWeeklySchedule: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteWeeklySchedule"),
+
+      /// ----------------------- MARKS-SVC ----------------------- ///
+
+      deleteMarksFile: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.MARKS_URL, "deleteMarksFile"),
+
+      addMarksFile: (root ,args ,context) =>
+        Controller.Marks.addMarksFile(args ,context),
+
+
   }
 };
 

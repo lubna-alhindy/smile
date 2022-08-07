@@ -1,62 +1,41 @@
-const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
-const { ApolloServer } = require('apollo-server-express');
-const jwt = require('jsonwebtoken');
-const express = require('express');
-require('dotenv').config();
+// ------- 3rd Party Pkg imports --------- //
+const { ApolloServer } = require('apollo-server');
 
-const Controller = require('./controllers/Controller');
+// ------------ My imports --------------- //
 const resolvers = require('./graphQL/resolvers');
 const typeDefs = require('./graphQL/schema');
 const models = require('./database/models');
+require('dotenv').config();
 
-/// -------------------------------------------- ///
+// --------------------------------------- //
 
-async function startServer() {
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
 
-        context: async ({req}) => {
-            console.log("HEADERS:");
-            console.log(req.headers);
-            console.log("BODY:");
-            console.log(req.body);
-            console.log("==========================================");
+    context: async ({req}) => {
+        console.log("HEADERS:");
+        console.log(req.headers);
+        console.log("BODY:");
+        console.log(req.body);
+        console.log("==========================================");
 
-            return  {
-                payload: !req.get('token') ? null : jwt.decode(req.get('token') ,process.env.JWT_SECRET),
-                models: models
-            };
-        }
-    });
+        return  {
+            models: models
+        };
+    }
+});
 
-    await server.start();
-    const app = express();
+// --------------------------------------- //
 
-    app.use(graphqlUploadExpress());
-
-    server.applyMiddleware({
-        app,
-        cors: {
-            origin: true,
-            credentials: true,
-        },
-        bodyParserConfig: {
-            limit:"50mb"
-        }
-    });
-
-    app.listen(process.env.PORT ,result => {
-        console.log(`🚀 Marks service is ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
-    });
-}
-
-/// -------------------------------------------- ///
-
-startServer()
-  .then()
-  .catch(err => {
-      console.error(err);
+server
+  .listen({
+      protocol: process.env.PROTOCOL,
+      hostname: process.env.HOSTNAME,
+      port: process.env.PORT,
+  })
+  .then(({url}) => {
+      console.log("🚀 Marks service is running on " + url);
   });
 
 // --------------------------------------- //
