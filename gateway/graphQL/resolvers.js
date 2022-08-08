@@ -1,6 +1,7 @@
 const Controller = require("../controllers/Controller");
 
 const GraphQLUpload = require("graphql-upload/GraphQLUpload.js");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 /// ----------------------------------------------- ///
@@ -76,13 +77,58 @@ const resolvers = {
       getWeeklySchedule: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "getWeeklySchedule"),/// ----------------------- LECTURE-SVC ----------------------- ///
 
-      /// ----------------------- LECTURE-SVC ----------------------- ///
+    /// ----------------------- MARKS-SVC ----------------------- ///
 
       getMarksFiles: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.MARKS_URL, "getMarksFiles"),
 
       getAllMarksFiles: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.MARKS_URL, "getAllMarksFiles"),
+
+      getUserMarks: async (root ,args ,context ,info) => {
+          const {id} = jwt.decode(context.token ,process.env.JWT_SECRET);
+
+          context.query["getUserUniversityNumbers"] = `query {
+            getUserUniversityNumbers(id:${id}){
+              year
+              universityNumber
+            }
+          }`
+          const userUniversityNumbers =  await Controller.Connection.fetch(context, process.env.USER_URL, "getUserUniversityNumbers");
+          let years = [] ,universityNumberss = [];
+          for(let i of userUniversityNumbers){
+            years.push('"' + i.year + '"');
+            universityNumberss.push(i.universityNumber);
+          }
+          context.query["getUniversityNumbers"] = `query {
+            getUniversityNumbers(years:[${years}] ,universityNumbers:[${universityNumberss}])
+          }`
+
+          const universityNumbers =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUniversityNumbers");
+          context.query["getUserMarks"] = `query {
+              getUserMarks(class: ${args.class} ,type: ${args.type} ,universityNumberIds: [${universityNumbers}]){
+                id
+                mark
+                subject{
+                  id
+                  name
+                  class
+                  semester
+                  section
+                  type
+                  createdAt
+                  updatedAt
+                }
+                universityNumber{
+                  id
+                  universityNumber
+                  year
+                }
+            }
+          }`;
+
+          return await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUserMarks");
+      },
 
   },
 
@@ -194,7 +240,7 @@ const resolvers = {
       deleteWeeklySchedule: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteWeeklySchedule"),
 
-      /// ----------------------- MARKS-SVC ----------------------- ///
+    /// ----------------------- MARKS-SVC ----------------------- ///
 
       deleteMarksFile: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.MARKS_URL, "deleteMarksFile"),

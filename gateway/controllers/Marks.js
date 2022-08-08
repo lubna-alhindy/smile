@@ -29,8 +29,11 @@ exports.addMarksFile = async (args ,context) => {
     }
   }
 
-  context.query["addMarksFile"] = gql`mutation{addMarksFile(url:"${path}",year:"${year}",subjectId:${subjectId})}`;
-  await Connection.fetch(context ,process.env.MARKS_URL ,"addMarksFile");
+  context.query["addMarksFile"] = gql`mutation{addMarksFile(url:"${path}",year:"${year}",subjectId:${subjectId}){id}}`;
+  const marksFile = await Connection.fetch(context ,process.env.MARKS_URL ,"addMarksFile");
+
+  context.query["analyseMarksFile"] = gql`mutation{analyseMarksFile(id:${marksFile.id})}`;
+  Connection.fetch(context ,process.env.MARKS_URL ,"analyseMarksFile");
 
   return {filename: path, mimetype, encoding };
 };

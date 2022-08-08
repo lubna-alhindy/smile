@@ -171,16 +171,7 @@ const typeDefs = gql`
       createdAt: Date
       updatedAt: Date
     }
-    
-    type marksfiles{
-      id: Int!
-      subjectId: Int!
-      url: String!
-      year: String!
-      subject: subjects
-      createdAt: Date
-      updatedAt: Date
-    }
+
   # ------------------------------------- USER-SVC ------------------------------------- #
   
     type AuthPayload {
@@ -238,6 +229,7 @@ const typeDefs = gql`
     }
 
   # --------------------------------- LECTURE-SVC --------------------------------- #
+  
   	enum LectureTypes {
       RBCs
       Other
@@ -273,6 +265,33 @@ const typeDefs = gql`
       subject: subjects
       createdAt: Date
       updatedAt: Date
+    }
+    
+  # --------------------------------- MARKS-SVC --------------------------------- #
+      
+    type universitynumbers{
+      id: Int!
+      universityNumber: Int!
+      year: String!
+    }
+  
+    type marksfiles {
+      id: Int!
+      subjectId: Int!
+      url: String!
+      year: String!
+      subject: subjects
+      createdAt: Date
+      updatedAt: Date
+    }  
+    
+    type subjectsuniversitynumbers {
+      id: Int!
+      universityNumberId: Int!
+      subjectId: Int!
+      mark: Int!
+      subject: subjects!
+      universityNumber: universitynumbers
     }
 
   # ------------------------------------- QUERY ------------------------------------- #
@@ -341,13 +360,16 @@ const typeDefs = gql`
         getWeeklySchedule(year: String!)
           : weeklyschedules
           
-      # --------------------------------- LECTURE-SVC --------------------------------- #
+      # --------------------------------- MARKS-SVC --------------------------------- #
       
         getMarksFiles(id: Int!)
           : marksfiles
       
         getAllMarksFiles(class: Class ,semester: Semester ,type: SubjectTypes ,year: String)
           : [marksfiles]!
+          
+        getUserMarks(class: Class! ,type: SubjectTypes)
+          : [subjectsuniversitynumbers]
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #
@@ -460,13 +482,13 @@ const typeDefs = gql`
         addWeeklySchedule(file: Upload!)
            : File!
            
-      # --------------------------------- LECTURE-SVC --------------------------------- #
+      # --------------------------------- MARKS-SVC --------------------------------- #
       
-      addMarksFile(file: Upload!)
-        : File!
-       
-      deleteMarksFile(id: Int!)
-         : Void
+        addMarksFile(file: Upload!)
+          : File!
+         
+        deleteMarksFile(id: Int!)
+           : Void
     }
 `;
 
