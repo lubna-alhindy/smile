@@ -61,7 +61,7 @@ const typeDefs = gql`
 
   type Mutation {
     addMarksFile(url: String! ,year: String! ,subjectId: Int!)
-      : Void
+      : marksfiles
        
     deleteMarksFile(id: Int!)
        : Void
