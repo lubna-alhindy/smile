@@ -467,3 +467,18 @@ exports.changeUserRole = async (args ,context) => {
 }
 
 // -------------------------------- //
+
+exports.getUserUniversityNumbers = async (args ,context) => {
+    try {
+        return await context.models.usersUniversityNumbers.findAll({
+            where: {
+                userId: args.id
+            }
+        });
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+// -------------------------------- //

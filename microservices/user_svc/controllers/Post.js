@@ -503,7 +503,7 @@ exports.deleteComment = async (args, context) => {
       }
     });
 
-    if (context.payload.roleName === "USER") {
+    if (context.payload.roleName === "Student") {
       if (comment.userId !== context.payload.id) {
         throw new Error("Unauthorized");
       }

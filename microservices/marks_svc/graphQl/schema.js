@@ -50,6 +50,25 @@ const typeDefs = gql`
     updatedAt: Date
   }
   
+  type universitynumbers{
+    id: Int!
+    universityNumber: Int!
+    year: String!
+  }
+  
+  type subjectsuniversitynumbers{
+    id: Int!
+    universityNumberId: Int!
+    subjectId: Int!
+    mark: Int!
+    subject: subjects!
+    universityNumber: universitynumbers
+  }
+  
+  input universityNumbersInput {
+    universityNumber: Int!
+    year: String!
+  }
   
   type Query {
     getMarksFiles(id: Int!)
@@ -57,13 +76,22 @@ const typeDefs = gql`
       
     getAllMarksFiles(class: Class ,semester: Semester ,type: SubjectTypes ,year: String)
       : [marksfiles]!
+      
+    getUserMarks(class: Class! ,type: SubjectTypes ,universityNumberIds: [Int]!)
+      : [subjectsuniversitynumbers]
+      
+    getUniversityNumbers(years: [String]!, universityNumbers: [Int]!)
+      : [Int]!
   }
 
   type Mutation {
     addMarksFile(url: String! ,year: String! ,subjectId: Int!)
-      : Void
+      : marksfiles
        
     deleteMarksFile(id: Int!)
+       : Void
+       
+    analyseMarksFile(id: Int!)
        : Void
   }
 `;

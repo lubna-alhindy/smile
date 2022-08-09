@@ -11,11 +11,27 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },{
-      name: 'Private_Supervisor',
+      name: 'Public_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
     },{
-      name: 'Public_Supervisor',
+      name: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'Fifth_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});

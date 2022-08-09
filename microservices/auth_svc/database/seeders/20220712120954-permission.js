@@ -167,6 +167,10 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },{
+      name: 'deleteSummary',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
       name: 'addSummary',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -212,6 +216,14 @@ module.exports = {
       updatedAt: new Date(),
     },{
       name: 'deleteMarksFile',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getUserMarks',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'getGroupsOfUser',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});

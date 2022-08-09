@@ -43,6 +43,9 @@ const resolvers = {
 
         getGroupsOfUser: (root ,args ,context ,info) =>
           Controller.Post.getGroupsOfUser(args ,context),
+
+        getUserUniversityNumbers: (root ,args ,context ,info) =>
+          Controller.User.getUserUniversityNumbers(args ,context),
     },
 
     /// ---------------------------- ///

@@ -1,17 +1,21 @@
 const {unlinkSync} = require("fs");
 
+// ----------------------------- //
+
 exports.getMarksFiles = async (args ,context) => {
     try{
-      return await context,models.marksfiles({
+      return await context.models.marksfiles({
         where: {
           id: args.id
         },
         include: context.models.subjects
       })
     } catch (err) {
-      throw new Error();
+      throw new Error(err);
     }
 }
+
+// ----------------------------- //
 
 exports.getAllMarksFiles = async (args ,context) => {
     try {
@@ -41,6 +45,8 @@ exports.getAllMarksFiles = async (args ,context) => {
     }
 }
 
+// ----------------------------- //
+
 exports.addMarksFile = async (args ,context) => {
   try {
     return await context.models.marksfiles.create({
@@ -54,6 +60,8 @@ exports.addMarksFile = async (args ,context) => {
   }
 
 }
+
+// ----------------------------- //
 
 exports.deleteMarksFile = async (args ,context) => {
   try {
@@ -69,5 +77,61 @@ exports.deleteMarksFile = async (args ,context) => {
   catch(err) {
     throw new Error(err);
   }
-
 }
+
+// ----------------------------- //
+
+exports.getUniversityNumbers = async (args ,context) => {
+  try {
+    const response = [];
+    for(let i = 0 ; i < args.years.length ; i++){
+      const un = await context.models.universitynumbers.findOne({
+        where: {
+          year: args.years[i],
+          universityNumber: args.universityNumbers[i]
+        }
+      });
+      if( un !== null ) {
+        response.push(un.id);
+      }
+    }
+
+    return response;
+  }
+  catch(err) {
+    throw new Error(err);
+  }
+}
+
+// ----------------------------- //
+
+exports.getUserMarks = async (args ,context) => {
+  try {
+    return await context.models.subjectsuniversitynumbers.findAll({
+      where: {
+        universityNumberId: args.universityNumberIds
+      },
+      include:[{
+        model: context.models.subjects,
+        required: true,
+        where: {
+          class: args.class,
+          type: args.type ? args.type : {
+            [context.models.Sequelize.Op.ne]: null
+          }
+        }
+      },{
+        model: context.models.universitynumbers,
+        as: "universityNumber",
+        where: {
+
+        }
+      }]
+    });
+  }
+  catch(err) {
+    throw new Error(err);
+  }
+}
+
+// ----------------------------- //

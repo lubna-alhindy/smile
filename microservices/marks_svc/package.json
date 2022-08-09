@@ -15,6 +15,7 @@
     "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "pdf2table": "^0.0.2",
     "sequelize": "^6.21.3",
     "sequelize-cli": "^6.4.1"
   },

@@ -13,6 +13,12 @@ const resolvers = {
 
     getAllMarksFiles: (root ,args ,context ,info) =>
       Controller.Marks.getAllMarksFiles(args ,context),
+
+    getUserMarks: (root ,args ,context ,info) =>
+      Controller.Marks.getUserMarks(args ,context),
+
+    getUniversityNumbers: (root ,args ,context ,info) =>
+      Controller.Marks.getUniversityNumbers(args ,context)
   },
 
   /// ---------------------------- ///
@@ -25,6 +31,8 @@ const resolvers = {
     deleteMarksFile: (root ,args ,context ,info) =>
       Controller.Marks.deleteMarksFile(args ,context),
 
+    analyseMarksFile: (root ,args ,context ,info) =>
+      Controller.Analyzer.analyseMarksFile(args ,context),
   },
 };
 

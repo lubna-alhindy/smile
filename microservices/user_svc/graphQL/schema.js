@@ -246,6 +246,9 @@ const typeDefs = gql`
     getSubjects(semester: Semester ,group: Groups ,type: SubjectTypes)
       : [subjects]!
       
+    getUserUniversityNumbers(id: Int!)
+      : [UsersUniversityNumbers]!
+      
     getGroupsOfUser
       : [Groups]!
   }
