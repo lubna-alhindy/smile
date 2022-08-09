@@ -226,6 +226,10 @@ module.exports = {
       name: 'getGroupsOfUser',
       createdAt: new Date(),
       updatedAt: new Date(),
+    },{
+      name: 'getSpecialPosts',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

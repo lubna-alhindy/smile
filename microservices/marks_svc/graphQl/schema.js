@@ -65,6 +65,11 @@ const typeDefs = gql`
     universityNumber: universitynumbers
   }
   
+  type Marks {
+    avg: Float!
+    marks: [subjectsuniversitynumbers]!
+  }
+  
   input universityNumbersInput {
     universityNumber: Int!
     year: String!
@@ -78,9 +83,12 @@ const typeDefs = gql`
       : [marksfiles]!
       
     getUserMarks(class: Class! ,type: SubjectTypes ,universityNumberIds: [Int]!)
-      : [subjectsuniversitynumbers]
+      : Marks
       
     getUniversityNumbers(years: [String]!, universityNumbers: [Int]!)
+      : [Int]!
+      
+    getSpecialSubjects(class: Class! ,universityNumbers: [Int]!)
       : [Int]!
   }
 

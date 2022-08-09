@@ -18,7 +18,10 @@ const resolvers = {
       Controller.Marks.getUserMarks(args ,context),
 
     getUniversityNumbers: (root ,args ,context ,info) =>
-      Controller.Marks.getUniversityNumbers(args ,context)
+      Controller.Marks.getUniversityNumbers(args ,context),
+
+    getSpecialSubjects: (root ,args ,context ,info) =>
+      Controller.Marks.getSpecialSubjects(args ,context)
   },
 
   /// ---------------------------- ///

@@ -32,6 +32,9 @@ const resolvers = {
         getPosts: (root, args, context, info) =>
           Controller.Post.getPosts(args ,context),
 
+        getSpecialPosts: (root, args, context, info) =>
+          Controller.Post.getSpecialPosts(args ,context),
+
         getBanState: (root ,args ,context ,info) =>
           Controller.User.getBanState(args ,context),
 

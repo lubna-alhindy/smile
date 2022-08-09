@@ -50,8 +50,43 @@ const resolvers = {
       getPost: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getPost"),
 
+      getSpecialPosts: async (root, args, context) => {
+          const {id} = jwt.decode(context.token ,process.env.JWT_SECRET);
+          const Class = jwt.decode(context.token ,process.env.JWT_SECRET).class;
+
+          context.query["getUserUniversityNumbers"] = `query {
+                getUserUniversityNumbers(id:${id}){
+                  year
+                  universityNumber
+                }
+              }`;
+          const userUniversityNumbers =  await Controller.Connection.fetch(context, process.env.USER_URL, "getUserUniversityNumbers");
+          let years = [] ,universityNumberss = [];
+          for(let i of userUniversityNumbers){
+              years.push('"' + i.year + '"');
+              universityNumberss.push(i.universityNumber);
+          }
+
+          context.query["getUniversityNumbers"] = `query {
+                getUniversityNumbers(years:[${years}] ,universityNumbers:[${universityNumberss}])
+              }`
+          const universityNumbers =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUniversityNumbers");
+
+          context.query["getSpecialSubjects"] = `query {
+                getSpecialSubjects(class:${Class} ,universityNumbers:[${universityNumbers}])
+              }`
+          const subjectId =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getSpecialSubjects");
+          if( args.type === undefined ) {
+              context.query.getSpecialPosts = context.query.getSpecialPosts.substr(0, 21) + `(subjectId: [${subjectId}])` + context.query.getSpecialPosts.substr(21);
+          } else {
+              context.query.getSpecialPosts = context.query.getSpecialPosts.substr(0, 22) + `subjectId: [${subjectId}] ,` + context.query.getSpecialPosts.substr(22);
+          }
+
+          return await Controller.Connection.fetch(context, process.env.USER_URL, "getSpecialPosts");
+      },
+
       getPosts: (root, args, context) =>
-        Controller.Connection.fetch(context, process.env.USER_URL, "getPosts"),
+          Controller.Connection.fetch(context, process.env.USER_URL, "getPosts"),
 
       getSubjects: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getSubjects"),
@@ -93,39 +128,42 @@ const resolvers = {
               year
               universityNumber
             }
-          }`
+          }`;
           const userUniversityNumbers =  await Controller.Connection.fetch(context, process.env.USER_URL, "getUserUniversityNumbers");
           let years = [] ,universityNumberss = [];
           for(let i of userUniversityNumbers){
             years.push('"' + i.year + '"');
             universityNumberss.push(i.universityNumber);
           }
+
           context.query["getUniversityNumbers"] = `query {
             getUniversityNumbers(years:[${years}] ,universityNumbers:[${universityNumberss}])
           }`
-
           const universityNumbers =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUniversityNumbers");
+
           context.query["getUserMarks"] = `query {
-              getUserMarks(class: ${args.class} ,type: ${args.type} ,universityNumberIds: [${universityNumbers}]){
+          getUserMarks(class: ${args.class} ,type: ${args.type} ,universityNumberIds: [${universityNumbers}]){
+            avg
+            marks {
+              id
+              mark
+              subject{
                 id
-                mark
-                subject{
-                  id
-                  name
-                  class
-                  semester
-                  section
-                  type
-                  createdAt
-                  updatedAt
-                }
-                universityNumber{
-                  id
-                  universityNumber
-                  year
-                }
+                name
+                class
+                semester
+                section
+                type
+                createdAt
+                updatedAt
+              }
+              universityNumber{
+                id
+                universityNumber
+                year
+              }
             }
-          }`;
+          }}`;
 
           return await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUserMarks");
       },

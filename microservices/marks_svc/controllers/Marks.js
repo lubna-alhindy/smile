@@ -107,7 +107,7 @@ exports.getUniversityNumbers = async (args ,context) => {
 
 exports.getUserMarks = async (args ,context) => {
   try {
-    return await context.models.subjectsuniversitynumbers.findAll({
+    let marks = await context.models.subjectsuniversitynumbers.findAll({
       where: {
         universityNumberId: args.universityNumberIds
       },
@@ -122,16 +122,88 @@ exports.getUserMarks = async (args ,context) => {
         }
       },{
         model: context.models.universitynumbers,
-        as: "universityNumber",
-        where: {
-
-        }
+        as: "universityNumber"
       }]
     });
+
+    const map = new Map();
+    for(let i = 0 ; i < marks.length ; i++) {
+      if( map[marks[i].subjectId] ){
+        if( map[marks[i].subjectId].mark < marks[i].mark ){
+          map[marks[i].subjectId] = marks[i];
+        }
+      } else {
+        map[marks[i].subjectId] = marks[i];
+      }
+    }
+
+    marks = [];
+    for(const i in map){
+      marks.push(map[i]);
+    }
+
+    let sum = 0.0 ,cnt = 0;
+    for(let i=0; i< marks.length; i++) {
+      if( marks[i].mark >= 60.0 && marks[i].subject.type === 'Theoretical' ){
+        sum += marks[i].mark;
+        cnt += 1;
+      }
+    }
+
+    return {
+      avg: !cnt ? 0.0 : sum / cnt,
+      marks: marks
+    };
   }
   catch(err) {
     throw new Error(err);
   }
 }
+
+// ----------------------------- //
+
+exports.getSpecialSubjects = async (args ,context) => {
+  try {
+    const classes = ["First", "Second", "Third", "Fourth", "Fifth"];
+
+    const neededClass = [];
+    for(let i=0; i<classes.length; i++) {
+      neededClass.push(classes[i]);
+      if( classes[i] === args.class ){
+        break;
+      }
+    }
+    const subjects = await context.models.subjects.findAll({
+      where: {
+        class: neededClass
+      }
+    });
+
+    const subjectIds = new Set();
+    for(let i=0; i<subjects.length; i++) {
+      subjectIds.add(subjects[i].id);
+    }
+
+    const result = await context.models.subjectsuniversitynumbers.findAll({
+      where: {
+        universityNumberId: args.universityNumbers,
+        subjectId: Array.from(subjectIds),
+        mark: {
+          [context.models.Sequelize.Op.gte]: 60.0
+        }
+      }
+    });
+
+    const response = [];
+    for(let i = 0 ; i < result.length ; i++) {
+      subjectIds.delete(result[i].subjectId);
+    }
+
+    return Array.from(subjectIds);
+  }
+  catch(err) {
+    throw new Error(err);
+  }
+};
 
 // ----------------------------- //

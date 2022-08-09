@@ -236,6 +236,9 @@ const typeDefs = gql`
 
     getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
       : [Posts]
+      
+    getSpecialPosts(subjectId: [Int]! ,type: PostTypes)
+      : [Posts]
     
     getBanState(id: Int!)
     	: Boolean

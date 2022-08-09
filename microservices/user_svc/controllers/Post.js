@@ -73,24 +73,13 @@ exports.getPost = async (args, context) => {
 
 // -------------------------------- //
 
-//TODO: make the special function
-//TODO: make detect the year of user
-async function getSpecialSubjects(userId){
-  return [1 ,2 ,3];
-}
-
-// -------------------------------- //
-
-async function getSpecialPosts(args ,context){
-  const subjects = await getSpecialSubjects(context.payload.id);
-
+exports.getSpecialPosts = async (args ,context) => {
   const posts = await context.models.posts.findAll({
     where: {
       type: args.type !== undefined ? args.type : {
         [Op.ne]: null
       },
-
-      subjectId: subjects
+      subjectId: args.subjectId
     },
 
     include: [{
@@ -156,9 +145,6 @@ async function getGeneralPosts(args ,context){
 
 exports.getPosts = async (args, context) => {
   try {
-    if( args.group === "Special" ){
-      return await getSpecialPosts(args ,context);
-    }
     if( args.group === "General" ){
       return await getGeneralPosts(args ,context);
     }
@@ -358,7 +344,7 @@ exports.getAllGeneralPostRequests = async (context) => {
 
 // -------------------------------- //
 
-exports.getAllPostRequests = async (context) => {
+exports.getAllPostRequests = async (args ,context) => {
   try {
     if( args.group === "General" ){
       return await getAllGeneralPostRequests(args ,context);

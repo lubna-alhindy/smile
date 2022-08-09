@@ -294,6 +294,11 @@ const typeDefs = gql`
       universityNumber: universitynumbers
     }
 
+    type Marks {
+      avg: Float!
+      marks: [subjectsuniversitynumbers]!
+    }
+    
   # ------------------------------------- QUERY ------------------------------------- #
   
     type Query {
@@ -337,6 +342,9 @@ const typeDefs = gql`
         getPosts(type: PostTypes ,subjectId: [Int] ,group: Groups!)
           : [Posts]
         
+        getSpecialPosts(type: PostTypes)
+          : [Posts]
+      
         getSubjects(semester: Semester ,group: Groups ,type: SubjectTypes)
           : [subjects]!
         
@@ -369,7 +377,7 @@ const typeDefs = gql`
           : [marksfiles]!
           
         getUserMarks(class: Class! ,type: SubjectTypes)
-          : [subjectsuniversitynumbers]
+          : Marks
     }
 
   # ------------------------------------- MUTATION ------------------------------------- #
