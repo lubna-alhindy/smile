@@ -6,7 +6,7 @@ const typeDefs = gql`
 
  enum Roles {
     Student
-    Admin
+    Admin_
     General_Supervisor
     Private_Supervisor
 	}

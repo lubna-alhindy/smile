@@ -230,6 +230,14 @@ module.exports = {
       name: 'getSpecialPosts',
       createdAt: new Date(),
       updatedAt: new Date(),
+    },{
+      name: 'getBannedUsersInGroup',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      name: 'changeBanUserInGroup',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

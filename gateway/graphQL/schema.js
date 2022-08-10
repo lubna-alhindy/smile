@@ -39,8 +39,8 @@ const typeDefs = gql`
   # ------------------------------------- AUTH-SVC ------------------------------------- #
   
     enum Roles {
-      Student
-      Admin
+      Student_
+      Admin_
       Public_Supervisor
       First_Supervisor
       Second_Supervisor
@@ -140,7 +140,6 @@ const typeDefs = gql`
       name: String!
       postId: Int
       postRequestId: Int
-      base64image: String
       adId: Int
     }
     
@@ -294,6 +293,16 @@ const typeDefs = gql`
       universityNumber: universitynumbers
     }
 
+    type BannedInGroups {
+      id: Int!
+      userId: Int!
+      group: Groups!
+      user: Users
+      isBanned: Boolean
+      createdAt: Date
+      updatedAt: Date
+    }
+
     type Marks {
       avg: Float!
       marks: [subjectsuniversitynumbers]!
@@ -327,6 +336,9 @@ const typeDefs = gql`
         
         getAllComplaints
           : [Complaints]!
+          
+        getBannedUsersInGroup(group: Groups!)
+          : [BannedInGroups]!
          
       # --------------------------------- POST-SVC --------------------------------- #
   
@@ -434,6 +446,9 @@ const typeDefs = gql`
     
         deleteUsersUniversityNumber(id: Int!)
           : Void
+          
+        changeBanUserInGroup(userId: Int! ,group: Groups!)
+           : BannedInGroups
       
       # --------------------------------- POST-SVC --------------------------------- #
       

@@ -242,6 +242,10 @@ exports.addPost = async (args, context) => {
 
 exports.subervisorAddPost = async (args, context) => {
   try {
+    if (args.group !== context.payload.roleName.split('_')[0]) {
+      throw new Error("Unauthorized");
+    }
+
     const post = await context.models.posts.create({
       subjectId: args.subjectId,
       userId: args.userId,
@@ -318,7 +322,7 @@ exports.deletePost = async (args, context) => {
 
 exports.getAllGeneralPostRequests = async (context) => {
   try {
-    const postRequests = await context.models.postRequests.findAll({
+    return await context.models.postRequests.findAll({
       where: {
         subjectId: null,
       },
@@ -328,15 +332,6 @@ exports.getAllGeneralPostRequests = async (context) => {
         model: context.models.users
       }]
     });
-
-    for (let i = 0; i < postRequests.length; i++) {
-      for (let j = 0; j < postRequests[i].postImages.length; j++) {
-        const imagePath = Helper.getImagePath(postRequests[i].postImages[j].name);
-        postRequests[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
-      }
-    }
-
-    return postRequests;
   } catch (err) {
     throw new Error(err);
   }
@@ -348,6 +343,10 @@ exports.getAllPostRequests = async (args ,context) => {
   try {
     if( args.group === "General" ){
       return await getAllGeneralPostRequests(args ,context);
+    }
+
+    if (args.group === context.payload.roleName.split('_')[0]) {
+      throw new Error("Unauthorized");
     }
 
     const postRequests = await context.models.postRequests.findAll({
@@ -362,13 +361,6 @@ exports.getAllPostRequests = async (args ,context) => {
         }
       }]
     });
-
-    for (let i = 0; i < postRequests.length; i++) {
-      for (let j = 0; j < postRequests[i].postImages.length; j++) {
-        const imagePath = Helper.getImagePath(postRequests[i].postImages[j].name);
-        postRequests[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
-      }
-    }
 
     return postRequests;
   } catch (err) {
@@ -398,18 +390,15 @@ exports.approvalPostRequest = async (args, context) => {
         userId: postRequest.userId
       });
 
-      post["postImages"] = [];
       for (let image of postRequest.postImages) {
-        post["postImages"].push(await context.models.postImages.update({
+        await context.models.postImages.update({
           postRequestId: null,
           postId: post.id
         }, {
           where: {
             id: image.id
           }
-        }));
-        const imagePath = Helper.getImagePath(image.name);
-        post["postImages"][post["postImages"].length - 1] = Helper.convertImageToBase64(imagePath);
+        });
       }
     } else {
       for (let image of postRequest.postImages) {
@@ -489,7 +478,7 @@ exports.deleteComment = async (args, context) => {
       }
     });
 
-    if (context.payload.roleName === "Student") {
+    if (context.payload.roleName === "Student_") {
       if (comment.userId !== context.payload.id) {
         throw new Error("Unauthorized");
       }
@@ -520,11 +509,6 @@ exports.changeFavorite = async (args, context) => {
         userId: args.userId
       }
     });
-
-    for (let i = 0; i < post.postImages; i++) {
-      const imagePath = Helper.getImagePath(post.postImages[i].name);
-      post.postImages[i].base64image = Helper.convertImageToBase64(imagePath);
-    }
 
     if (!favorite) {
       post.isFavorite = true;

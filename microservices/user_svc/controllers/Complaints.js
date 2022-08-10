@@ -4,20 +4,11 @@ const Helper = require("./Helper");
 
 exports.getAllComplaints = async (context) => {
     try {
-        const complaints = await context.models.complaints.findAll({
+        return await context.models.complaints.findAll({
             include: {
                 model: context.models.users
             }
         });
-
-        for(let complaint of complaints) {
-            if (complaint.user.image !== null) {
-                const imagePath = Helper.getImagePath(complaint.user.image);
-                complaint.user.image = Helper.convertImageToBase64(imagePath);
-            }
-        }
-
-        return complaints;
     }
     catch(err){
         throw new Error(err);

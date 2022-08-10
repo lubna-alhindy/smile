@@ -4,9 +4,9 @@ const {getAuthorization} = require('../middleware/Authorization');
 
 /// -------------------------------------- ///
 
-exports.fetch = async (context ,url ,resolverName) => {
+exports.fetch = async (context ,url ,resolverName ,args) => {
   try {
-    if (!await getAuthorization(context.token, resolverName)) {
+    if (!await getAuthorization(context.token, resolverName ,args.group)) {
       throw new Error("Unauthorized");
     }
     const res = await request(url, context.query[`${resolverName}`] ,{} ,{token: context.token});

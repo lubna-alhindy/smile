@@ -5,8 +5,8 @@ const typeDefs = gql`
   scalar Void
   
 	enum Roles {
-		Student
-		Admin
+		Student_
+		Admin_
 		Public_Supervisor
 		First_Supervisor
 		Second_Supervisor
@@ -105,7 +105,6 @@ const typeDefs = gql`
   	name: String!
   	postId: Int
   	postRequestId: Int
-  	base64image: String
   	adId: Int
   }
   
@@ -216,6 +215,7 @@ const typeDefs = gql`
     userId: Int!
     group: Groups!
     user: Users
+    isBanned: Boolean
     createdAt: Date
     updatedAt: Date
   }
@@ -262,6 +262,12 @@ const typeDefs = gql`
       
     getGroupsOfUser
       : [Groups]!
+      
+    getBannedUsersInGroup(group: Groups!)
+      : [BannedInGroups]!
+      
+    checkBanUsersInGroup(userId: Int! ,group: Groups!)
+      : Boolean!
   }
 
   type Mutation {
@@ -337,11 +343,11 @@ const typeDefs = gql`
     deleteAd(id: Int!)
       : Void 
       
-     adsDeleter
-        : Void
+    adsDeleter
+       : Void
         
-     changeBanUserInGroup(userId: Int! ,group: Groups!)
-        : BannedInGroups
+    changeBanUserInGroup(userId: Int! ,group: Groups!)
+       : BannedInGroups
   }
 `;
 

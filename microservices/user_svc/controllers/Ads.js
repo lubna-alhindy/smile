@@ -4,20 +4,11 @@ const Helper = require('./Helper');
 
 exports.getAllAds = async (context) => {
   try {
-    const ads = await context.models.ads.findAll({
+    return await context.models.ads.findAll({
       include: {
         model: context.models.postImages
       }
     });
-
-    for (let i = 0; i < ads.length; i++) {
-      for (let j = 0; j < ads[i].postImages.length; j++) {
-        const imagePath = Helper.getImagePath(ads[i].postImages[j].name);
-        ads[i].postImages[j].base64image = Helper.convertImageToBase64(imagePath);
-      }
-    }
-
-    return ads;
   } catch (err) {
     throw new Error(err);
   }

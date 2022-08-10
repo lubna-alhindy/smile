@@ -49,6 +49,12 @@ const resolvers = {
 
         getUserUniversityNumbers: (root ,args ,context ,info) =>
           Controller.User.getUserUniversityNumbers(args ,context),
+
+        getBannedUsersInGroup: (root ,args ,context ,info) =>
+          Controller.User.getBannedUsersInGroup(args ,context),
+
+        checkBanUsersInGroup: (root ,args ,context ,info) =>
+          Controller.User.checkBanUsersInGroup(args ,context),
     },
 
     /// ---------------------------- ///
