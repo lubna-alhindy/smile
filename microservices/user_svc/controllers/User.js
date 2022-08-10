@@ -484,3 +484,48 @@ exports.getUserUniversityNumbers = async (args ,context) => {
 }
 
 // -------------------------------- //
+
+exports.changeBanUserInGroup = async (args ,context) => {
+    try {
+        const user = await context.models.users.findOne({
+            where: {
+                id: args.userId
+            },
+            include: {
+                model: context.models.bannedingroups,
+                where:{
+                    group: args.group
+                }
+            }
+        });
+        console.log(JSON.stringify(user,2,null))
+        if (!user.bannedingroups) {
+            console.log(user.bannedingroups.id)
+            user.isBaned = true;
+            await context.models.bannedingroups.create({
+                userId: args.userId,
+                group: args.group
+            });
+
+        } else {
+            user.isBaned = false;
+            await context.models.bannedingroups.destroy({
+                where: {
+                    id: user.bannedingroups.id
+                }
+            });
+        }
+
+        if( user.image !== null ) {
+            const imagePath = Helper.getImagePath(user.image);
+            user.image = Helper.convertImageToBase64(imagePath);
+        }
+
+        return user;
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+// -------------------------------- //

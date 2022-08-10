@@ -211,7 +211,15 @@ const typeDefs = gql`
     user: Users!
   }
   
-
+  type BannedInGroups {
+    id: Int!
+    userId: Int!
+    group: Groups!
+    user: Users
+    createdAt: Date
+    updatedAt: Date
+  }
+  
   type Query {
     getUser(id: Int!)
       : Users
@@ -331,6 +339,9 @@ const typeDefs = gql`
       
      adsDeleter
         : Void
+        
+     changeBanUserInGroup(userId: Int! ,group: Groups!)
+        : BannedInGroups
   }
 `;
 

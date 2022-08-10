@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
       users.hasMany(models.favorites ,{
         foreignKey: 'userId'
       });
+      users.hasMany(models.bannedingroups ,{
+        foreignKey: 'userId'
+      });
     }
   }
 

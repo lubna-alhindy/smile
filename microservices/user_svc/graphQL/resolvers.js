@@ -127,6 +127,9 @@ const resolvers = {
         adsDeleter: (root, args, context, info) =>
             Controller.Ads.adsDeleter(args ,context),
 
+        changeBanUserInGroup: (root, args, context, info) =>
+            Controller.User.changeBanUserInGroup(args ,context),
+
     },
 };
 
