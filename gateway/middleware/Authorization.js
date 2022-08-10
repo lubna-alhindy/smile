@@ -1,4 +1,3 @@
-const {checkBanUsersInGroup} = require("./checkBanUsersInGroup");
 const {getBanState} = require("./getBanState");
 const {checkToken} = require("./checkToken");
 const {authorize} = require("./authorize");
@@ -20,13 +19,6 @@ exports.getAuthorization = async (token, resolverName) => {
   // if( !auth ){
   //   return false;
   // }
-
-  if (group) {
-    const bannedUserInGroup = await checkBanUsersInGroup(payload.id, group);
-    if (!bannedUserInGroup) {
-      return false;
-    }
-  }
 
   return true;
 };

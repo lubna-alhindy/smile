@@ -23,8 +23,7 @@ async function startServer() {
             console.log("==========================================");
 
             return  {
-                // payload: !req.get('token') ? null : jwt.decode(req.get('token') ,process.env.JWT_SECRET),
-                token: !req.get('Authorization') ? null : (!req.get('Authorization').split(' ')[1] ? null : req.get('Authorization').split(' ')[1]),
+                payload: !req.get('token') ? null : jwt.decode(req.get('token') ,process.env.JWT_SECRET),
                 models: models
             };
         }

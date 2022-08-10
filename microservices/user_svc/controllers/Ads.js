@@ -50,7 +50,6 @@ exports.addAd = async (args, context) => {
         name: await Helper.getImagePath(name),
         adId: ad.id
       }));
-      ad["postImages"][ad["postImages"].length - 1].base64image = base64image;
     }
 
     return ad;
@@ -119,8 +118,6 @@ exports.updateAd = async (args, context) => {
             adId: ad.id
           })
         );
-
-        ad["postImages"][i].base64image = base64image;
       }
     }
 

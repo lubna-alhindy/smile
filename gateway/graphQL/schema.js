@@ -62,7 +62,7 @@ const typeDefs = gql`
       Third
       Fourth
       Fifth
-      General
+      Public
       Special
     }
   

@@ -145,7 +145,7 @@ async function getGeneralPosts(args ,context){
 
 exports.getPosts = async (args, context) => {
   try {
-    if( args.group === "General" ){
+    if( args.group === "Public" ){
       return await getGeneralPosts(args ,context);
     }
 
@@ -228,8 +228,6 @@ exports.addPost = async (args, context) => {
         name: await Helper.getImagePath(name),
         postRequestId: post.id
       }));
-
-      post["postImages"][i] = base64image;
     }
 
     return post;
@@ -242,7 +240,13 @@ exports.addPost = async (args, context) => {
 
 exports.subervisorAddPost = async (args, context) => {
   try {
-    if (args.group !== context.payload.roleName.split('_')[0]) {
+    const subjects = !args.subjectId ? {class: "Public"} : await context.models.subject.findOne({
+      where: {
+        id: args.subjectId
+      }
+    });
+
+    if (subjects.group !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin") {
       throw new Error("Unauthorized");
     }
 
@@ -268,15 +272,13 @@ exports.subervisorAddPost = async (args, context) => {
       );
       const image = await Helper.convertBase64ToImage(base64image);
       if (!await Helper.writeImage(image, name)) {
-        throw new Error("Ibternal server error, please try again");
+        throw new Error("Internal server error, please try again");
       }
 
       post["postImages"].push(await context.models.postImages.create({
         name: await Helper.getImagePath(name),
         postId: post.id
       }));
-
-      post["postImages"][i] = base64image;
     }
 
     return post;
@@ -293,17 +295,19 @@ exports.deletePost = async (args, context) => {
       where: {
         id: args.id
       },
-      include: {
+      include: [{
         model: context.models.postImages
-      }
+      },{
+        model: context.models.subjects
+      }]
     });
 
     if (post === null) {
       throw new Error("This Post is not found!");
     }
 
-    if (context.payload.roleName === "USER") {
-      if (post.userId !== context.payload.id) {
+    if (post.userId !== context.payload.id) {
+      if (context.payload.roleName !== "Admin_" && context.payload.roleName.split("_")[0] !== post.subject.class) {
         throw new Error("Unauthorized");
       }
     }
@@ -341,15 +345,15 @@ exports.getAllGeneralPostRequests = async (context) => {
 
 exports.getAllPostRequests = async (args ,context) => {
   try {
-    if( args.group === "General" ){
-      return await getAllGeneralPostRequests(args ,context);
-    }
-
-    if (args.group === context.payload.roleName.split('_')[0]) {
+    if (args.group !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin"){
       throw new Error("Unauthorized");
     }
 
-    const postRequests = await context.models.postRequests.findAll({
+    if( args.group === "Public" ){
+      return await getAllGeneralPostRequests(args, context);
+    }
+
+    return await context.models.postRequests.findAll({
       include: [{
         model: context.models.postImages
       }, {
@@ -361,8 +365,6 @@ exports.getAllPostRequests = async (args ,context) => {
         }
       }]
     });
-
-    return postRequests;
   } catch (err) {
     throw new Error(err);
   }
@@ -376,10 +378,20 @@ exports.approvalPostRequest = async (args, context) => {
       where: {
         id: args.id
       },
-      include: {
+      include: [{
         model: context.models.postImages
-      }
+      },{
+        model: context.models.subjects
+      }]
     });
+
+    if( !postRequest.subject ){
+      postRequest.subject = {class: "Public"};
+    }
+
+    if (postRequest.subject.group !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin"){
+      throw new Error("Unauthorized");
+    }
 
     if (args.choice === true) {
       const post = await context.models.posts.create({
@@ -567,7 +579,7 @@ exports.getGroupsOfUser = async (args ,context) => {
       attributes: ["class"]
     });
 
-    const allClasses = ["Special" ,"General" ,"First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
+    const allClasses = ["Special" ,"Public" ,"First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
 
     const result = [];
     if( user.class !== null ){

@@ -1,246 +1,246 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('permissions', [{
       name: 'getQuizRequests',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       name: 'approvalQuizRequest',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       name: 'getAllPostRequests',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       name: 'subervisorAddPost',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       name: 'deletePost',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       name: 'approvalPostRequest',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getQuizs',
+    }, {
+      name: 'getQuizs',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getQuiz',
+    }, {
+      name: 'getQuiz',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addQuiz',
+    }, {
+      name: 'addQuiz',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteQuiz',
+    }, {
+      name: 'deleteQuiz',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getUser',
+    }, {
+      name: 'getUser',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllUser',
+    }, {
+      name: 'getAllUser',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllAds',
+    }, {
+      name: 'getAllAds',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getBansUser',
+    }, {
+      name: 'getBansUser',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getPost',
+    }, {
+      name: 'getPost',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllComplaints',
+    }, {
+      name: 'getAllComplaints',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getPosts',
+    }, {
+      name: 'getPosts',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'signup',
+    }, {
+      name: 'signup',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'login',
+    }, {
+      name: 'login',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'editProfile',
+    }, {
+      name: 'editProfile',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'userChangePassword',
+    }, {
+      name: 'userChangePassword',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeUserRole',
+    }, {
+      name: 'changeUserRole',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'userDeleteAccount',
+    }, {
+      name: 'userDeleteAccount',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addPost',
+    }, {
+      name: 'addPost',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeLike',
+    }, {
+      name: 'changeLike',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addComment',
+    }, {
+      name: 'addComment',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteComment',
+    }, {
+      name: 'deleteComment',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeFavorite',
+    }, {
+      name: 'changeFavorite',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeBanUser',
+    }, {
+      name: 'changeBanUser',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addComplaint',
+    }, {
+      name: 'addComplaint',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeDoneComplaint',
+    }, {
+      name: 'changeDoneComplaint',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteComplaint',
+    }, {
+      name: 'deleteComplaint',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addUsersUniversityNumber',
+    }, {
+      name: 'addUsersUniversityNumber',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteUsersUniversityNumber',
+    }, {
+      name: 'deleteUsersUniversityNumber',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addAd',
+    }, {
+      name: 'addAd',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'updateAd',
+    }, {
+      name: 'updateAd',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteAd',
+    }, {
+      name: 'deleteAd',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getSubjects',
+    }, {
+      name: 'getSubjects',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getSummary',
+    }, {
+      name: 'getSummary',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllSummary',
+    }, {
+      name: 'getAllSummary',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteSummary',
+    }, {
+      name: 'deleteSummary',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addSummary',
+    }, {
+      name: 'addSummary',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getLecture',
+    }, {
+      name: 'getLecture',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllLecture',
+    }, {
+      name: 'getAllLecture',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getWeeklySchedule',
+    }, {
+      name: 'getWeeklySchedule',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addLecture',
+    }, {
+      name: 'addLecture',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteLecture',
+    }, {
+      name: 'deleteLecture',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteWeeklySchedule',
+    }, {
+      name: 'deleteWeeklySchedule',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addWeeklySchedule',
+    }, {
+      name: 'addWeeklySchedule',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getMarksFiles',
+    }, {
+      name: 'getMarksFiles',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getAllMarksFiles',
+    }, {
+      name: 'getAllMarksFiles',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'addMarksFile',
+    }, {
+      name: 'addMarksFile',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'deleteMarksFile',
+    }, {
+      name: 'deleteMarksFile',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getUserMarks',
+    }, {
+      name: 'getUserMarks',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getGroupsOfUser',
+    }, {
+      name: 'getGroupsOfUser',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getSpecialPosts',
+    }, {
+      name: 'getSpecialPosts',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getBannedUsersInGroup',
+    }, {
+      name: 'getBannedUsersInGroup',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'changeBanUserInGroup',
+    }, {
+      name: 'changeBanUserInGroup',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-      // name: 'getUserUniversityNumbers',
+    }, {
+      name: 'getUserUniversityNumbers',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
   }
 };

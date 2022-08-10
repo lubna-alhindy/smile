@@ -4,7 +4,12 @@ exports.getQuizRequests = async (args ,context) => {
     try {
         return await context.models.quizRequests.findAll({
             include: {
-                model: context.models.subjects
+                model: context.models.subjects,
+                where: {
+                    class: context.payload.roleName.split("_")[0] === "Admin" ? {
+                        [context.models.Sequelize.Op.ne]: null
+                    } : context.payload.roleName.split("_")[0]
+                }
             }
         });
     }
@@ -87,12 +92,20 @@ exports.approvalQuizRequest = async (args ,context) => {
     try {
         const quizRequest = await context.models.quizRequests.findOne({
             where: {
-                id: args.id
+                id: args.id,
+            },
+            include: {
+                model: context.models.subjects,
+                where: {
+                    class: context.payload.roleName.split("_")[0] === "Admin" ? {
+                        [context.models.Sequelize.Op.ne]: null
+                    } : context.payload.roleName.split("_")[0]
+                }
             }
         });
 
         if( !quizRequest ){
-            throw new Error("The quiz not found");
+            throw new Error("The quiz not found, Or you aren't allowed to affect this quiz");
         }
 
         if( args.choice === true ) {
