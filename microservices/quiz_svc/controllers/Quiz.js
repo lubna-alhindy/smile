@@ -35,6 +35,24 @@ exports.getQuizs = async (args ,context) => {
 
 /// -------------------------------- ///
 
+exports.getQuiz = async (args ,context) => {
+    try {
+        return await context.models.quizs.findAll({
+            where: {
+                id: args.quizId
+            },
+            include: {
+                model: context.models.subjects
+            }
+        });
+    }
+    catch(err) {
+        throw new Error(err);
+    }
+};
+
+/// -------------------------------- ///
+
 exports.addQuiz = async (args ,context) => {
     try {
         return await context.models.quizRequests.create({

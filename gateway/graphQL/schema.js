@@ -318,7 +318,10 @@ const typeDefs = gql`
           : [quizs]!
           
         getQuizRequests
-          : [quizs]!  
+          : [quizs]! 
+          
+        getQuiz(quizId: Int!)
+          : quizs 
         
       # --------------------------------- USER-SVC --------------------------------- #
       
@@ -339,6 +342,9 @@ const typeDefs = gql`
           
         getBannedUsersInGroup(group: Groups!)
           : [BannedInGroups]!
+          
+        getUserUniversityNumbers(id: Int!)
+          : [UsersUniversityNumbers]!
          
       # --------------------------------- POST-SVC --------------------------------- #
   

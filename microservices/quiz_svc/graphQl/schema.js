@@ -61,6 +61,9 @@ const typeDefs = gql`
         
     getQuizs(subjectId: Int)
       : [quizs]!
+      
+    getQuiz(quizId: Int!)
+       : quizs
   }
 
   type Mutation {

@@ -10,6 +10,9 @@ const resolvers = {
 
         getQuizs: (root ,args ,context) =>
             Controller.Quiz.getQuizs(args ,context),
+
+        getQuiz: (root ,args ,context) =>
+          Controller.Quiz.getQuiz(args ,context),
     },
 
     Mutation: {

@@ -22,6 +22,9 @@ const resolvers = {
       getQuizs: (root, args, context) =>
         Controller.Connection.fetch(context, process.env.QUIZ_URL, "getQuizs", args),
 
+      getQuiz: (root, args, context) =>
+        Controller.Connection.fetch(context, process.env.QUIZ_URL, "getQuiz", args),
+
     /// ----------------------- USER-SVC ----------------------- ///
 
       getUser: (root, args, context) =>
@@ -41,6 +44,9 @@ const resolvers = {
 
       getBannedUsersInGroup: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getBannedUsersInGroup", args),
+
+      getUserUniversityNumbers: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.USER_URL, "getUserUniversityNumbers", args),
 
     /// ----------------------- POST-SVC ----------------------- ///
 
