@@ -389,7 +389,7 @@ exports.approvalPostRequest = async (args, context) => {
       postRequest.subject = {class: "Public"};
     }
 
-    if (postRequest.subject.group !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin"){
+    if (postRequest.subject.class !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin"){
       throw new Error("Unauthorized");
     }
 

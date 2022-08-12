@@ -21,7 +21,7 @@ const resolvers = {
           Controller.User.getBansUser(context),
 
         getAllPostRequests: (root, args, context, info) =>
-          Controller.Post.getAllPostRequests(context),
+          Controller.Post.getAllPostRequests(args ,context),
 
         getPost: (root, args, context, info) =>
           Controller.Post.getPost(args ,context),

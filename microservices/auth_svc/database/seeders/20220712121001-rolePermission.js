@@ -573,7 +573,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
-      permissionName: 'login',
+      permissionName: 'getSpecialPosts',
       roleName: 'Public_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
