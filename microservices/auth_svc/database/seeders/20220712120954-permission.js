@@ -238,6 +238,14 @@ module.exports = {
       name: 'getUserUniversityNumbers',
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      name: 'getUniversityNumbers',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      name: 'getSpecialSubjects',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

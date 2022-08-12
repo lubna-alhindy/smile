@@ -35,6 +35,16 @@ const typeDefs = gql`
       createdAt: Date
       updatedAt: Date
     }
+    
+    type quizRequests {
+      id: Int!
+      subjectId: Int!
+      question: String!
+      answer: String!
+      createdAt: Date
+      updatedAt: Date
+      subject: subjects
+  }
   
   # ------------------------------------- AUTH-SVC ------------------------------------- #
   
@@ -318,7 +328,7 @@ const typeDefs = gql`
           : [quizs]!
           
         getQuizRequests
-          : [quizs]! 
+          : [quizRequests]! 
           
         getQuiz(quizId: Int!)
           : quizs 
@@ -403,7 +413,7 @@ const typeDefs = gql`
     type Mutation {
       # --------------------------------- QUIZ-SVC --------------------------------- #
 
-        addQuiz(subjectName: String! ,question: String! ,answer: String!)
+        addQuiz(subjectId: Int! ,question: String! ,answer: String!)
           : quizs
         
         deleteQuiz(id: Int!)

@@ -3,51 +3,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('rolePermissions', [{
-      permissionName: 'signup',
-      roleName: 'Student_',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Student_',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Admin_',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Public_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'First_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Second_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Third_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Fourth_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'login',
-      roleName: 'Fifth_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
       permissionName: 'editProfile',
       roleName: 'Student_',
       createdAt: new Date(),
@@ -1234,52 +1189,12 @@ module.exports = {
       updatedAt: new Date(),
     }, {
       permissionName: 'addMarksFile',
-      roleName: 'First_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'addMarksFile',
-      roleName: 'Second_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'addMarksFile',
-      roleName: 'Third_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'addMarksFile',
-      roleName: 'Fourth_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'addMarksFile',
-      roleName: 'Fifth_Supervisor',
+      roleName: 'Public_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
       permissionName: 'deleteMarksFile',
-      roleName: 'First_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'deleteMarksFile',
-      roleName: 'Second_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'deleteMarksFile',
-      roleName: 'Third_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'deleteMarksFile',
-      roleName: 'Fourth_Supervisor',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }, {
-      permissionName: 'deleteMarksFile',
-      roleName: 'Fifth_Supervisor',
+      roleName: 'Public_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
@@ -1607,7 +1522,87 @@ module.exports = {
       roleName: 'Student_',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },], {});
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Student_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+        permissionName: 'getUniversityNumbers',
+        roleName: 'Admin_',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getUniversityNumbers',
+        roleName: 'First_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getUniversityNumbers',
+        roleName: 'Second_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getUniversityNumbers',
+        roleName: 'Third_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getUniversityNumbers',
+        roleName: 'Fourth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getUniversityNumbers',
+        roleName: 'Fifth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+     }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Student_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+        permissionName: 'getSpecialSubjects',
+        roleName: 'Admin_',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getSpecialSubjects',
+        roleName: 'First_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getSpecialSubjects',
+        roleName: 'Second_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getSpecialSubjects',
+        roleName: 'Third_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getSpecialSubjects',
+        roleName: 'Fourth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'getSpecialSubjects',
+        roleName: 'Fifth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }], {});
   },
 
   async down(queryInterface, Sequelize) {

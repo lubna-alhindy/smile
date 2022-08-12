@@ -9,7 +9,7 @@ exports.authorize = async (roleName ,permissionName) => {
     }
   `;
 
-  const res = await request('http://localhost:5000', query);
+  const res = await request('http://localhost:5000/graphql', query);
   return res.authorize;
 };
 
