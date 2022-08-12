@@ -6,9 +6,22 @@ function isAlpha(c) { // check if char can be belongs to resolver name
 
 /// -------------------------------------- ///
 
+// function fixQuery(query) {
+//   if (!query || !query.length) return null;
+//   query = query.substr(query[0] === 'q' ? 6 : (query[0] === 'm' ? 9 : 13));
+//   query = query.substr(0, query.length - 1);
+//   query = query.replace(/ /g, '');
+//   return query;
+// }
+
+
 function fixQuery(query) {
   if (!query || !query.length) return null;
-  query = query.substr(query[0] === 'q' ? 6 : (query[0] === 'm' ? 9 : 13));
+
+  while( query.length > 0 && query[0] !== '{') {
+    query = query.substr(1);
+  }
+  query = query.substr(1);
   query = query.substr(0, query.length - 1);
   query = query.replace(/ /g, '');
   return query;
