@@ -579,9 +579,9 @@ exports.getGroupsOfUser = async (args ,context) => {
       attributes: ["class"]
     });
 
-    const allClasses = ["Special" ,"Public" ,"First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
+    const allClasses = ["First" ,"Second" ,"Third" ,"Fourth" ,"Fifth"];
 
-    const result = [];
+    const result = ["Special" ,"Public"];
     if( user.class !== null ){
       for(let Class of allClasses){
         result.push(Class);
