@@ -1602,6 +1602,36 @@ module.exports = {
         roleName: 'Fifth_Supervisor',
         createdAt: new Date(),
         updatedAt: new Date(),
+      }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      }, {
+        permissionName: 'subervisorAddPost',
+        roleName: 'First_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'subervisorAddPost',
+        roleName: 'Second_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'subervisorAddPost',
+        roleName: 'Third_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'subervisorAddPost',
+        roleName: 'Fourth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, {
+        permissionName: 'subervisorAddPost',
+        roleName: 'Fifth_Supervisor',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }], {});
   },
 

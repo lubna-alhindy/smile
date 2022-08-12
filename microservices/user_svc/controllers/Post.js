@@ -240,13 +240,13 @@ exports.addPost = async (args, context) => {
 
 exports.subervisorAddPost = async (args, context) => {
   try {
-    const subjects = !args.subjectId ? {class: "Public"} : await context.models.subject.findOne({
+    const subjects = !args.subjectId ? {class: "Public"} : await context.models.subjects.findOne({
       where: {
         id: args.subjectId
       }
     });
 
-    if (subjects.group !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin") {
+    if (subjects.class !== context.payload.roleName.split('_')[0] && context.payload.roleName.split('_')[0] !== "Admin") {
       throw new Error("Unauthorized");
     }
 
