@@ -1532,107 +1532,107 @@ module.exports = {
       roleName: 'Student_',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-        permissionName: 'getUniversityNumbers',
-        roleName: 'Admin_',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getUniversityNumbers',
-        roleName: 'First_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getUniversityNumbers',
-        roleName: 'Second_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getUniversityNumbers',
-        roleName: 'Third_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getUniversityNumbers',
-        roleName: 'Fourth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getUniversityNumbers',
-        roleName: 'Fifth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getUniversityNumbers',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
       permissionName: 'getSpecialSubjects',
       roleName: 'Public_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
-     }, {
+    }, {
       permissionName: 'getSpecialSubjects',
       roleName: 'Student_',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
-        permissionName: 'getSpecialSubjects',
-        roleName: 'Admin_',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getSpecialSubjects',
-        roleName: 'First_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getSpecialSubjects',
-        roleName: 'Second_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getSpecialSubjects',
-        roleName: 'Third_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getSpecialSubjects',
-        roleName: 'Fourth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'getSpecialSubjects',
-        roleName: 'Fifth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getSpecialSubjects',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
       permissionName: 'subervisorAddPost',
       roleName: 'Admin_',
       createdAt: new Date(),
       updatedAt: new Date(),
-      }, {
-        permissionName: 'subervisorAddPost',
-        roleName: 'First_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'subervisorAddPost',
-        roleName: 'Second_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'subervisorAddPost',
-        roleName: 'Third_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'subervisorAddPost',
-        roleName: 'Fourth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }, {
-        permissionName: 'subervisorAddPost',
-        roleName: 'Fifth_Supervisor',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }], {});
+    }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'subervisorAddPost',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }], {});
   },
 
   async down(queryInterface, Sequelize) {

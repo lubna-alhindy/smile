@@ -60,11 +60,19 @@ exports.getQuiz = async (args ,context) => {
 
 exports.addQuiz = async (args ,context) => {
     try {
-        return await context.models.quizRequests.create({
-            subjectId: args.subjectId,
-            question: args.question,
-            answer: args.answer,
-        });
+        if( context.payload.roleName === "Student_" ){
+            return await context.models.quizRequests.create({
+                subjectId: args.subjectId,
+                question: args.question,
+                answer: args.answer,
+            });
+        } else {
+            return await context.models.quizs.create({
+                subjectId: args.subjectId,
+                question: args.question,
+                answer: args.answer,
+            });
+        }
     }
     catch(err) {
         throw new Error(err);

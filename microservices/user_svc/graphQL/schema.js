@@ -236,7 +236,7 @@ const typeDefs = gql`
     getAllPostRequests(group: Groups!)
       : [PostRequests]!
 
-    getPost(id: Int! ,like: Boolean ,comment: Boolean)
+    getPost(id: Int!)
       : Posts
 
     getAllComplaints

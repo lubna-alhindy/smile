@@ -1,10 +1,16 @@
+const {checkIfExist ,requiredFields} = require("../graphQL/body");
 const {Sequelize, Op} = require('sequelize');
 const Helper = require('./Helper');
 
 // -------------------------------- //
 
-exports.getPost = async (args, context) => {
+exports.getPost = async (args, context ,info) => {
   try {
+    const body = await requiredFields(info);
+
+    args.like = await checkIfExist(body, "likes");
+    args.comment = await checkIfExist(body, "comments");
+
     const post = await context.models.posts.findOne({
       where: {
         id: args.id

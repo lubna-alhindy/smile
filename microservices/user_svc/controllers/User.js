@@ -427,6 +427,21 @@ exports.changeUserRole = async (args, context) => {
     });
 
     user.roleName = args.roleName;
+    if( !user.class ){
+      user.class = args.roleName.split('_')[0];
+    } else {
+      const classes = ["First" , "Second" , "Third" , "Fourth" , "Fifth"];
+      let flag = false;
+      for(let i = 0; i < classes.length; i++){
+        if( classes[i] === args.roleName.split('_')[0] ){
+          flag = true;
+        }
+        if( classes[i] === user.class && !flag ){
+          throw new Error("This user is not allowed to be admin of this group")
+        }
+      }
+    }
+
     await user.save();
 
     return user;

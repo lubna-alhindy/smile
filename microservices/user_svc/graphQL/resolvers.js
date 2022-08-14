@@ -24,7 +24,7 @@ const resolvers = {
           Controller.Post.getAllPostRequests(args ,context),
 
         getPost: (root, args, context, info) =>
-          Controller.Post.getPost(args ,context),
+          Controller.Post.getPost(args ,context ,info),
 
         getAllComplaints: (root, args, context, info) =>
           Controller.Complaints.getAllComplaints(context),

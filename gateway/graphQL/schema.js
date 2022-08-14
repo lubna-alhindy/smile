@@ -324,7 +324,7 @@ const typeDefs = gql`
     
       # --------------------------------- QUIZ-SVC --------------------------------- #
 
-        getQuizs(subjectName: String)
+        getQuizs(subjectId: Int)
           : [quizs]!
           
         getQuizRequests

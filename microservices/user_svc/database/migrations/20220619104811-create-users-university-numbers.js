@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      year:{ // yyyy/yyyy
+      year:{ // x
         type: Sequelize.STRING,
         allowNull: false
       },

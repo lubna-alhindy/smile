@@ -3,6 +3,7 @@ const {ApolloServer} = require('apollo-server-express');
 const {request, gql} = require('graphql-request');
 const schedule = require('node-schedule');
 const express = require('express');
+const path = require('path');
 require("dotenv").config();
 
 const resolvers = require('./graphQL/resolvers');
@@ -43,6 +44,7 @@ async function startServer() {
   await server.start();
   const app = express();
 
+  app.use("images" ,express.static(path.join(__dirname,"..","microservices","user_svc","assets","images")));
   app.use(graphqlUploadExpress());
 
   schedule.scheduleJob('2 0 0 * * *', () => {
