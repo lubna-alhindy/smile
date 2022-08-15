@@ -1632,6 +1632,86 @@ module.exports = {
       roleName: 'Fifth_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Student_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getNotification',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },{
+      permissionName: 'getAllNotification',
+      roleName: 'Student_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'getAllNotification',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 

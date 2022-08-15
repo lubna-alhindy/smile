@@ -55,6 +55,12 @@ const resolvers = {
 
         checkBanUsersInGroup: (root ,args ,context ,info) =>
           Controller.User.checkBanUsersInGroup(args ,context),
+
+        getAllNotification: (root ,args ,context ,info) =>
+          Controller.Notifications.getAllNotification(context),
+
+        getNotification: (root ,args ,context ,info) =>
+          Controller.Notifications.getNotification(args ,context),
     },
 
     /// ---------------------------- ///

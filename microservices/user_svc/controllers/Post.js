@@ -418,6 +418,13 @@ exports.approvalPostRequest = async (args, context) => {
           }
         });
       }
+      await Notification.addNotification(
+        postRequest.userId,
+        'pindding Post',
+        'Your Post has been Approved',
+        context
+      );
+
     } else {
       for (let image of postRequest.postImages) {
         await Helper.deleteImage(image.name);
@@ -427,7 +434,14 @@ exports.approvalPostRequest = async (args, context) => {
           }
         });
       }
+      await Notification.addNotification(
+        postRequest.userId,
+        'pindding Post',
+        'Your Post has been Rejected',
+        context
+      );
     }
+
 
     await postRequest.destroy();
   } catch (err) {
@@ -476,6 +490,19 @@ exports.changeLike = async (args, context) => {
 
 exports.addComment = async (args, context) => {
   try {
+    const post = await context.models.posts.findOne({
+      where: {
+        id: args.postId
+      }
+    });
+
+    await Notification.addNotification(
+      post.userId,
+      'New Comment',
+      'Your Post has New Comment',
+      context
+    );
+
     return await context.models.comments.create({
       body: args.body,
       userId: args.userId,

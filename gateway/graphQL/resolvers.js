@@ -48,6 +48,12 @@ const resolvers = {
       getUserUniversityNumbers: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.USER_URL, "getUserUniversityNumbers"),
 
+      getAllNotification: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.USER_URL, "getAllNotification"),
+
+      getNotification: (root ,args ,context ,info) =>
+        Controller.Connection.fetch(context, process.env.USER_URL, "getNotification"),
+
     /// ----------------------- POST-SVC ----------------------- ///
 
       getAllAds: (root, args, context) =>

@@ -220,6 +220,15 @@ const typeDefs = gql`
     updatedAt: Date
   }
   
+  type Notifications {
+    userId: Int!
+    title: String
+    body: String!
+    isRead: Boolean
+    createdAt: Date
+    updatedAt: Date
+  }
+  
   type Query {
     getUser(id: Int!)
       : Users
@@ -268,6 +277,12 @@ const typeDefs = gql`
       
     checkBanUsersInGroup(userId: Int! ,group: Groups!)
       : Boolean!
+      
+    getAllNotification
+      : [Notifications]!
+      
+    getNotification(id: Int!)
+      : Notifications
   }
 
   type Mutation {

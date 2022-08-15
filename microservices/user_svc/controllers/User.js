@@ -516,6 +516,13 @@ exports.changeBanUserInGroup = async (args, context) => {
         }
       });
 
+      await Notification.addNotification(
+        args.userId,
+        'Alert',
+        'Your have been blocked from ' + args.group +' group',
+        context
+      );
+
       bannedInGroup.isBanned = true;
     } else {
       await context.models.bannedingroups.destroy({
@@ -523,6 +530,13 @@ exports.changeBanUserInGroup = async (args, context) => {
           id: bannedInGroup.id
         }
       });
+
+      await Notification.addNotification(
+        args.userId,
+        'Alert',
+        'Your have been unBlocked from ' + args.group +' group',
+        context
+      );
 
       bannedInGroup.isBanned = false;
     }

@@ -1,4 +1,5 @@
 const Helper = require('./Helper');
+const Notification = require('./Notifications');
 
 /// ----------------------------- ///
 
@@ -51,6 +52,13 @@ exports.addAd = async (args, context) => {
         adId: ad.id
       }));
     }
+
+    await Notification.addNotification(
+      null,
+      'Public Ad',
+      body,
+      context
+    );
 
     return ad;
   } catch (err) {

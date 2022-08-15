@@ -4,6 +4,7 @@ const User = require('./User');
 const Post = require('./Post');
 const Helper = require('./Helper');
 const Complaints = require('./Complaints');
+const Notifications = require('./Notifications');
 
 module.exports = {
     Ads: Ads,
@@ -11,5 +12,6 @@ module.exports = {
     User: User,
     Post: Post,
     Helper: Helper,
-    Complaints: Complaints
+    Complaints: Complaints,
+    Notifications: Notifications
 };

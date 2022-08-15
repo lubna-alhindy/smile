@@ -318,6 +318,16 @@ const typeDefs = gql`
       marks: [subjectsuniversitynumbers]!
     }
     
+    
+    type Notifications {
+      userId: Int!
+      title: String
+      body: String!
+      isRead: Boolean
+      createdAt: Date
+      updatedAt: Date
+    }
+  
   # ------------------------------------- QUERY ------------------------------------- #
   
     type Query {
@@ -355,6 +365,12 @@ const typeDefs = gql`
           
         getUserUniversityNumbers(id: Int!)
           : [UsersUniversityNumbers]!
+          
+        getAllNotification
+          : [Notifications]!
+      
+        getNotification(id: Int!)
+          : Notifications
          
       # --------------------------------- POST-SVC --------------------------------- #
   

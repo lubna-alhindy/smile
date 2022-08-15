@@ -246,6 +246,14 @@ module.exports = {
       name: 'getSpecialSubjects',
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      name: 'getNotification',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      name: 'getAllNotification',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 
