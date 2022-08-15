@@ -9,17 +9,14 @@ exports.getAuthorization = async (token, resolverName) => {
   if( !payload ){
     return false;
   }
-
   const isBaned = await getBanState(payload.id);
   if( isBaned ){
     return false;
   }
-
   const auth = await authorize(payload.roleName ,resolverName);
   if( !auth ){
     return false;
   }
-
   return true;
 };
 

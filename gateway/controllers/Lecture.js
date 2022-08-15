@@ -21,7 +21,7 @@ exports.addLecture = async (args ,context) => {
   context.query["addLecture"] = gql`mutation{addLecture(url:"${filename}",year:"${year}",subjectId:${subjectId},type:${type})}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addLecture");
 
-  return {filename: filename, mimetype, encoding };
+  return {filename, mimetype, encoding };
 };
 
 /// --------------------------- ///

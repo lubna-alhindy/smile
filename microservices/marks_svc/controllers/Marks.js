@@ -58,7 +58,6 @@ exports.addMarksFile = async (args ,context) => {
   catch(err) {
     throw new Error(err.message);
   }
-
 }
 
 // ----------------------------- //

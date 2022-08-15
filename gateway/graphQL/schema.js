@@ -320,7 +320,8 @@ const typeDefs = gql`
     
     
     type Notifications {
-      userId: Int!
+      id: Int!
+      userId: Int
       title: String
       body: String!
       isRead: Boolean

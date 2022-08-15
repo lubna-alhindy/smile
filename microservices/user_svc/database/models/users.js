@@ -35,9 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       users.hasMany(models.bannedingroups ,{
         foreignKey: 'userId'
       });
-      users.hasMany(models.notifications ,{
-        foreignKey: 'userId'
-      });
     }
   }
 

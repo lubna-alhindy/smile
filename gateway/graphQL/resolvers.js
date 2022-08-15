@@ -198,7 +198,7 @@ const resolvers = {
         Controller.Connection.fetch(context, process.env.QUIZ_URL, "deleteQuiz"),
 
       approvalQuizRequest: (root ,args ,context) =>
-        Controller.Connection.fetch(context, process.env.QUIZ_URL, "approvalQuizRequest"),
+          Controller.Connection.fetch(context, process.env.QUIZ_URL, "approvalQuizRequest"),
 
     /// ----------------------- USER-SVC ----------------------- ///
 
@@ -284,11 +284,21 @@ const resolvers = {
       deleteSummary: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteSummary"),
 
-      addLecture: (root ,args ,context) =>
-        Controller.Lecture.addLecture(args ,context),
+      addLecture: async (root ,args ,context) => {
+          context.query["sendNotification"] = `mutation {
+            sendNotification(userId: null ,title: "Lectures", body: "New Lecture has been added")
+          }`
+          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return await Controller.Lecture.addLecture(args, context);
+      },
 
-      addWeeklySchedule: (root ,args ,context) =>
-        Controller.WeeklySchedule.addWeeklySchedule(args ,context),
+      addWeeklySchedule: async (root ,args ,context) => {
+          context.query["sendNotification"] = `mutation {
+            sendNotification(userId: null ,title: "Weekly Schedule", body: "Weekly Schedule has been added")
+          }`
+          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return await Controller.WeeklySchedule.addWeeklySchedule(args, context);
+      },
 
       deleteLecture: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteLecture"),
@@ -301,10 +311,13 @@ const resolvers = {
       deleteMarksFile: (root ,args ,context ,info) =>
         Controller.Connection.fetch(context, process.env.MARKS_URL, "deleteMarksFile"),
 
-      addMarksFile: (root ,args ,context) =>
-        Controller.Marks.addMarksFile(args ,context),
-
-
+      addMarksFile: async (root ,args ,context) => {
+          context.query["sendNotification"] = `mutation {
+            sendNotification(userId: null ,title: "Marks", body: "New marks file has been added")
+          }`
+          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return await Controller.Marks.addMarksFile(args, context);
+      },
   }
 };
 

@@ -142,6 +142,8 @@ const resolvers = {
         changeBanUserInGroup: (root, args, context, info) =>
             Controller.User.changeBanUserInGroup(args ,context),
 
+        sendNotification: (root, args, context, info) =>
+            Controller.Notifications.sendNotification(args ,context),
     },
 };
 

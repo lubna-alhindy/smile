@@ -1672,7 +1672,7 @@ module.exports = {
       roleName: 'Fifth_Supervisor',
       createdAt: new Date(),
       updatedAt: new Date(),
-    },{
+    }, {
       permissionName: 'getAllNotification',
       roleName: 'Student_',
       createdAt: new Date(),
@@ -1710,6 +1710,86 @@ module.exports = {
     }, {
       permissionName: 'getAllNotification',
       roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'sendNotification',
+      roleName: 'Student_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Admin_',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Public_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'First_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Second_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Third_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Fourth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Fifth_Supervisor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      permissionName: 'analyseMarksFile',
+      roleName: 'Student_',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});

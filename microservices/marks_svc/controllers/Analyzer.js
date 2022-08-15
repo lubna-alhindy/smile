@@ -23,7 +23,9 @@ exports.analyseMarksFile = async (args, context) => {
       include: context.models.subjects
     });
 
-    readFile(marksFile.url, (err ,buffer) => {
+    const filePath = require("path").join(__dirname, ".." ,"upload" ,"marksFiles" ,marksFile.url);
+
+    readFile(filePath, (err ,buffer) => {
       if (err) {
         throw new Error(err.message);
       }

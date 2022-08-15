@@ -23,7 +23,7 @@ exports.addMarksFile = async (args ,context) => {
   context.query["analyseMarksFile"] = gql`mutation{analyseMarksFile(id:${marksFile.id})}`;
   Connection.fetch(context ,process.env.MARKS_URL ,"analyseMarksFile");
 
-  return {filename: filename, mimetype, encoding };
+  return {filename, mimetype, encoding};
 };
 
 /// --------------------------- ///

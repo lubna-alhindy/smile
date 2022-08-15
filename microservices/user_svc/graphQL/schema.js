@@ -221,7 +221,8 @@ const typeDefs = gql`
   }
   
   type Notifications {
-    userId: Int!
+    id: Int!
+    userId: Int
     title: String
     body: String!
     isRead: Boolean
@@ -363,6 +364,9 @@ const typeDefs = gql`
         
     changeBanUserInGroup(userId: Int! ,group: Groups!)
        : BannedInGroups
+      
+    sendNotification(userId: Int ,title: String ,body: String!)
+      : Void
   }
 `;
 

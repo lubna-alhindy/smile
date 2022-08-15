@@ -21,7 +21,7 @@ exports.addWeeklySchedule = async (args ,context) => {
   context.query["addWeeklySchedule"] = gql`mutation{addWeeklySchedule(url:"${filename}",year:"${year}")}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addWeeklySchedule");
 
-  return {filename: filename, mimetype, encoding };
+  return {filename, mimetype, encoding };
 };
 
 /// --------------------------- ///

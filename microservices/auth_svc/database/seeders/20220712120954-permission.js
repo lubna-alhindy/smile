@@ -254,6 +254,14 @@ module.exports = {
       name: 'getAllNotification',
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      name: 'sendNotification',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } ,{
+      name: 'analyseMarksFile',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
   },
 
