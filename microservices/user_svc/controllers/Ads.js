@@ -10,7 +10,7 @@ exports.getAllAds = async (context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -47,14 +47,14 @@ exports.addAd = async (args, context) => {
       }
 
       ad["postImages"].push(await context.models.postImages.create({
-        name: await Helper.getImagePath(name),
+        name: name,
         adId: ad.id
       }));
     }
 
     return ad;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -114,7 +114,7 @@ exports.updateAd = async (args, context) => {
 
         ad["postImages"].push(
           await context.models.postImages.create({
-            name: await Helper.getImagePath(name),
+            name: name,
             adId: ad.id
           })
         );
@@ -123,7 +123,7 @@ exports.updateAd = async (args, context) => {
 
     return ad;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -147,7 +147,7 @@ exports.deleteAd = async (args, context) => {
 
     await ad.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 

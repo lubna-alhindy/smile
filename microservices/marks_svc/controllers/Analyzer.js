@@ -25,7 +25,7 @@ exports.analyseMarksFile = async (args, context) => {
 
     readFile(marksFile.url, (err ,buffer) => {
       if (err) {
-        throw new Error(err);
+        throw new Error(err.message);
       }
 
       pdf2table.parse(buffer ,async (err, rows, rowsdebug) => {
@@ -63,7 +63,7 @@ exports.analyseMarksFile = async (args, context) => {
       });
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

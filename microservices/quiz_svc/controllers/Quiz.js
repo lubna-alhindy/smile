@@ -14,7 +14,7 @@ exports.getQuizRequests = async (args ,context) => {
         });
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -34,7 +34,7 @@ exports.getQuizs = async (args ,context) => {
         });
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -52,7 +52,7 @@ exports.getQuiz = async (args ,context) => {
         });
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -75,7 +75,7 @@ exports.addQuiz = async (args ,context) => {
         }
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -90,7 +90,7 @@ exports.deleteQuiz = async (args ,context) => {
         });
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -127,7 +127,7 @@ exports.approvalQuizRequest = async (args ,context) => {
         await quizRequest.destroy();
     }
     catch(err) {
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 

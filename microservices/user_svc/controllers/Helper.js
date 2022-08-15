@@ -124,7 +124,7 @@ exports.writeImage = async (image ,name) => {
         return filePath;
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -165,42 +165,7 @@ exports.deleteImage = async name => {
         }
     }
     catch(err){
-        throw new Error(err);
-    }
-};
-
-/// --------------------------- ///
-
-exports.getImagePath = name => {
-    try {
-        let filePath = join(
-          __dirname,
-          "..",
-          "assets"
-        );
-
-        if (!existsSync(filePath)) {
-            mkdirSync(filePath);
-        }
-
-        filePath = join(
-          filePath,
-          'images'
-        );
-
-        if (!existsSync(filePath)) {
-            mkdirSync(filePath);
-        }
-
-        filePath = join(
-          filePath,
-          name
-        );
-
-        return filePath;
-    }
-    catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -209,7 +174,9 @@ exports.getImagePath = name => {
 exports.uniqueName = suffix => {
     const date = new Date();
 
-    return date.toLocaleDateString('sv') + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds() + '-' + date.getMilliseconds() + '-' + suffix.toString();
+    const str = date.toLocaleDateString('sv') + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds() + '-' + date.getMilliseconds() + '-' + suffix.toString();
+
+    return new Buffer(str).toString("base64");
 };
 
 /// --------------------------- ///
@@ -221,7 +188,7 @@ exports.convertBase64ToImage = base64 => {
         return !image ? null : image;
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 };
 
@@ -232,7 +199,7 @@ exports.convertImageToBase64 = filePath => {
         return readFileSync(filePath ,'base64');
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 }
 

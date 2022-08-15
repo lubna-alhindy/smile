@@ -11,7 +11,7 @@ exports.getMarksFiles = async (args ,context) => {
         include: context.models.subjects
       })
     } catch (err) {
-      throw new Error(err);
+      throw new Error(err.message);
     }
 }
 
@@ -41,7 +41,7 @@ exports.getAllMarksFiles = async (args ,context) => {
         }
       });
     } catch (err) {
-      throw new Error(err);
+      throw new Error(err.message);
     }
 }
 
@@ -56,7 +56,7 @@ exports.addMarksFile = async (args ,context) => {
     });
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 
 }
@@ -75,7 +75,7 @@ exports.deleteMarksFile = async (args ,context) => {
     await marksFile.destroy();
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -99,7 +99,7 @@ exports.getUniversityNumbers = async (args ,context) => {
     return response;
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -156,7 +156,7 @@ exports.getUserMarks = async (args ,context) => {
     };
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -202,7 +202,7 @@ exports.getSpecialSubjects = async (args ,context) => {
     return Array.from(subjectIds);
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

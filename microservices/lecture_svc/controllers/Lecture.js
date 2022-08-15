@@ -21,7 +21,7 @@ exports.addLecture = async (args ,context) => {
       type: args.type
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -44,7 +44,7 @@ exports.deleteLecture = async (args ,context) => {
     unlinkSync(lecture.url);
     await lecture.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -59,7 +59,7 @@ exports.getLecture = async (args ,context) => {
       include: context.models.subjects
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -92,7 +92,7 @@ exports.getAllLecture = async (args ,context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

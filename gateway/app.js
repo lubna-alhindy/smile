@@ -44,8 +44,11 @@ async function startServer() {
   await server.start();
   const app = express();
 
-  app.use("images" ,express.static(path.join(__dirname,"..","microservices","user_svc","assets","images")));
   app.use(graphqlUploadExpress());
+  app.use("/images" ,express.static(path.join(__dirname, "..", "microservices", "user_svc", "assets", "images")));
+  app.use("/lecture_svc/files" ,express.static(path.join(__dirname, "..", "microservices", "lecture_svc", "upload", "lectures")));
+  app.use("/lecture_svc/weeklySchedules" ,express.static(path.join(__dirname, "..", "microservices", "lecture_svc", "upload", "weeklySchedules")));
+  app.use("/marks_svc/files" ,express.static(path.join(__dirname, "..", "microservices", "marks_svc", "upload", "marksFiles")));
 
   schedule.scheduleJob('2 0 0 * * *', () => {
     request(process.env.USER_URL, gql`

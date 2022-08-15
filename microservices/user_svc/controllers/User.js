@@ -38,7 +38,7 @@ exports.signup = async (args, context) => {
       })
     };
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -64,8 +64,9 @@ exports.login = async (args, context) => {
         class: user.class
       })
     };
+
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -121,13 +122,13 @@ exports.editProfile = async (args, context) => {
       if (!await Helper.writeImage(image, name)) {
         throw new Error("Internal server error, try again");
       }
-      user.image = await Helper.getImagePath(name);
+      user.image = name;
     }
 
     await user.save();
     return user;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -157,7 +158,7 @@ exports.userChangePassword = async (args, context) => {
 
     return user;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -205,7 +206,7 @@ exports.userDeleteAccount = async (args, context) => {
 
     await user.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -291,7 +292,7 @@ exports.getUser = async (args, context, info) => {
     }
     return editedUser;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -313,7 +314,7 @@ exports.getAllUser = async (context) => {
 
     return users;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -327,7 +328,7 @@ exports.getBansUser = async (context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -360,7 +361,7 @@ exports.changeBanUser = async (args, context) => {
 
     return user;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -374,7 +375,7 @@ exports.addUsersUniversityNumber = async (args, context) => {
       year: args.year
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -392,7 +393,7 @@ exports.deleteUsersUniversityNumber = async (args, context) => {
       throw new Error("This university number doesn't exist");
     }
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -412,7 +413,7 @@ exports.getBanState = async (args, context) => {
 
     return true;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -446,7 +447,7 @@ exports.changeUserRole = async (args, context) => {
 
     return user;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -460,7 +461,7 @@ exports.getUserUniversityNumbers = async (args, context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -528,7 +529,7 @@ exports.changeBanUserInGroup = async (args, context) => {
 
     return bannedInGroup;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -550,7 +551,7 @@ exports.getBannedUsersInGroup = async (args ,context) => {
     });
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -568,7 +569,7 @@ exports.checkBanUsersInGroup = async (args ,context) => {
     return !bannedInGroup ? false : true
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

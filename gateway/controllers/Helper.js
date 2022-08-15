@@ -46,19 +46,10 @@ exports.Void = {
 
 // -------------------------------------------- //
 
-const {existsSync ,mkdirSync ,createWriteStream} = require('fs');
-const CryptoJS = require("crypto-js");
+const {existsSync ,mkdirSync} = require('fs');
 const {join} = require('path');
 
 // -------------------------------------------- //
-
-exports.encryptB64 = (message) => {
-    const ciphertext = CryptoJS.AES.encrypt(
-      JSON.stringify(message),
-      "ENCRYPTSECRETKEY"
-    ).toString();
-    return Buffer.from(ciphertext, "utf8").toString("base64");
-};
 
 exports.uniqueName = (suffix) => {
     const date = new Date();
@@ -71,7 +62,7 @@ exports.uniqueName = (suffix) => {
       + date.getMilliseconds() + '-'
       + suffix.toString();
 
-    return this.encryptB64(name);
+    return new Buffer(name).toString("base64");
 };
 
 exports.getUploadPath = (folder ,service) => {

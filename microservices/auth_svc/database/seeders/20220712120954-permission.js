@@ -246,10 +246,6 @@ module.exports = {
       name: 'getSpecialSubjects',
       createdAt: new Date(),
       updatedAt: new Date(),
-    }, {
-      name: 'subervisorAddPost',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     }], {});
   },
 

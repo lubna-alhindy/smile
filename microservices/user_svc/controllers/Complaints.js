@@ -11,7 +11,7 @@ exports.getAllComplaints = async (context) => {
         });
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 }
 
@@ -26,7 +26,7 @@ exports.addComplaint = async (args ,context) => {
         });
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 }
 
@@ -46,7 +46,7 @@ exports.changeDoneComplaint = async (args ,context) => {
         return complaint;
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 }
 
@@ -61,7 +61,7 @@ exports.deleteComplaint = async (args ,context) => {
         });
     }
     catch(err){
-        throw new Error(err);
+        throw new Error(err.message);
     }
 }
 

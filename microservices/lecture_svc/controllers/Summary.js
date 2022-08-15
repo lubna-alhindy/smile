@@ -9,7 +9,7 @@ exports.getSummary = async (args, context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -32,7 +32,7 @@ exports.getAllSummary = async (args, context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -44,7 +44,7 @@ exports.addSummary = async (args, context) => {
       body: args.body
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -56,7 +56,7 @@ exports.deleteSummary = async (args, context) => {
       }
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

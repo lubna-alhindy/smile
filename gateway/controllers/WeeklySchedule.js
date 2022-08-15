@@ -18,22 +18,10 @@ exports.addWeeklySchedule = async (args ,context) => {
   const out = createWriteStream(filePath);
   await stream.pipe(out);
 
-  let path = "";
-  for(let i = 0 ; i < filePath.length ; i++){
-    if( i > 0 && filePath[i] === "\\" && filePath[i - 1] === "\\" ){
-      continue;
-    }
-    if( filePath[i] === "\\" ){
-      path += "/";
-    } else {
-      path += filePath[i];
-    }
-  }
-
-  context.query["addWeeklySchedule"] = gql`mutation{addWeeklySchedule(url:"${path}",year:"${year}")}`;
+  context.query["addWeeklySchedule"] = gql`mutation{addWeeklySchedule(url:"${filename}",year:"${year}")}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addWeeklySchedule");
 
-  return {filename: path, mimetype, encoding };
+  return {filename: filename, mimetype, encoding };
 };
 
 /// --------------------------- ///

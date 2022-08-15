@@ -11,7 +11,7 @@ exports.getWeeklySchedule = async (args ,context) => {
     });
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -29,7 +29,7 @@ exports.deleteWeeklySchedule = async (args ,context) => {
     await weeklySchedule.destroy();
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -43,7 +43,7 @@ exports.addWeeklySchedule = async (args ,context) => {
     });
   }
   catch(err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

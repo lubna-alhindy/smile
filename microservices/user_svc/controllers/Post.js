@@ -73,7 +73,7 @@ exports.getPost = async (args, context ,info) => {
 
     return editedPost;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -197,7 +197,7 @@ exports.getPosts = async (args, context) => {
 
     return posts;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -231,14 +231,14 @@ exports.addPost = async (args, context) => {
       }
 
       post["postImages"].push(await context.models.postImages.create({
-        name: await Helper.getImagePath(name),
+        name: name,
         postRequestId: post.id
       }));
     }
 
     return post;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -282,14 +282,14 @@ exports.subervisorAddPost = async (args, context) => {
       }
 
       post["postImages"].push(await context.models.postImages.create({
-        name: await Helper.getImagePath(name),
+        name: name,
         postId: post.id
       }));
     }
 
     return post;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -324,7 +324,7 @@ exports.deletePost = async (args, context) => {
 
     await post.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -343,7 +343,7 @@ exports.getAllGeneralPostRequests = async (context) => {
       }]
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -372,7 +372,7 @@ exports.getAllPostRequests = async (args ,context) => {
       }]
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -431,7 +431,7 @@ exports.approvalPostRequest = async (args, context) => {
 
     await postRequest.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -468,7 +468,7 @@ exports.changeLike = async (args, context) => {
     }
     return post;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -482,7 +482,7 @@ exports.addComment = async (args, context) => {
       postId: args.postId
     });
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -504,7 +504,7 @@ exports.deleteComment = async (args, context) => {
 
     await comment.destroy();
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -545,7 +545,7 @@ exports.changeFavorite = async (args, context) => {
 
     return post;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 
@@ -568,7 +568,7 @@ exports.getSubjects = async (args ,context) => {
     });
   }
   catch(err){
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -600,7 +600,7 @@ exports.getGroupsOfUser = async (args ,context) => {
     return result;
   }
   catch(err){
-    throw new Error(err);
+    throw new Error(err.message);
   }
 };
 

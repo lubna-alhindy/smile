@@ -18,22 +18,10 @@ exports.addLecture = async (args ,context) => {
   const out = createWriteStream(filePath);
   await stream.pipe(out);
 
-  let path = "";
-  for(let i = 0 ; i < filePath.length ; i++){
-    if( i > 0 && filePath[i] === "\\" && filePath[i - 1] === "\\" ){
-      continue;
-    }
-    if( filePath[i] === "\\" ){
-      path += "/";
-    } else {
-      path += filePath[i];
-    }
-  }
-
-  context.query["addLecture"] = gql`mutation{addLecture(url:"${path}",year:"${year}",subjectId:${subjectId},type:${type})}`;
+  context.query["addLecture"] = gql`mutation{addLecture(url:"${filename}",year:"${year}",subjectId:${subjectId},type:${type})}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addLecture");
 
-  return {filename: path, mimetype, encoding };
+  return {filename: filename, mimetype, encoding };
 };
 
 /// --------------------------- ///

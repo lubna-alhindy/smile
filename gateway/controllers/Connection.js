@@ -14,7 +14,7 @@ exports.fetch = async (context ,url ,resolverName) => {
     const res = await request(url, context.query[`${resolverName}`] ,{} ,{token: context.token});
     return res[`${resolverName}`];
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
 }
 

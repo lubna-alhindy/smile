@@ -18,7 +18,6 @@
   "author": "Loubna & Ismail",
   "license": "ISC",
   "devDependencies": {
-    "crypto-js": "^4.1.1",
     "nodemon": "^2.0.19"
   },
   "dependencies": {
