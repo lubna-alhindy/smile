@@ -9,7 +9,7 @@ const Helper = require('./Helper');
 
 exports.addWeeklySchedule = async (args ,context) => {
   let { createReadStream, filename, mimetype, encoding } = await args.file;
-  const {year} = await context.data;
+  const {year} = await context.data.data;
   const stream = createReadStream();
 
   filename = Helper.uniqueName(filename) + '.' + mimetype.split('/')[1];
@@ -18,7 +18,7 @@ exports.addWeeklySchedule = async (args ,context) => {
   const out = createWriteStream(filePath);
   await stream.pipe(out);
 
-  context.query["addWeeklySchedule"] = gql`mutation{addWeeklySchedule(url:"${filename}",year:"${year}")}`;
+  context.query = gql`mutation{addWeeklySchedule(url:"${filename}",year:"${year}")}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addWeeklySchedule");
 
   return {filename, mimetype, encoding };

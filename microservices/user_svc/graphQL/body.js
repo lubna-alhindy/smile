@@ -13,7 +13,7 @@
 
         Example about level 0 get required fields:
         for(let i = 0 ; i < info.fieldNodes[0].selectionSet.selections.length ; i++){
-            console.log(info.fieldNodes[0].selectionSet.selections[i].name.value)
+            log(info.fieldNodes[0].selectionSet.selections[i].name.value)
         }
 
         output the full info about the request from info object:

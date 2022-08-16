@@ -9,7 +9,7 @@ const Helper = require('./Helper');
 
 exports.addLecture = async (args ,context) => {
   let { createReadStream, filename, mimetype, encoding } = await args.file;
-  const {year ,subjectId ,type} = await context.data;
+  const {year ,subjectId ,type} = await context.data.data;
   const stream = createReadStream();
 
   filename = Helper.uniqueName(filename) + '.' + mimetype.split('/')[1];
@@ -18,7 +18,7 @@ exports.addLecture = async (args ,context) => {
   const out = createWriteStream(filePath);
   await stream.pipe(out);
 
-  context.query["addLecture"] = gql`mutation{addLecture(url:"${filename}",year:"${year}",subjectId:${subjectId},type:${type})}`;
+  context.query = gql`mutation{addLecture(url:"${filename}",year:"${year}",subjectId:${subjectId},type:${type})}`;
   await Connection.fetch(context ,process.env.LECTURE_URL ,"addLecture");
 
   return {filename, mimetype, encoding };

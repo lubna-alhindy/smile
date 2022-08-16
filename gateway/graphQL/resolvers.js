@@ -69,7 +69,7 @@ const resolvers = {
           const {id} = jwt.decode(context.token ,process.env.JWT_SECRET);
           const Class = jwt.decode(context.token ,process.env.JWT_SECRET).class;
 
-          context.query["getUserUniversityNumbers"] = `query {
+          context.query = `query {
                 getUserUniversityNumbers(id:${id}){
                   year
                   universityNumber
@@ -82,19 +82,19 @@ const resolvers = {
               universityNumberss.push(i.universityNumber);
           }
 
-          context.query["getUniversityNumbers"] = `query {
+          context.query = `query {
                 getUniversityNumbers(years:[${years}] ,universityNumbers:[${universityNumberss}])
               }`
           const universityNumbers =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUniversityNumbers");
 
-          context.query["getSpecialSubjects"] = `query {
+          context.query = `query {
                 getSpecialSubjects(class:${Class} ,universityNumbers:[${universityNumbers}])
               }`
           const subjectId =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getSpecialSubjects");
           if( args.type === undefined ) {
-              context.query.getSpecialPosts = context.query.getSpecialPosts.substr(0, 21) + `(subjectId: [${subjectId}])` + context.query.getSpecialPosts.substr(21);
+              context.query = context.query.substr(0, 21) + `(subjectId: [${subjectId}])` + context.query.substr(21);
           } else {
-              context.query.getSpecialPosts = context.query.getSpecialPosts.substr(0, 22) + `subjectId: [${subjectId}] ,` + context.query.getSpecialPosts.substr(22);
+              context.query = context.query.substr(0, 22) + `subjectId: [${subjectId}] ,` + context.query.substr(22);
           }
 
           return await Controller.Connection.fetch(context, process.env.USER_URL, "getSpecialPosts");
@@ -138,7 +138,7 @@ const resolvers = {
       getUserMarks: async (root ,args ,context ,info) => {
           const {id} = jwt.decode(context.token ,process.env.JWT_SECRET);
 
-          context.query["getUserUniversityNumbers"] = `query {
+          context.query = `query {
             getUserUniversityNumbers(id:${id}){
               year
               universityNumber
@@ -151,17 +151,19 @@ const resolvers = {
             universityNumberss.push(i.universityNumber);
           }
 
-          context.query["getUniversityNumbers"] = `query {
+          context.query = `query {
             getUniversityNumbers(years:[${years}] ,universityNumbers:[${universityNumberss}])
           }`
           const universityNumbers =  await Controller.Connection.fetch(context, process.env.MARKS_URL, "getUniversityNumbers");
 
-          context.query["getUserMarks"] = `query {
+          context.query = `query {
           getUserMarks(class: ${args.class} ,type: ${args.type} ,universityNumberIds: [${universityNumbers}]){
             avg
             marks {
               id
               mark
+              universityNumberId
+              subjectId
               subject{
                 id
                 name
@@ -285,19 +287,21 @@ const resolvers = {
         Controller.Connection.fetch(context, process.env.LECTURE_URL, "deleteSummary"),
 
       addLecture: async (root ,args ,context) => {
-          context.query["sendNotification"] = `mutation {
+          const res = await Controller.Lecture.addLecture(args, context);
+          context.query = `mutation {
             sendNotification(userId: null ,title: "Lectures", body: "New Lecture has been added")
-          }`
-          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
-          return await Controller.Lecture.addLecture(args, context);
+          }`;
+          await Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return res
       },
 
       addWeeklySchedule: async (root ,args ,context) => {
-          context.query["sendNotification"] = `mutation {
+          const res = await Controller.WeeklySchedule.addWeeklySchedule(args, context);
+          context.query = `mutation {
             sendNotification(userId: null ,title: "Weekly Schedule", body: "Weekly Schedule has been added")
-          }`
-          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
-          return await Controller.WeeklySchedule.addWeeklySchedule(args, context);
+          }`;
+          await Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return res;
       },
 
       deleteLecture: (root ,args ,context ,info) =>
@@ -312,11 +316,12 @@ const resolvers = {
         Controller.Connection.fetch(context, process.env.MARKS_URL, "deleteMarksFile"),
 
       addMarksFile: async (root ,args ,context) => {
-          context.query["sendNotification"] = `mutation {
+          const res = await Controller.Marks.addMarksFile(args, context);
+          context.query = `mutation {
             sendNotification(userId: null ,title: "Marks", body: "New marks file has been added")
-          }`
-          Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
-          return await Controller.Marks.addMarksFile(args, context);
+          }`;
+          await Controller.Connection.fetch(context ,process.env.USER_URL ,"sendNotification");
+          return res;
       },
   }
 };

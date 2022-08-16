@@ -1,5 +1,4 @@
 exports.addNotification = async (userId, title, body, context) => {
-  console.log(userId)
   await context.models.notifications.create({
     userId: userId,
     title: title,
@@ -37,7 +36,6 @@ exports.getNotification = async (args, context) => {
 
 exports.sendNotification = async (args, context) => {
   try {
-    console.log(args);
     await this.addNotification(args.userId, args.title, args.body, context);
   } catch (err) {
     throw new Error(err);
