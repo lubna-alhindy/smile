@@ -11,8 +11,8 @@ exports.fetch = async (context ,url ,resolverName) => {
         throw new Error("Unauthorized");
       }
     }
-    const res = await request(url, context.query[`${resolverName}`] ,{} ,{token: context.token});
-    return res[`${resolverName}`];
+    const res = await request(url,gql`${context.query}`,context.data ,{token: context.token});
+    return res[resolverName];
   } catch (err) {
     throw new Error(err.message);
   }
