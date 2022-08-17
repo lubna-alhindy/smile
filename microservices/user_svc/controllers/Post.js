@@ -205,7 +205,7 @@ exports.getPosts = async (args, context) => {
 
 exports.addPost = async (args, context) => {
   try {
-    const post = await context.models.postRequests.create({
+    const post = await context.models.posts.create({
       subjectId: args.subjectId,
       userId: args.userId,
       title: args.title,
@@ -227,12 +227,12 @@ exports.addPost = async (args, context) => {
       );
       const image = await Helper.convertBase64ToImage(base64image);
       if (!await Helper.writeImage(image, name)) {
-        throw new Error("Ibternal server error, please try again");
+        throw new Error("Internal server error, please try again");
       }
 
       post["postImages"].push(await context.models.postImages.create({
         name: name,
-        postRequestId: post.id
+        postId: post.id
       }));
     }
 
