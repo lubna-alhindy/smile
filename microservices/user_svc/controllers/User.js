@@ -429,7 +429,9 @@ exports.changeUserRole = async (args, context) => {
 
     user.roleName = args.roleName;
     if( !user.class ){
-      user.class = args.roleName.split('_')[0];
+      if( args.roleName !== "Admin_" && args.roleName !== "Public_Supervisor" && args.roleName !== "Student_" ) {
+        user.class = args.roleName.split('_')[0];
+      }
     } else {
       const classes = ["First" , "Second" , "Third" , "Fourth" , "Fifth"];
       let flag = false;
